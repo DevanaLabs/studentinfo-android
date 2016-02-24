@@ -3,18 +3,25 @@ package rs.devana.labs.studentinfo.presentation.main;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import rs.devana.labs.studentinfo.R;
+import rs.devana.labs.studentinfo.domain.Adapters.NotificationArrayAdapter;
 import rs.devana.labs.studentinfo.domain.dummy.Dummy;
 import rs.devana.labs.studentinfo.domain.dummy.DummyRepository;
+import rs.devana.labs.studentinfo.domain.models.notification.Notification;
 import rs.devana.labs.studentinfo.infrastructure.dagger.Injector;
+import rs.devana.labs.studentinfo.infrastructure.repository.LectureRepository;
+import rs.devana.labs.studentinfo.infrastructure.repository.NotificationRepository;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,6 +33,9 @@ public class MainActivity extends AppCompatActivity {
     @Inject
     DummyRepository dummyRepository;
 
+    @Inject
+    NotificationRepository notificationRepository;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,8 +46,24 @@ public class MainActivity extends AppCompatActivity {
             Log.i(TAG, dummy.getName());
         }
 
-        eventBus.register(this);
-        eventBus.post(new BigLoadEvent("Hello application!"));
+        Thread inflateView = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                List<Notification> notifications = notificationRepository.getAllNotifications();
+                final ListView listView = (ListView) findViewById(R.id.notificationListView);
+                final NotificationArrayAdapter adapter = new NotificationArrayAdapter(notifications, MainActivity.this);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        listView.setAdapter(adapter);
+                    }
+                });
+            }
+        });
+
+        inflateView.start();
+//        eventBus.register(this);
+//        eventBus.post(new BigLoadEvent("Hello application!"));
     }
 
     @Override

@@ -1,0 +1,73 @@
+{
+  "project_info": {
+    "project_id": "studentinfo-51473",
+    "project_number": "494149022047",
+    "name": "StudentInfo"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:494149022047:android:9c547b5ed466b580",
+        "client_id": "android:com.android.vending",
+        "client_type": 1,
+        "android_client_info": {
+          "package_name": "com.android.vending"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "cloud_messaging_service": {
+          "status": 2,
+          "apns_config": []
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "google_signin_service": {
+          "status": 1
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:494149022047:android:6a799f82df216645",
+        "client_id": "android:rs.devana.labs.studentinfo",
+        "client_type": 1,
+        "android_client_info": {
+          "package_name": "rs.devana.labs.studentinfo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "cloud_messaging_service": {
+          "status": 2,
+          "apns_config": []
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "google_signin_service": {
+          "status": 1
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "client_info": [],
+  "ARTIFACT_VERSION": "1"
+}
