@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
@@ -17,6 +18,8 @@ import rs.devana.labs.studentinfo.domain.api.ApiPushNotifications;
 import rs.devana.labs.studentinfo.infrastructure.dagger.Injector;
 
 public class RegistrationIntentService extends IntentService {
+
+    private final  static String TAG = RegistrationIntentService.class.getSimpleName();
 
     @Inject
     public ApiPushNotifications apiPushNotifications;
@@ -32,7 +35,9 @@ public class RegistrationIntentService extends IntentService {
 
     @Override
     public void onCreate() {
+        super.onCreate();
         Injector.INSTANCE.getApplicationComponent().inject(this);
+        Log.i(TAG, " service started.");
     }
     @Override
     protected void onHandleIntent(Intent intent) {

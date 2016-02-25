@@ -20,7 +20,6 @@ import rs.devana.labs.studentinfo.domain.http.HttpClientInterface;
 public class HttpClient implements HttpClientInterface{
 
     private static final String TAG = OkHttpClient.class.getSimpleName();
-
     public static final MediaType JSON
             = MediaType.parse("application/json; charset=utf-8");
 

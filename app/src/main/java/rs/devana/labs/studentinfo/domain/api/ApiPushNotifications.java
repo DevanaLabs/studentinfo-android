@@ -48,19 +48,4 @@ public class ApiPushNotifications {
         }
         return false;
     }
-
-    public boolean deactivateDeviceToken(String deviceToken, String accessToken) {
-        final String payload = "{\"active\": " + 0 + ",\"access_token\": \"" + accessToken + "\"}";
-        try {
-            BufferedReader reader = httpClient.put(url + "/deviceToken/" + deviceToken, payload);
-            String response = responseReader.readResponse(reader);
-            JSONObject json = new JSONObject(response);
-            if (json.has("success")) {
-                return true;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
 }

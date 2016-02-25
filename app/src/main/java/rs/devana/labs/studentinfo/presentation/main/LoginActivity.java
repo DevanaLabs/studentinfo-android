@@ -92,7 +92,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
             try {
                 latch.await();
                 if (auth) {
-                    Intent navigationDrawer = new Intent(this, MainActivity.class);
+                    Intent navigationDrawer = new Intent(this, NavigationDrawerActivity.class);
                     startActivity(navigationDrawer);
                 }
             } catch (InterruptedException e) {
@@ -253,8 +253,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
                 startService(intent);
                 finish();
 
-                Intent main = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(main);
+                Intent navigationDrawerIntent = new Intent(LoginActivity.this, NavigationDrawerActivity.class);
+                startActivity(navigationDrawerIntent);
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();

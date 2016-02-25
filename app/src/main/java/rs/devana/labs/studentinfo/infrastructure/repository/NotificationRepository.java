@@ -41,7 +41,6 @@ public class NotificationRepository implements NotificationRepositoryInterface {
 
                 DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
                 Calendar calendar = Calendar.getInstance();
-                Log.i("blabla",stringNotification);
                 calendar.setTime(df.parse(stringNotification));
 
                 Notification notification = new Notification(jsonNotification.getInt("id"), jsonNotification.getString("description"), calendar);

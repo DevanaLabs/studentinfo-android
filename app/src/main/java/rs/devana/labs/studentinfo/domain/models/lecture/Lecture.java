@@ -1,15 +1,29 @@
 package rs.devana.labs.studentinfo.domain.models.lecture;
 
+import java.util.Calendar;
+import java.util.List;
+
+import rs.devana.labs.studentinfo.domain.models.classroom.Classroom;
+import rs.devana.labs.studentinfo.domain.models.course.Course;
+import rs.devana.labs.studentinfo.domain.models.notification.lecture.LectureNotification;
+
 public class Lecture {
     private int id;
-    private String type, course, teacher, classroom;
+    private String type, teacher;
+    private int startsAt, endsAt;
+    private Course course;
+    private Classroom classroom;
+    private List<LectureNotification> lectureNotifications;
 
-    public  Lecture(int id, String type, String course, String teacher, String classroom){
+    public  Lecture(int id, String type, Course course, int startsAt, int  endsAt, String teacher, Classroom classroom, List<LectureNotification> lectureNotifications){
         this.id = id;
         this.type = type;
+        this.startsAt = startsAt;
+        this.endsAt = endsAt;
         this.course = course;
         this.teacher = teacher;
         this.classroom = classroom;
+        this.lectureNotifications = lectureNotifications;
     }
 
     @Override
@@ -18,6 +32,9 @@ public class Lecture {
                 ", type='" + type + '\'' +
                 ", course='" + course + '\'' +
                 ", teacher='" + teacher + '\'' +
-                ", classroom='" + classroom + '\'';
+                ", startsAt='" + startsAt + '\'' +
+                ", endsAt='" + endsAt + '\'' +
+                ", classroom='" + classroom + '\'' +
+                ", notifications='" + lectureNotifications+ '\'';
     }
 }

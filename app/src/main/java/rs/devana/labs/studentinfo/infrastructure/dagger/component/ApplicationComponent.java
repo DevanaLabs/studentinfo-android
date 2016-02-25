@@ -12,13 +12,16 @@ import rs.devana.labs.studentinfo.infrastructure.dagger.module.ApplicationContex
 import rs.devana.labs.studentinfo.infrastructure.dagger.module.DummyModule;
 import rs.devana.labs.studentinfo.infrastructure.dagger.module.EventBusModule;
 import rs.devana.labs.studentinfo.infrastructure.dagger.module.HttpClientModule;
+import rs.devana.labs.studentinfo.infrastructure.dagger.module.LectureRepositoryModule;
 import rs.devana.labs.studentinfo.infrastructure.dagger.module.NotificationRepositoryModule;
 import rs.devana.labs.studentinfo.presentation.main.LoginActivity;
 import rs.devana.labs.studentinfo.presentation.main.MainActivity;
+import rs.devana.labs.studentinfo.presentation.main.NavigationDrawerActivity;
 
 @Component(modules = {
         ApplicationContextModule.class,
         NotificationRepositoryModule.class,
+        LectureRepositoryModule.class,
         ApiPushNotificationsModule.class,
         HttpClientModule.class,
         EventBusModule.class,
@@ -30,4 +33,5 @@ public interface ApplicationComponent {
     void inject(MainActivity mainActivity);
     void inject(RegistrationIntentService registrationIntentService);
     void inject(LoginActivity loginActivity);
+    void inject(NavigationDrawerActivity navigationDrawerActivity);
 }

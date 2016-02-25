@@ -15,13 +15,12 @@ import java.util.List;
 import javax.inject.Inject;
 
 import rs.devana.labs.studentinfo.R;
-import rs.devana.labs.studentinfo.domain.Adapters.NotificationArrayAdapter;
+import rs.devana.labs.studentinfo.domain.Adapters.LectureArrayAdapter;
 import rs.devana.labs.studentinfo.domain.dummy.Dummy;
 import rs.devana.labs.studentinfo.domain.dummy.DummyRepository;
-import rs.devana.labs.studentinfo.domain.models.notification.Notification;
+import rs.devana.labs.studentinfo.domain.models.lecture.Lecture;
 import rs.devana.labs.studentinfo.infrastructure.dagger.Injector;
 import rs.devana.labs.studentinfo.infrastructure.repository.LectureRepository;
-import rs.devana.labs.studentinfo.infrastructure.repository.NotificationRepository;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     DummyRepository dummyRepository;
 
     @Inject
-    NotificationRepository notificationRepository;
+    LectureRepository lectureRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,9 +48,9 @@ public class MainActivity extends AppCompatActivity {
         Thread inflateView = new Thread(new Runnable() {
             @Override
             public void run() {
-                List<Notification> notifications = notificationRepository.getAllNotifications();
-                final ListView listView = (ListView) findViewById(R.id.notificationListView);
-                final NotificationArrayAdapter adapter = new NotificationArrayAdapter(notifications, MainActivity.this);
+                List<Lecture> lectures= lectureRepository.getAllLecturesForGroup(1);
+                final ListView listView = (ListView) findViewById(R.id.lectureListView);
+                final LectureArrayAdapter adapter = new LectureArrayAdapter(lectures, MainActivity.this);
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
