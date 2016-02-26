@@ -4,8 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
+import android.app.*;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -23,6 +23,7 @@ import javax.inject.Inject;
 import rs.devana.labs.studentinfo.R;
 import rs.devana.labs.studentinfo.domain.api.ApiAuth;
 import rs.devana.labs.studentinfo.infrastructure.dagger.Injector;
+import rs.devana.labs.studentinfo.presentation.fragments.SettingsFragment;
 
 public class NavigationDrawerActivity extends AppCompatActivity {
 
@@ -40,6 +41,9 @@ public class NavigationDrawerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Injector.INSTANCE.getApplicationComponent().inject(this);
+
+        PreferenceManager.setDefaultValues(this, R.xml.settings_fragment, false);
+
         setContentView(R.layout.activity_navigation_drawer);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         Log.i("Email:", email = sharedPreferences.getString("email", ""));
@@ -137,13 +141,12 @@ public class NavigationDrawerActivity extends AppCompatActivity {
     private void handleSettings() {
         Log.i(TAG, "Entering settings view.");
 
-//        Fragment fragment = SettingsFragment.newInstance();
+        Fragment fragment = SettingsFragment.newInstance();
 
-        // Insert the fragment by replacing any existing fragment
-//        FragmentManager fragmentManager = getSupportFragmentManager();
-//        fragmentManager.beginTransaction()
-//                .replace(R.id.content_navigation_drawer, fragment)
-//                .commit();
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.content_navigation_drawer, fragment)
+                .commit();
 
         toolbar.setTitle(R.string.settings);
     }

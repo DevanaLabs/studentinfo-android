@@ -13,12 +13,24 @@ import android.util.Log;
 
 import com.google.android.gms.gcm.GcmListenerService;
 
+import javax.inject.Inject;
+
 import rs.devana.labs.studentinfo.R;
+import rs.devana.labs.studentinfo.infrastructure.dagger.Injector;
 import rs.devana.labs.studentinfo.presentation.main.LoginActivity;
 
 public class GcmListeningService extends GcmListenerService {
 
     private static final String TAG = GcmListeningService.class.getSimpleName();
+
+    @Inject
+    SharedPreferences sharedPreferences;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        Injector.INSTANCE.getApplicationComponent().inject(this);
+    }
 
     @Override
     public void onMessageReceived(String from, Bundle data) {
@@ -26,8 +38,7 @@ public class GcmListeningService extends GcmListenerService {
         Log.d(TAG, "From: " + from);
         Log.d(TAG, "Message: " + message);
 
-        SharedPreferences preferences = getSharedPreferences("stuff", Context.MODE_PRIVATE);
-        if(preferences.getBoolean("pushNotificationsEnabled", true)){
+        if(sharedPreferences.getBoolean("pushNotifications", true)){
             Log.i(TAG, "Push notification sent.");
             sendNotification(message);
         }

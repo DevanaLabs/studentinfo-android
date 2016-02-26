@@ -5,6 +5,7 @@ import javax.inject.Singleton;
 import dagger.Component;
 import rs.devana.labs.studentinfo.domain.api.ApiAuth;
 import rs.devana.labs.studentinfo.domain.api.ApiPushNotifications;
+import rs.devana.labs.studentinfo.domain.services.gcm.GcmListeningService;
 import rs.devana.labs.studentinfo.domain.services.gcm.RegistrationIntentService;
 import rs.devana.labs.studentinfo.infrastructure.dagger.module.ApiAuthModule;
 import rs.devana.labs.studentinfo.infrastructure.dagger.module.ApiPushNotificationsModule;
@@ -34,4 +35,5 @@ public interface ApplicationComponent {
     void inject(RegistrationIntentService registrationIntentService);
     void inject(LoginActivity loginActivity);
     void inject(NavigationDrawerActivity navigationDrawerActivity);
+    void inject(GcmListeningService gcmListeningService);
 }

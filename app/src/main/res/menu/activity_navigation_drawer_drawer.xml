@@ -5,15 +5,15 @@
         android:id="@+id/group1">
         <item
             android:id="@+id/nav_weekly_schedule"
-            android:icon="@drawable/ic_menu_weekly_schedule"
-            android:title="@string/weeklySchedule" />
+            android:icon="@drawable/ic_menu_schedule"
+            android:title="@string/weeklySchedule"/>
         <item
             android:id="@+id/nav_yearly_calendar"
-            android:icon="@drawable/ic_yearly_calendar"
+            android:icon="@drawable/ic_menu_calendar"
             android:title="@string/yearlyCalender" />
         <item
             android:id="@+id/nav_notifications"
-            android:icon="@drawable/ic_menu_notifications"
+            android:icon="@drawable/ic_menu_notification"
             android:title="@string/notifications" />
         <item
             android:id="@+id/nav_settings"
