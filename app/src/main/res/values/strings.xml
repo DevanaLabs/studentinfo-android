@@ -22,7 +22,6 @@
     <string name="yearlyCalender">Godisnji kalendar</string>
     <string name="notifications">Obaveštenja</string>
     <string name="settings">Podešavanja</string>
-    <string name="pushNotifications">Push notifikacije</string>
     <string name="off">Isklj.</string>
     <string name="on">Uklj.</string>
     <string name="networkConnection">Check your internet connection</string>
@@ -34,7 +33,15 @@
     <string name="action_settings">Settings</string>
     <string name="placeholderUsername">android.studio@android.com</string>
     <string name="placeholderGroup">Grupa 101</string>
+    <string name="pushNotifications">Push notifikacije</string>
     <string name="pushNotificationsDescription">Uključite ili isključite push notifikacije</string>
+    <string name="vibration">Vibracija</string>
+    <string name="vibrationDescription">Uključite ili isključite vibraciju</string>
+    <string name="group">Grupa</string>
+    <string name="chooseGroup">Izaberi grupu</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>

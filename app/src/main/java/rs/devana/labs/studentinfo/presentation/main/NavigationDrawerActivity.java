@@ -1,21 +1,21 @@
 package rs.devana.labs.studentinfo.presentation.main;
 
-import android.content.Context;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.app.*;
 import android.preference.PreferenceManager;
-import android.util.Log;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import javax.inject.Inject;
@@ -23,7 +23,10 @@ import javax.inject.Inject;
 import rs.devana.labs.studentinfo.R;
 import rs.devana.labs.studentinfo.domain.api.ApiAuth;
 import rs.devana.labs.studentinfo.infrastructure.dagger.Injector;
+import rs.devana.labs.studentinfo.presentation.fragments.NotificationsFragment;
 import rs.devana.labs.studentinfo.presentation.fragments.SettingsFragment;
+import rs.devana.labs.studentinfo.presentation.fragments.WeeklyScheduleFragment;
+import rs.devana.labs.studentinfo.presentation.fragments.YearlyCalendarFragment;
 
 public class NavigationDrawerActivity extends AppCompatActivity {
 
@@ -118,22 +121,28 @@ public class NavigationDrawerActivity extends AppCompatActivity {
     }
 
     private void handleWeeklySchedule() {
-        //TODO: implement the method
         Log.i(TAG, "Entering weekly schedule view.");
+
+        Fragment fragment = WeeklyScheduleFragment.newInstance();
+        changeToFragment(fragment);
 
         toolbar.setTitle(R.string.weeklySchedule);
     }
 
     private void handleYearlyCalendar() {
-        //TODO: implement the method
         Log.i(TAG, "Entering yearly calendar view.");
+
+        Fragment fragment = YearlyCalendarFragment.newInstance();
+        changeToFragment(fragment);
 
         toolbar.setTitle(R.string.yearlyCalender);
     }
 
     private void handleNotifications() {
-        //TODO: implement the method
         Log.i(TAG, "Entering notifications view.");
+
+        Fragment fragment = NotificationsFragment.newInstance();
+        changeToFragment(fragment);
 
         toolbar.setTitle(R.string.notifications);
     }
@@ -142,15 +151,17 @@ public class NavigationDrawerActivity extends AppCompatActivity {
         Log.i(TAG, "Entering settings view.");
 
         Fragment fragment = SettingsFragment.newInstance();
-
-        FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.content_navigation_drawer, fragment)
-                .commit();
+        changeToFragment(fragment);
 
         toolbar.setTitle(R.string.settings);
     }
 
+    private void changeToFragment(Fragment fragment){
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.content_navigation_drawer, fragment)
+                .commit();
+    }
 
     private void handleLogout() {
         final Thread logout = new Thread(new Runnable() {

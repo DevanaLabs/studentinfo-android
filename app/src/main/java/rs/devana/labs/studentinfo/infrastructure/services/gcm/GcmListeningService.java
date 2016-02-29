@@ -18,6 +18,7 @@ import javax.inject.Inject;
 import rs.devana.labs.studentinfo.R;
 import rs.devana.labs.studentinfo.infrastructure.dagger.Injector;
 import rs.devana.labs.studentinfo.presentation.main.LoginActivity;
+import rs.devana.labs.studentinfo.presentation.main.NavigationDrawerActivity;
 
 public class GcmListeningService extends GcmListenerService {
 
@@ -48,7 +49,7 @@ public class GcmListeningService extends GcmListenerService {
     }
 
     private void sendNotification(String message) {
-        Intent intent = new Intent(this, LoginActivity.class);
+        Intent intent = new Intent(this, NavigationDrawerActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
                 PendingIntent.FLAG_ONE_SHOT);
@@ -61,6 +62,9 @@ public class GcmListeningService extends GcmListenerService {
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)
                 .setContentIntent(pendingIntent);
+        if (sharedPreferences.getBoolean("vibrationEnabled", true)){
+            notificationBuilder.setVibrate(new long[]{1000, 1000, 1000});
+        }
 
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);

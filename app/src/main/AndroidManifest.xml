@@ -46,20 +46,21 @@
         </receiver>
 
         <service
-            android:name=".domain.services.gcm.GcmListeningService"
+            android:name=".infrastructure.services.gcm.GcmListeningService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
             </intent-filter>
         </service>
         <service
-            android:name=".domain.services.gcm.RegistrationIntentService"
+            android:name=".infrastructure.services.gcm.RegistrationIntentService"
             android:exported="false" />
 
         <activity
             android:name=".presentation.main.NavigationDrawerActivity"
             android:label="@string/title_activity_navigation_drawer"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="rs.devana.labs.studentinfo.presentation.main.NavigationActivity" />
 

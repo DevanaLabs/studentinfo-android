@@ -5,8 +5,14 @@ import android.util.Log;
 import java.io.BufferedReader;
 import java.io.IOException;
 
+import javax.inject.Inject;
+
 public class ResponseReader {
     private static final String TAG = ResponseReader.class.getSimpleName();
+
+    @Inject
+    public ResponseReader() {
+    }
 
     public String readResponse(BufferedReader reader) {
         StringBuilder response = new StringBuilder();

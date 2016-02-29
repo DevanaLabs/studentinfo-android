@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
         inflateView.start();
 //        eventBus.register(this);
-//        eventBus.post(new BigLoadEvent("Hello application!"));
+//        eventBus.postStream(new BigLoadEvent("Hello application!"));
     }
 
     @Override

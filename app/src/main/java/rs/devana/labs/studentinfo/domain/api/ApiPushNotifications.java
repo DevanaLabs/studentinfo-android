@@ -16,14 +16,15 @@ import rs.devana.labs.studentinfo.domain.http.HttpClientInterface;
 public class ApiPushNotifications {
     SharedPreferences sharedPreferences;
     HttpClientInterface httpClient;
-    static ResponseReader responseReader = new ResponseReader();
+    ResponseReader responseReader;
     static String url = "http://api.studentinfo.rs";
     private static final String TAG = ApiPushNotifications.class.getSimpleName();
 
     @Inject
-    public ApiPushNotifications(SharedPreferences sharedPreferences, HttpClientInterface httpClient){
+    public ApiPushNotifications(SharedPreferences sharedPreferences, HttpClientInterface httpClient, ResponseReader responseReader){
         this.sharedPreferences = sharedPreferences;
         this.httpClient = httpClient;
+        this.responseReader = responseReader;
     }
 
     public boolean postDeviceToken(String token) {
@@ -31,7 +32,7 @@ public class ApiPushNotifications {
         if (!accessToken.equals("")) {
             final String payload = "{\"token\": \"" + token + "\", \"access_token\": \"" + accessToken + "\", \"active\": \"" + 1 + "\"}";
             try {
-                BufferedReader reader = httpClient.post(url + "/deviceToken", payload);
+                BufferedReader reader = httpClient.postStream(url + "/deviceToken", payload);
                 String response = responseReader.readResponse(reader);
 
                 JSONObject json = new JSONObject(response);

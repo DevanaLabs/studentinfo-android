@@ -15,20 +15,22 @@ import rs.devana.labs.studentinfo.domain.http.HttpClientInterface;
 public class ApiAuth {
     SharedPreferences sharedPreferences;
     HttpClientInterface httpClient;
+    ResponseReader responseReader;
     private static final String TAG = ApiAuth.class.getSimpleName();
-    static ResponseReader responseReader = new ResponseReader();
+    private static final String CLIENT_ID = "\"client_id\": \"1\"";
     static String url = "http://api.studentinfo.rs";
 
     @Inject
-    public ApiAuth(SharedPreferences sharedPreferences, HttpClientInterface httpClient) {
+    public ApiAuth(SharedPreferences sharedPreferences, HttpClientInterface httpClient, ResponseReader responseReader) {
         this.sharedPreferences = sharedPreferences;
         this.httpClient = httpClient;
+        this.responseReader = responseReader;
     }
 
     public boolean getAccessToken(String username, String password) {
-        final String payload = "{\"grant_type\": \"password\",\"client_id\": \"1\", \"client_secret\": \"secret\", \"username\": \"" + username + "\", \"password\": \"" + password + "\"}";
+        final String payload = "{\"grant_type\": \"password\","+CLIENT_ID+", \"client_secret\": \"secret\", \"username\": \"" + username + "\", \"password\": \"" + password + "\"}";
         try {
-            BufferedReader reader = httpClient.post(url + "/oauth/access_token", payload);
+            BufferedReader reader = httpClient.postStream(url + "/oauth/access_token", payload);
             String response = responseReader.readResponse(reader);
             if (!response.contains("\"success\"")) {
                 return false;
@@ -55,7 +57,7 @@ public class ApiAuth {
     public boolean getUser(String email, String password) {
         final String payload = "{\"email\": \"" + email + "\", \"password\": \"" + password + "\"}";
         try {
-            BufferedReader reader = httpClient.post(url + "/auth", payload);
+            BufferedReader reader = httpClient.postStream(url + "/auth", payload);
             String response = responseReader.readResponse(reader);
             if (!response.contains("success")) {
                 return false;
@@ -86,7 +88,7 @@ public class ApiAuth {
     public boolean logout(String accessToken) {
         try {
             String payload = "{\"access_token\": \"" + accessToken + "\"}";
-            BufferedReader reader = httpClient.delete(url + "/auth", payload);
+            BufferedReader reader = httpClient.deleteStream(url + "/auth", payload);
             String response = responseReader.readResponse(reader);
             JSONObject json = new JSONObject(response);
             if (json.has("success")) {
@@ -100,7 +102,7 @@ public class ApiAuth {
 
     public boolean verifyAccessToken(String accessToken) {
         try {
-            BufferedReader reader = httpClient.get(url + "/verifyAccessToken?access_token=" + accessToken);
+            BufferedReader reader = httpClient.getStream(url + "/verifyAccessToken?access_token=" + accessToken);
             String response = responseReader.readResponse(reader);
             if (response.contains("success")) {
                 return true;
@@ -113,7 +115,7 @@ public class ApiAuth {
     public boolean deactivateDeviceToken(String deviceToken, String accessToken) {
         final String payload = "{\"active\": " + 0 + ",\"access_token\": \"" + accessToken + "\"}";
         try {
-            BufferedReader reader = httpClient.put(url + "/deviceToken/" + deviceToken, payload);
+            BufferedReader reader = httpClient.putStream(url + "/deviceToken/" + deviceToken, payload);
             String response = responseReader.readResponse(reader);
             JSONObject json = new JSONObject(response);
             if (json.has("success")) {

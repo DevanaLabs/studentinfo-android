@@ -42,7 +42,7 @@ public class NotificationArrayAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
             convertView = inflater.inflate(android.R.layout.simple_list_item_1, parent, false);
-            TextView lecture = (TextView)convertView.findViewById(android.R.id.text1);
+            TextView lecture = (TextView) convertView.findViewById(android.R.id.text1);
             lecture.setText(notifications.get(position).toString());
         }
         return convertView;

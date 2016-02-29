@@ -1,7 +1,6 @@
 package rs.devana.labs.studentinfo.domain.api;
 
 import android.content.SharedPreferences;
-import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -17,20 +16,22 @@ import rs.devana.labs.studentinfo.domain.http.HttpClientInterface;
 public class ApiDataFetch {
     SharedPreferences sharedPreferences;
     HttpClientInterface httpClient;
-    static ResponseReader responseReader = new ResponseReader();
+    ResponseReader responseReader;
     static String url = "http://api.studentinfo.rs";
     private static final String TAG = ApiDataFetch.class.getSimpleName();
 
     @Inject
-    public ApiDataFetch(SharedPreferences sharedPreferences, HttpClientInterface httpClient){
+    public ApiDataFetch(SharedPreferences sharedPreferences, HttpClientInterface httpClient, ResponseReader responseReader) {
         this.sharedPreferences = sharedPreferences;
         this.httpClient = httpClient;
+        this.responseReader = responseReader;
     }
+
     public JSONArray getLecturesForGroup(int groupId) {
         String accessToken = sharedPreferences.getString("accessToken", "");
         String slug = sharedPreferences.getString("slug", "");
         try {
-            BufferedReader reader = httpClient.get(url + "/" + slug + "/group/" + groupId + "?access_token=" + accessToken);
+            BufferedReader reader = httpClient.getStream(url + "/" + slug + "/group/" + groupId + "?access_token=" + accessToken);
             String response = responseReader.readResponse(reader);
             JSONObject json = new JSONObject(response);
 
@@ -49,7 +50,7 @@ public class ApiDataFetch {
     public JSONArray getAllGroups(String accessToken) {
         try {
             String slug = sharedPreferences.getString("slug", "");
-            BufferedReader reader = httpClient.get(url + "/" + slug + "/groups?access_token=" + accessToken);
+            BufferedReader reader = httpClient.getStream(url + "/" + slug + "/groups?access_token=" + accessToken);
             String response = responseReader.readResponse(reader);
 
             if (response.contains("success")) {
@@ -64,11 +65,11 @@ public class ApiDataFetch {
         return null;
     }
 
-    public JSONArray getAllNotifications(){
+    public JSONArray getAllNotifications() {
         String accessToken = sharedPreferences.getString("accessToken", "");
         String slug = sharedPreferences.getString("slug", "");
         try {
-            BufferedReader reader = httpClient.get(url + "/" + slug + "/notifications/" + "?access_token=" + accessToken);
+            BufferedReader reader = httpClient.getStream(url + "/" + slug + "/notifications/" + "?access_token=" + accessToken);
             String response = responseReader.readResponse(reader);
             JSONObject json = new JSONObject(response);
 

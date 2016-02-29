@@ -17,7 +17,7 @@ import rs.devana.labs.studentinfo.infrastructure.dagger.Injector;
 
 public class RegistrationIntentService extends IntentService {
 
-    private final  static String TAG = RegistrationIntentService.class.getSimpleName();
+    private final static String TAG = RegistrationIntentService.class.getSimpleName();
 
     @Inject
     public ApiPushNotifications apiPushNotifications;
@@ -37,6 +37,7 @@ public class RegistrationIntentService extends IntentService {
         Injector.INSTANCE.getApplicationComponent().inject(this);
         Log.i(TAG, " service started.");
     }
+
     @Override
     protected void onHandleIntent(Intent intent) {
         try {
