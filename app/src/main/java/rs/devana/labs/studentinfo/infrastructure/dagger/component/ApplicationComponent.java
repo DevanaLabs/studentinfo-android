@@ -3,32 +3,28 @@ package rs.devana.labs.studentinfo.infrastructure.dagger.component;
 import javax.inject.Singleton;
 
 import dagger.Component;
-import rs.devana.labs.studentinfo.domain.api.ApiAuth;
-import rs.devana.labs.studentinfo.domain.api.ApiPushNotifications;
-import rs.devana.labs.studentinfo.domain.services.gcm.GcmListeningService;
-import rs.devana.labs.studentinfo.domain.services.gcm.RegistrationIntentService;
-import rs.devana.labs.studentinfo.infrastructure.dagger.module.ApiAuthModule;
-import rs.devana.labs.studentinfo.infrastructure.dagger.module.ApiPushNotificationsModule;
+
+import rs.devana.labs.studentinfo.infrastructure.dagger.module.ApiModule;
 import rs.devana.labs.studentinfo.infrastructure.dagger.module.ApplicationContextModule;
-import rs.devana.labs.studentinfo.infrastructure.dagger.module.DummyModule;
+
 import rs.devana.labs.studentinfo.infrastructure.dagger.module.EventBusModule;
 import rs.devana.labs.studentinfo.infrastructure.dagger.module.HttpClientModule;
-import rs.devana.labs.studentinfo.infrastructure.dagger.module.LectureRepositoryModule;
-import rs.devana.labs.studentinfo.infrastructure.dagger.module.NotificationRepositoryModule;
+
+import rs.devana.labs.studentinfo.infrastructure.dagger.module.RepositoryModule;
+import rs.devana.labs.studentinfo.infrastructure.services.gcm.GcmListeningService;
+import rs.devana.labs.studentinfo.infrastructure.services.gcm.RegistrationIntentService;
 import rs.devana.labs.studentinfo.presentation.main.LoginActivity;
 import rs.devana.labs.studentinfo.presentation.main.MainActivity;
 import rs.devana.labs.studentinfo.presentation.main.NavigationDrawerActivity;
 
 @Component(modules = {
         ApplicationContextModule.class,
-        NotificationRepositoryModule.class,
-        LectureRepositoryModule.class,
-        ApiPushNotificationsModule.class,
+        RepositoryModule.class,
         HttpClientModule.class,
         EventBusModule.class,
-        ApiAuthModule.class,
-        DummyModule.class,
+        ApiModule.class,
 })
+
 @Singleton
 public interface ApplicationComponent {
     void inject(MainActivity mainActivity);

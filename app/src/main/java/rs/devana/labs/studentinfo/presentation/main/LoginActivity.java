@@ -46,8 +46,8 @@ import javax.inject.Inject;
 
 import rs.devana.labs.studentinfo.R;
 import rs.devana.labs.studentinfo.domain.api.ApiAuth;
-import rs.devana.labs.studentinfo.domain.services.gcm.RegistrationIntentService;
 import rs.devana.labs.studentinfo.infrastructure.dagger.Injector;
+import rs.devana.labs.studentinfo.infrastructure.services.gcm.RegistrationIntentService;
 
 public class LoginActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
 

@@ -10,10 +10,14 @@ import javax.inject.Inject;
 
 import rs.devana.labs.studentinfo.domain.models.classroom.Classroom;
 import rs.devana.labs.studentinfo.domain.models.classroom.ClassroomRepositoryInterface;
+import rs.devana.labs.studentinfo.infrastructure.json.parser.ClassroomParser;
 
 public class ClassroomRepository implements ClassroomRepositoryInterface {
+    ClassroomParser classroomParser;
+
     @Inject
-    public ClassroomRepository(){
+    public ClassroomRepository(ClassroomParser classroomParser){
+        this.classroomParser = classroomParser;
     }
 
     @Override
@@ -23,11 +27,6 @@ public class ClassroomRepository implements ClassroomRepositoryInterface {
 
     @Override
     public Classroom getClassroom(JSONObject jsonClassroom) {
-        try {
-            return new Classroom(jsonClassroom.getInt("id"), jsonClassroom.getString("name"), jsonClassroom.getInt("floor"), null);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return  null;
+        return classroomParser.parse(jsonClassroom);
     }
 }

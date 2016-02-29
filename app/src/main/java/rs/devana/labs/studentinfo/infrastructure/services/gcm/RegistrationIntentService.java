@@ -1,10 +1,8 @@
-package rs.devana.labs.studentinfo.domain.services.gcm;
+package rs.devana.labs.studentinfo.infrastructure.services.gcm;
 
 import android.app.IntentService;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Bundle;
 import android.util.Log;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;

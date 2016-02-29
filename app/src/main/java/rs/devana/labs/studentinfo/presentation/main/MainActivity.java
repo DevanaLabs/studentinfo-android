@@ -15,9 +15,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import rs.devana.labs.studentinfo.R;
-import rs.devana.labs.studentinfo.domain.Adapters.LectureArrayAdapter;
-import rs.devana.labs.studentinfo.domain.dummy.Dummy;
-import rs.devana.labs.studentinfo.domain.dummy.DummyRepository;
+import rs.devana.labs.studentinfo.presentation.adapters.LectureArrayAdapter;
 import rs.devana.labs.studentinfo.domain.models.lecture.Lecture;
 import rs.devana.labs.studentinfo.infrastructure.dagger.Injector;
 import rs.devana.labs.studentinfo.infrastructure.repository.LectureRepository;
@@ -30,9 +28,6 @@ public class MainActivity extends AppCompatActivity {
     EventBus eventBus;
 
     @Inject
-    DummyRepository dummyRepository;
-
-    @Inject
     LectureRepository lectureRepository;
 
     @Override
@@ -40,10 +35,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Injector.INSTANCE.getApplicationComponent().inject(this);
-
-        for (Dummy dummy : dummyRepository.getAll()) {
-            Log.i(TAG, dummy.getName());
-        }
 
         Thread inflateView = new Thread(new Runnable() {
             @Override

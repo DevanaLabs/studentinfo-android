@@ -1,4 +1,4 @@
-package rs.devana.labs.studentinfo.domain.Adapters;
+package rs.devana.labs.studentinfo.presentation.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;

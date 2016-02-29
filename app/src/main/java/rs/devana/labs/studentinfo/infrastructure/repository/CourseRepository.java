@@ -9,10 +9,14 @@ import javax.inject.Inject;
 
 import rs.devana.labs.studentinfo.domain.models.course.Course;
 import rs.devana.labs.studentinfo.domain.models.course.CourseRepositoryInterface;
+import rs.devana.labs.studentinfo.infrastructure.json.parser.CourseParser;
 
 public class CourseRepository implements CourseRepositoryInterface {
+    CourseParser courseParser;
+
     @Inject
-    public CourseRepository(){
+    public CourseRepository(CourseParser courseParser){
+        this.courseParser = courseParser;
     }
 
     @Override
@@ -22,11 +26,6 @@ public class CourseRepository implements CourseRepositoryInterface {
 
     @Override
     public Course getCourse(JSONObject jsonCourse) {
-        try {
-            return new Course(jsonCourse.getInt("id"), jsonCourse.getString("name"), jsonCourse.getInt("semester"), jsonCourse.getInt("espb"), null);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return null;
+        return courseParser.parse(jsonCourse);
     }
 }

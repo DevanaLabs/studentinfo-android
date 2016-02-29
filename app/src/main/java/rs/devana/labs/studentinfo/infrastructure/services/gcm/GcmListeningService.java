@@ -1,4 +1,4 @@
-package rs.devana.labs.studentinfo.domain.services.gcm;
+package rs.devana.labs.studentinfo.infrastructure.services.gcm;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
