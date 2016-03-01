@@ -1,7 +1,7 @@
 package rs.devana.labs.studentinfo.presentation.main;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -55,9 +55,6 @@ public class NavigationDrawerActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_navigation_drawer);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        Log.i("Email:", email = sharedPreferences.getString("email", ""));
-
-        Log.i("sharedPrefs", String.valueOf(sharedPreferences.getInt("allGroups", 0)));
 
         Thread getGroups = new Thread(new Runnable() {
             @Override
@@ -170,14 +167,14 @@ public class NavigationDrawerActivity extends AppCompatActivity {
     private void handleSettings() {
         Log.i(TAG, "Entering settings view.");
 
-        Fragment fragment = SettingsFragment.newInstance();
-        changeToFragment(fragment);
+//        Fragment fragment = SettingsFragment.newInstance();
+//        changeToFragment(fragment);
 
         toolbar.setTitle(R.string.settings);
     }
 
     private void changeToFragment(Fragment fragment){
-        FragmentManager fragmentManager = getFragmentManager();
+        FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.content_navigation_drawer, fragment)
                 .commit();

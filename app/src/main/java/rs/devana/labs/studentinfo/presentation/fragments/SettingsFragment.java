@@ -5,11 +5,9 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.PreferenceFragment;
-import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.List;
 
@@ -21,7 +19,7 @@ import rs.devana.labs.studentinfo.domain.models.group.Group;
 import rs.devana.labs.studentinfo.infrastructure.dagger.Injector;
 import rs.devana.labs.studentinfo.infrastructure.json.parser.GroupParser;
 
-public class SettingsFragment extends PreferenceFragment {
+public class SettingsFragment extends PreferenceFragment{
 
     @Inject
     ApiDataFetch apiDataFetch;
@@ -53,7 +51,7 @@ public class SettingsFragment extends PreferenceFragment {
     }
 
     @Override
-    public void onDetach() {
+    public void onDetach()   {
         super.onDetach();
     }
 
@@ -65,7 +63,7 @@ public class SettingsFragment extends PreferenceFragment {
             CharSequence[] entries = new CharSequence[groups.size()];
             CharSequence[] entryValues = new CharSequence[groups.size()];
 
-            for (int i = 0; i < groups.size(); i++){
+            for (int i = 0; i < groups.size(); i++) {
                 entries[i] = groups.get(i).name;
                 entryValues[i] = String.valueOf(groups.get(i).id);
             }
