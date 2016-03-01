@@ -12,9 +12,4 @@ public class EventRepository implements EventRepositoryInterface {
     public List<Event> getEvents() {
         return null;
     }
-
-    @Override
-    public Event getEvent(JSONObject jsonEvent) {
-        return null;
-    }
 }

@@ -27,9 +27,4 @@ public class LectureRepository implements LectureRepositoryInterface {
 
         return lectureParser.parse(jsonLectures);
     }
-
-    @Override
-    public List<Lecture> getLectures(JSONArray jsonLectures) {
-        return null;
-    }
 }

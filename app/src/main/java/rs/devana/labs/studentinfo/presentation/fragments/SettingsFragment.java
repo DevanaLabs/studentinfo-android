@@ -8,12 +8,18 @@ import android.preference.PreferenceFragment;
 import android.util.Log;
 
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
 import rs.devana.labs.studentinfo.R;
 import rs.devana.labs.studentinfo.domain.api.ApiDataFetch;
+import rs.devana.labs.studentinfo.domain.models.group.Group;
 import rs.devana.labs.studentinfo.infrastructure.dagger.Injector;
+import rs.devana.labs.studentinfo.infrastructure.json.parser.GroupParser;
 
 public class SettingsFragment extends PreferenceFragment {
 
@@ -21,6 +27,8 @@ public class SettingsFragment extends PreferenceFragment {
     ApiDataFetch apiDataFetch;
     @Inject
     SharedPreferences sharedPreferences;
+    @Inject
+    GroupParser groupParser;
 
     public static SettingsFragment newInstance() {
         SettingsFragment fragment = new SettingsFragment();
@@ -50,32 +58,22 @@ public class SettingsFragment extends PreferenceFragment {
     }
 
     private void setListPreferenceData(ListPreference listPreference) {
-        final String accessToken = sharedPreferences.getString("accessToken", "");
-//        final JSONArray[] jsonGroups = new JSONArray[1];
-//        if (!accessToken.equals("")) {
-//            Thread t = new Thread(new Runnable() {
-//                @Override
-//                public void run() {
-//                    jsonGroups[0] = apiDataFetch.getAllGroups(accessToken);
-//                }
-//            });
-//            t.start();
-//            try {
-//                t.join();
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//            Log.i("GRUPE", jsonGroups[0].toString());
-//        }
-        CharSequence[] entries = new CharSequence[1];
-        entries[0] = "Grupa nije izabrana";
-        CharSequence[] entryValues = new CharSequence[1];
-        entryValues[0] = "0";
-//        while (i < jsonGroups[0].length()){
-//
-//        }
-        listPreference.setEntries(entries);
-        listPreference.setDefaultValue("0");
-        listPreference.setEntryValues(entryValues);
+        String jsonGroups = sharedPreferences.getString("allGroups", "");
+        try {
+            List<Group> groups = groupParser.parse(new JSONArray(jsonGroups));
+
+            CharSequence[] entries = new CharSequence[groups.size()];
+            CharSequence[] entryValues = new CharSequence[groups.size()];
+
+            for (int i = 0; i < groups.size(); i++){
+                entries[i] = groups.get(i).name;
+                entryValues[i] = String.valueOf(groups.get(i).id);
+            }
+
+            listPreference.setEntries(entries);
+            listPreference.setEntryValues(entryValues);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }

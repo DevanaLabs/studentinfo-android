@@ -6,12 +6,10 @@ import dagger.Module;
 import dagger.Provides;
 import rs.devana.labs.studentinfo.infrastructure.json.parser.ClassroomParser;
 import rs.devana.labs.studentinfo.infrastructure.json.parser.CourseParser;
+import rs.devana.labs.studentinfo.infrastructure.json.parser.GroupParser;
 import rs.devana.labs.studentinfo.infrastructure.json.parser.LectureNotificationParser;
 import rs.devana.labs.studentinfo.infrastructure.json.parser.LectureParser;
 import rs.devana.labs.studentinfo.infrastructure.json.parser.NotificationParser;
-import rs.devana.labs.studentinfo.infrastructure.repository.ClassroomRepository;
-import rs.devana.labs.studentinfo.infrastructure.repository.CourseRepository;
-import rs.devana.labs.studentinfo.infrastructure.repository.LectureNotificationRepository;
 
 @Module
 public class JsonParserModule {
@@ -38,6 +36,12 @@ public class JsonParserModule {
     @Singleton
     public CourseParser provideCourseParser() {
         return new CourseParser();
+    }
+
+    @Provides
+    @Singleton
+    public GroupParser provideGroupParser() {
+        return new GroupParser();
     }
 
 }

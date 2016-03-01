@@ -47,10 +47,11 @@ public class ApiDataFetch {
         return new JSONArray();
     }
 
-    public JSONArray getAllGroups(String accessToken) {
+    public JSONArray getAllGroups() {
+        String accessToken = sharedPreferences.getString("accessToken", "");
+        String slug = sharedPreferences.getString("slug", "");
         try {
-            String slug = sharedPreferences.getString("slug", "");
-            BufferedReader reader = httpClient.getStream(url + "/" + slug + "/groups?access_token=" + accessToken);
+            BufferedReader reader = httpClient.getStream(url + "/" + slug + "/groups?display=limited&access_token=" + accessToken);
             String response = responseReader.readResponse(reader);
 
             if (response.contains("success")) {

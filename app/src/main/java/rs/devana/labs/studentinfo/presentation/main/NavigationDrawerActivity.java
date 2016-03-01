@@ -18,10 +18,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import org.json.JSONArray;
+
 import javax.inject.Inject;
 
 import rs.devana.labs.studentinfo.R;
 import rs.devana.labs.studentinfo.domain.api.ApiAuth;
+import rs.devana.labs.studentinfo.domain.api.ApiDataFetch;
 import rs.devana.labs.studentinfo.infrastructure.dagger.Injector;
 import rs.devana.labs.studentinfo.presentation.fragments.NotificationsFragment;
 import rs.devana.labs.studentinfo.presentation.fragments.SettingsFragment;
@@ -35,6 +38,9 @@ public class NavigationDrawerActivity extends AppCompatActivity {
 
     @Inject
     public ApiAuth apiAuth;
+
+    @Inject
+    public ApiDataFetch apiDataFetch;
 
     private Toolbar toolbar;
     private static final String TAG = NavigationDrawerActivity.class.getSimpleName();
@@ -50,6 +56,20 @@ public class NavigationDrawerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_navigation_drawer);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         Log.i("Email:", email = sharedPreferences.getString("email", ""));
+
+        Log.i("sharedPrefs", String.valueOf(sharedPreferences.getInt("allGroups", 0)));
+
+        Thread getGroups = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                JSONArray jsonGroups= apiDataFetch.getAllGroups();
+
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("allGroups", jsonGroups.toString());
+                editor.apply();
+            }
+        });
+        getGroups.start();
 
         handleWeeklySchedule();
 

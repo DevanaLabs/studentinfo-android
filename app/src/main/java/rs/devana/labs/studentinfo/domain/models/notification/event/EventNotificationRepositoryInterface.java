@@ -7,6 +7,4 @@ import java.util.List;
 public interface EventNotificationRepositoryInterface {
 
     List<EventNotification> getEventNotifications();
-
-    EventNotification getEventNotification(JSONObject jsonNotification);
 }

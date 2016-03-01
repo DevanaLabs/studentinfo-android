@@ -16,12 +16,7 @@ public class LectureNotificationRepository implements LectureNotificationReposit
     }
 
     @Override
-    public List<LectureNotification> getLectureNotifications(JSONArray jsonNotifications) {
-        return null;
-    }
-
-    @Override
-    public LectureNotification getLectureNotification(JSONObject jsonNotification) {
+    public List<LectureNotification> getLectureNotifications() {
         return null;
     }
 }

@@ -19,14 +19,4 @@ public class ClassroomRepository implements ClassroomRepositoryInterface {
     public ClassroomRepository(ClassroomParser classroomParser){
         this.classroomParser = classroomParser;
     }
-
-    @Override
-    public List<Classroom> getClassrooms(JSONArray jsonClassroom) {
-        return null;
-    }
-
-    @Override
-    public Classroom getClassroom(JSONObject jsonClassroom) {
-        return classroomParser.parse(jsonClassroom);
-    }
 }

@@ -23,9 +23,4 @@ public class CourseRepository implements CourseRepositoryInterface {
     public List<Course> getAllCourses() {
         return null;
     }
-
-    @Override
-    public Course getCourse(JSONObject jsonCourse) {
-        return courseParser.parse(jsonCourse);
-    }
 }

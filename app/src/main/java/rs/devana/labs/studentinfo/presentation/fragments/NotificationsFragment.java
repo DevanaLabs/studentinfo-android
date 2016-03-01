@@ -17,15 +17,12 @@ import rs.devana.labs.studentinfo.domain.models.notification.Notification;
 import rs.devana.labs.studentinfo.presentation.adapters.NotificationArrayAdapter;
 
 public class NotificationsFragment extends Fragment {
-
-
     public static NotificationsFragment newInstance() {
         NotificationsFragment fragment = new NotificationsFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -43,7 +40,7 @@ public class NotificationsFragment extends Fragment {
     }
 
     private List<Notification> generateDummyData() {
-        List<Notification> stringArrayList = new ArrayList<Notification>();
+        List<Notification> stringArrayList = new ArrayList<>();
         stringArrayList.add(new Notification(1, "Vazno obavestenje 1", Calendar.getInstance()));
         stringArrayList.add(new Notification(1, "Vrlo bitna stvar 2", Calendar.getInstance()));
         stringArrayList.add(new Notification(1, "Bas jako bitna stvar 3", Calendar.getInstance()));

@@ -6,7 +6,4 @@ import org.json.JSONObject;
 import java.util.List;
 
 public interface ClassroomRepositoryInterface {
-    List<Classroom> getClassrooms(JSONArray jsonClassrooms);
-
-    Classroom getClassroom(JSONObject jsonClassroom);
 }

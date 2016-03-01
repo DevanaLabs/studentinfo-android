@@ -5,8 +5,5 @@ import org.json.JSONObject;
 import java.util.List;
 
 public interface CourseRepositoryInterface {
-
     List<Course> getAllCourses();
-
-    Course getCourse(JSONObject jsonCourse);
 }

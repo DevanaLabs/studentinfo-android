@@ -6,6 +6,4 @@ import java.util.List;
 
 public interface EventRepositoryInterface {
     List<Event> getEvents();
-
-    Event getEvent(JSONObject jsonEvent);
 }
