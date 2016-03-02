@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +37,14 @@ public class WeeklyScheduleFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view =  inflater.inflate(R.layout.fragment_weekly_schedule, container, false);
+
         viewPager = (ViewPager) view.findViewById(R.id.viewPager);
 
         List<Fragment> fragments = new ArrayList<>();
@@ -53,26 +62,28 @@ public class WeeklyScheduleFragment extends Fragment {
         lectures6.add(new Lecture(6, "Predavanje", null, 124214, 421444, "pera", null, null));
         List<Lecture> lectures7 = new ArrayList<>();
         lectures7.add(new Lecture(7, "Predavanje", null, 124214, 421444, "pera", null, null));
-        fragments.add(DayFragment.newInstance(1, lectures1));
-        fragments.add(DayFragment.newInstance(2, lectures2));
-        fragments.add(DayFragment.newInstance(3, lectures3));
-        fragments.add(DayFragment.newInstance(4, lectures4));
-        fragments.add(DayFragment.newInstance(5, lectures5));
-        fragments.add(DayFragment.newInstance(6, lectures6));
-        fragments.add(DayFragment.newInstance(7, lectures7));
+        DayFragment mon = DayFragment.newInstance(1, lectures1);
+        DayFragment tue = DayFragment.newInstance(2, lectures2);
+        DayFragment wen = DayFragment.newInstance(3, lectures3);
+        DayFragment thu = DayFragment.newInstance(4, lectures4);
+        DayFragment fri = DayFragment.newInstance(5, lectures5);
+        DayFragment sat = DayFragment.newInstance(6, lectures6);
+        DayFragment sun = DayFragment.newInstance(7, lectures7);
+        fragments.add(mon);
+        fragments.add(tue);
+        fragments.add(wen);
+        fragments.add(thu);
+        fragments.add(fri);
+        fragments.add(sat);
+        fragments.add(sun);
         fragments.add(NotificationsFragment.newInstance());
-        fragments.add(NotificationsFragment.newInstance());
-        fragments.add(NotificationsFragment.newInstance());
-        fragments.add(NotificationsFragment.newInstance());
-        fragments.add(NotificationsFragment.newInstance());
+
 
         ScheduleFragmentPagerAdapter scheduleFragmentPagerAdapter = new ScheduleFragmentPagerAdapter(this.getActivity().getSupportFragmentManager(), fragments);
         viewPager.setAdapter(scheduleFragmentPagerAdapter);
-    }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_weekly_schedule, container, false);
+        scheduleFragmentPagerAdapter.notifyDataSetChanged();
+
+        return view;
     }
 }

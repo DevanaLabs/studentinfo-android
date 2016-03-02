@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-
     <PreferenceCategory android:title="@string/group">
         <ListPreference
             android:key="groups"
@@ -13,13 +12,13 @@
     <PreferenceCategory
         android:title="@string/notifications">
 
-        <SwitchPreference
+        <CheckBoxPreference
             android:key="pushNotifications"
             android:title="@string/pushNotifications"
             android:summary="@string/pushNotificationsDescription"
             android:defaultValue="true"/>
 
-        <SwitchPreference
+        <CheckBoxPreference
             android:key="vibrationEnabled"
             android:title="@string/vibration"
             android:summary="@string/vibrationDescription"

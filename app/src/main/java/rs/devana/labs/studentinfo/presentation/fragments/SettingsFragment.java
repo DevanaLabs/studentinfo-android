@@ -3,13 +3,16 @@ package rs.devana.labs.studentinfo.presentation.fragments;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.ListPreference;
-import android.preference.PreferenceFragment;
+import android.support.v7.preference.ListPreference;
+import android.support.v7.preference.Preference;
+import android.support.v7.preference.PreferenceFragmentCompat;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
 import javax.inject.Inject;
 
@@ -19,7 +22,7 @@ import rs.devana.labs.studentinfo.domain.models.group.Group;
 import rs.devana.labs.studentinfo.infrastructure.dagger.Injector;
 import rs.devana.labs.studentinfo.infrastructure.json.parser.GroupParser;
 
-public class SettingsFragment extends PreferenceFragment{
+public class SettingsFragment extends PreferenceFragmentCompat{
 
     @Inject
     ApiDataFetch apiDataFetch;
@@ -27,6 +30,10 @@ public class SettingsFragment extends PreferenceFragment{
     SharedPreferences sharedPreferences;
     @Inject
     GroupParser groupParser;
+
+    ListPreference listPreference;
+    private CharSequence[] entries;
+    private CharSequence[] entryValues;
 
     public static SettingsFragment newInstance() {
         SettingsFragment fragment = new SettingsFragment();
@@ -41,8 +48,21 @@ public class SettingsFragment extends PreferenceFragment{
         addPreferencesFromResource(R.xml.settings_fragment);
         Injector.INSTANCE.getApplicationComponent().inject(this);
 
-        ListPreference listPreference = (ListPreference) findPreference("groups");
+        listPreference = (ListPreference) findPreference("groups");
         setListPreferenceData(listPreference);
+        listPreference.setSummary(listPreference.getEntry());
+        listPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                listPreference.setSummary(findEntryForValue((CharSequence) newValue));
+                return true;
+            }
+        });
+    }
+
+    @Override
+    public void onCreatePreferences(Bundle bundle, String s) {
+
     }
 
     @Override
@@ -60,8 +80,8 @@ public class SettingsFragment extends PreferenceFragment{
         try {
             List<Group> groups = groupParser.parse(new JSONArray(jsonGroups));
 
-            CharSequence[] entries = new CharSequence[groups.size()];
-            CharSequence[] entryValues = new CharSequence[groups.size()];
+            entries = new CharSequence[groups.size()];
+            entryValues = new CharSequence[groups.size()];
 
             for (int i = 0; i < groups.size(); i++) {
                 entries[i] = groups.get(i).name;
@@ -73,5 +93,16 @@ public class SettingsFragment extends PreferenceFragment{
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    private CharSequence findEntryForValue(CharSequence value){
+        int i = 0;
+        for (CharSequence entryValue : entryValues) {
+            if (entryValue == value) {
+                return entries[i];
+            }
+            i++;
+        }
+        return "";
     }
 }
