@@ -106,6 +106,10 @@ public class NavigationDrawerActivity extends AppCompatActivity {
         View v = navigationView.getHeaderView(0);
         TextView emailTextView = (TextView) v.findViewById(R.id.emailTextView);
         emailTextView.setText(email);
+
+        if (Integer.valueOf(sharedPreferences.getString("groups", "0")) == 0){
+            handleSettings();
+        }
     }
 
     @Override

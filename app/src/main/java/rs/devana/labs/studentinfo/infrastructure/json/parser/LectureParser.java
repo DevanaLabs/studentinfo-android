@@ -15,6 +15,7 @@ public class LectureParser {
     CourseParser courseParser;
     ClassroomParser classroomParser;
     LectureNotificationParser lectureNotificationParser;
+     private static final int secondsInDay = 86400;
 
     @Inject
     public LectureParser(CourseParser courseParser, ClassroomParser classroomParser, LectureNotificationParser lectureNotificationParser){
@@ -44,6 +45,28 @@ public class LectureParser {
                 Lecture lecture = new Lecture(jsonLecture.getInt("id"), jsonLecture.getString("type"), courseParser.parse(jsonLecture.getJSONObject("course")), jsonLecture.getJSONObject("time").getInt("startsAt"), jsonLecture.getJSONObject("time").getInt("endsAt"), jsonLecture.getJSONObject("teacher").getString("firstName"), classroomParser.parse(jsonLecture.getJSONObject("classroom")), lectureNotificationParser.parse(jsonLecture.getJSONArray("notifications")));
 
                 lectures.add(lecture);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            } finally {
+                i++;
+            }
+        }
+        return lectures;
+    }
+
+    public List<Lecture> getLecturesForDay(int day, JSONArray jsonLectures){
+
+        List<Lecture> lectures = new ArrayList<>();
+
+        int i = 0;
+        while (i < jsonLectures.length()) {
+            try {
+                JSONObject jsonLecture = jsonLectures.getJSONObject(i);
+                if ((day*secondsInDay < jsonLecture.getJSONObject("time").getInt("startsAt") && jsonLecture.getJSONObject("time").getInt("startsAt") < (day+1)*secondsInDay)) {
+                    Lecture lecture = new Lecture(jsonLecture.getInt("id"), jsonLecture.getString("type"), courseParser.parse(jsonLecture.getJSONObject("course")), jsonLecture.getJSONObject("time").getInt("startsAt"), jsonLecture.getJSONObject("time").getInt("endsAt"), jsonLecture.getJSONObject("teacher").getString("firstName"), classroomParser.parse(jsonLecture.getJSONObject("classroom")), lectureNotificationParser.parse(jsonLecture.getJSONArray("notifications")));
+
+                    lectures.add(lecture);
+                }
             } catch (JSONException e) {
                 e.printStackTrace();
             } finally {

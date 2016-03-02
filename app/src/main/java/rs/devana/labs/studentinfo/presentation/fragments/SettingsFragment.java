@@ -53,7 +53,20 @@ public class SettingsFragment extends PreferenceFragmentCompat{
         listPreference.setSummary(listPreference.getEntry());
         listPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
+            public boolean onPreferenceChange(Preference preference, final Object newValue) {
+
+                Thread getLecturesForGroup = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        JSONArray jsonLectures= apiDataFetch.getLecturesForGroup(Integer.parseInt(String.valueOf(newValue)));
+
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString("lectures", jsonLectures.toString());
+                        editor.apply();
+                    }
+                });
+                getLecturesForGroup.start();
+
                 listPreference.setSummary(findEntryForValue((CharSequence) newValue));
                 return true;
             }

@@ -34,23 +34,17 @@ public class DayFragment extends Fragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_day, container, false);
-    }
+        View view =  inflater.inflate(R.layout.fragment_day, container, false);
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        ListView lecturesListView = (ListView) this.getActivity().findViewById(R.id.lecturesListView);
+        ListView lecturesListView = (ListView) view.findViewById(R.id.lecturesListView);
         LectureArrayAdapter lectureArrayAdapter = new LectureArrayAdapter(lectures, this.getActivity());
         lecturesListView.setAdapter(lectureArrayAdapter);
+
+        return view;
     }
+
 
     public int getDay() {
         return day;
