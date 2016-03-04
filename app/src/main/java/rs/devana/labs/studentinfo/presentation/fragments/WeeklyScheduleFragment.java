@@ -2,7 +2,9 @@ package rs.devana.labs.studentinfo.presentation.fragments;
 
 
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -67,6 +69,7 @@ public class WeeklyScheduleFragment extends Fragment {
         View view =  inflater.inflate(R.layout.fragment_weekly_schedule, container, false);
 
         viewPager = (ViewPager) view.findViewById(R.id.viewPager);
+        TabLayout tabLayout = (TabLayout) view.findViewById(R.id.sliding_tabs);
 
         String lectures = sharedPreferences.getString("lectures", "");
         fragments = new ArrayList<>();
@@ -86,6 +89,9 @@ public class WeeklyScheduleFragment extends Fragment {
         scheduleFragmentPagerAdapter = new ScheduleFragmentPagerAdapter(this.getActivity().getSupportFragmentManager(), fragments);
         viewPager.setAdapter(scheduleFragmentPagerAdapter);
         scheduleFragmentPagerAdapter.notifyDataSetChanged();
+        tabLayout.setTabTextColors(Color.LTGRAY, Color.WHITE);
+        tabLayout.setBackgroundColor(Color.parseColor("#3F51B5"));
+        tabLayout.setupWithViewPager(viewPager);
 
         return view;
     }

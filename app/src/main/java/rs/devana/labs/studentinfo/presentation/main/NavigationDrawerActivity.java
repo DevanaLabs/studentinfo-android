@@ -18,12 +18,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import javax.inject.Inject;
 
 import rs.devana.labs.studentinfo.R;
 import rs.devana.labs.studentinfo.domain.api.ApiAuth;
 import rs.devana.labs.studentinfo.domain.api.ApiDataFetch;
 import rs.devana.labs.studentinfo.infrastructure.dagger.Injector;
+import rs.devana.labs.studentinfo.infrastructure.event_bus_events.GroupChangedEvent;
 import rs.devana.labs.studentinfo.presentation.fragments.NotificationsFragment;
 import rs.devana.labs.studentinfo.presentation.fragments.SettingsFragment;
 import rs.devana.labs.studentinfo.presentation.fragments.WeeklyScheduleFragment;
@@ -43,10 +47,12 @@ public class NavigationDrawerActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private static final String TAG = NavigationDrawerActivity.class.getSimpleName();
     String email;
+    TextView groupTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
         Injector.INSTANCE.getApplicationComponent().inject(this);
 
         PreferenceManager.setDefaultValues(this, R.xml.settings_fragment, false);
@@ -91,7 +97,12 @@ public class NavigationDrawerActivity extends AppCompatActivity {
 
         View v = navigationView.getHeaderView(0);
         TextView emailTextView = (TextView) v.findViewById(R.id.emailTextView);
+        email = sharedPreferences.getString("email", "");
         emailTextView.setText(email);
+        groupTextView = (TextView) v.findViewById(R.id.groupTextView);
+
+        //TODO: Treba pronaci grupu po id-u jer sharedPreferences [groups] vraca id a ne ime grupe pa ce se prikazivati Grupa 15 umesto Grupa 107 npr.
+        groupTextView.setText("Grupa "+sharedPreferences.getString("groups", ""));
 
         if (Integer.valueOf(sharedPreferences.getString("groups", "0")) == 0){
             navigationView.setCheckedItem(R.id.nav_settings);
@@ -187,5 +198,16 @@ public class NavigationDrawerActivity extends AppCompatActivity {
 
         logout.start();
         Log.i(TAG, "Logging out.");
+    }
+
+    @Subscribe
+    public void onGroupChangedEvent(GroupChangedEvent groupChangedEvent){
+        groupTextView.setText("Grupa "+groupChangedEvent.group);
+    }
+
+    @Override
+    protected void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
     }
 }

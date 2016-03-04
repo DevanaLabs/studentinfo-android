@@ -41,7 +41,10 @@ public class LectureArrayAdapter extends BaseAdapter {
         if (convertView == null) {
             convertView = inflater.inflate(android.R.layout.simple_list_item_1, parent, false);
             TextView lecture = (TextView)convertView.findViewById(android.R.id.text1);
-            lecture.setText(lectures.get(position).toString());
+            lecture.setText("Pocetak:"+lectures.get(position).getConvertedStartsAt()+"h\n"
+                    +"Kraj:"+lectures.get(position).getConvertedEndsAt()+"h\n"
+                    +lectures.get(position).getLectureName()+"\n"
+                        +lectures.get(position).getLectureClassroom());
         }
         return convertView;
     }

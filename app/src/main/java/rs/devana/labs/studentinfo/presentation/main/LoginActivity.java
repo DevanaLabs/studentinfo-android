@@ -98,12 +98,22 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
             }
 
             mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
+            mEmailView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                @Override
+                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                    if (actionId == EditorInfo.IME_ACTION_NEXT){
+                        mPasswordView.requestFocus();
+                        return true;
+                    }
+                    return false;
+                }
+            });
 
             mPasswordView = (EditText) findViewById(R.id.password);
             mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
                 @Override
                 public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                    if (id == R.id.login || id == EditorInfo.IME_NULL) {
+                    if (id == R.id.login || id == EditorInfo.IME_ACTION_DONE) {
                         attemptLogin();
                         return true;
                     }

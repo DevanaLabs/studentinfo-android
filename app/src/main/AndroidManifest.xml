@@ -15,7 +15,8 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".presentation.main.MainActivity"
-            android:noHistory="true">
+            android:noHistory="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="rs.devana.labs.studentinfo.presentation.main.MainActivity" />
 
@@ -26,6 +27,7 @@
             android:name=".presentation.main.LoginActivity"
             android:label="@string/app_name"
             android:noHistory="true"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -64,6 +66,7 @@
             android:name=".presentation.main.NavigationDrawerActivity"
             android:label="@string/title_activity_navigation_drawer"
             android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="rs.devana.labs.studentinfo.presentation.main.NavigationActivity" />

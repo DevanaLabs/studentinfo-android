@@ -8,6 +8,7 @@ import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.util.Log;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -20,6 +21,7 @@ import rs.devana.labs.studentinfo.R;
 import rs.devana.labs.studentinfo.domain.api.ApiDataFetch;
 import rs.devana.labs.studentinfo.domain.models.group.Group;
 import rs.devana.labs.studentinfo.infrastructure.dagger.Injector;
+import rs.devana.labs.studentinfo.infrastructure.event_bus_events.GroupChangedEvent;
 import rs.devana.labs.studentinfo.infrastructure.json.parser.GroupParser;
 
 public class SettingsFragment extends PreferenceFragmentCompat{
@@ -30,6 +32,8 @@ public class SettingsFragment extends PreferenceFragmentCompat{
     SharedPreferences sharedPreferences;
     @Inject
     GroupParser groupParser;
+    @Inject
+    EventBus eventBus;
 
     ListPreference listPreference;
     private CharSequence[] entries;
@@ -58,7 +62,7 @@ public class SettingsFragment extends PreferenceFragmentCompat{
                 Thread getLecturesForGroup = new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        JSONArray jsonLectures= apiDataFetch.getLecturesForGroup(Integer.parseInt(String.valueOf(newValue)));
+                        JSONArray jsonLectures = apiDataFetch.getLecturesForGroup(Integer.parseInt(String.valueOf(newValue)));
 
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         editor.putString("lectures", jsonLectures.toString());
@@ -66,8 +70,10 @@ public class SettingsFragment extends PreferenceFragmentCompat{
                     }
                 });
                 getLecturesForGroup.start();
+                CharSequence group = findEntryForValue((CharSequence) newValue);
+                listPreference.setSummary(group);
+                eventBus.post(new GroupChangedEvent(group.toString()));
 
-                listPreference.setSummary(findEntryForValue((CharSequence) newValue));
                 return true;
             }
         });

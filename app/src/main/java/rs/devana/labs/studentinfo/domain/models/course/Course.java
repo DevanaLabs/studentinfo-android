@@ -18,6 +18,42 @@ public class Course {
         this.lectures = lectures;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public int getSemester() {
+        return semester;
+    }
+
+    public void setSemester(int semester) {
+        this.semester = semester;
+    }
+
+    public int getEspb() {
+        return espb;
+    }
+
+    public void setEspb(int espb) {
+        this.espb = espb;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<Lecture> getLectures() {
+        return lectures;
+    }
+
+    public void setLectures(List<Lecture> lectures) {
+        this.lectures = lectures;
+    }
+
     @Override
     public String toString() {
         return "id=" + id +
