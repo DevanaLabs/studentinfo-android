@@ -36,6 +36,7 @@ import rs.devana.labs.studentinfo.R;
 import rs.devana.labs.studentinfo.domain.api.ApiAuth;
 import rs.devana.labs.studentinfo.infrastructure.dagger.Injector;
 import rs.devana.labs.studentinfo.infrastructure.services.gcm.RegistrationIntentService;
+import rs.devana.labs.studentinfo.infrastructure.services.groups.FetchGroupsService;
 
 public class LoginActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -63,56 +64,64 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
         accessToken = sharedPreferences.getString("accessToken", "");
         final CountDownLatch latch = new CountDownLatch(1);
 
-        if (!accessToken.equals("")) {
-            Thread verifyTokenThread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        auth = apiAuth.verifyAccessToken(accessToken);
-                        latch.countDown();
-                    } catch (Exception e) {
-                        e.printStackTrace();
+        if (!isNetworkAvailable()) {
+            if (accessToken.equals("")) {
+                internetUnavailable();
+            } else {
+                Intent navigationDrawerIntent = new Intent(LoginActivity.this, NavigationDrawerActivity.class);
+                startActivity(navigationDrawerIntent);
+            }
+        } else {
+            if (!accessToken.equals("")) {
+                Thread verifyTokenThread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            auth = apiAuth.verifyAccessToken(accessToken);
+                            latch.countDown();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
+                });
+                verifyTokenThread.start();
+
+                try {
+                    latch.await();
+                    if (auth) {
+                        Intent navigationDrawer = new Intent(this, NavigationDrawerActivity.class);
+                        startActivity(navigationDrawer);
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
+
+            mPasswordView = (EditText) findViewById(R.id.password);
+            mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                @Override
+                public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
+                    if (id == R.id.login || id == EditorInfo.IME_NULL) {
+                        attemptLogin();
+                        return true;
+                    }
+                    return false;
                 }
             });
-            verifyTokenThread.start();
 
-            try {
-                latch.await();
-                if (auth) {
-                    Intent navigationDrawer = new Intent(this, NavigationDrawerActivity.class);
-                    startActivity(navigationDrawer);
-                }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-
-        mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
-
-        mPasswordView = (EditText) findViewById(R.id.password);
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == R.id.login || id == EditorInfo.IME_NULL) {
+            Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
+            mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
                     attemptLogin();
-                    return true;
                 }
-                return false;
-            }
-        });
+            });
 
-        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
-        mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                attemptLogin();
-            }
-        });
-
-        mLoginFormView = findViewById(R.id.login_form);
-        mProgressView = findViewById(R.id.login_progress);
-
+            mLoginFormView = findViewById(R.id.login_form);
+            mProgressView = findViewById(R.id.login_progress);
+        }
     }
 
     private void attemptLogin() {
@@ -237,8 +246,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
             if (success) {
                 accessToken = sharedPreferences.getString("accessToken", "");
 
-                Intent intent = new Intent(LoginActivity.this, RegistrationIntentService.class);
-                startService(intent);
+                Intent fetchGroups = new Intent(LoginActivity.this, FetchGroupsService.class);
+                startService(fetchGroups);
+
+                Intent gcmRegister = new Intent(LoginActivity.this, RegistrationIntentService.class);
+                startService(gcmRegister);
                 finish();
 
                 Intent navigationDrawerIntent = new Intent(LoginActivity.this, NavigationDrawerActivity.class);

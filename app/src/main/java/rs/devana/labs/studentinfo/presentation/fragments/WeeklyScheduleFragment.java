@@ -1,12 +1,10 @@
 package rs.devana.labs.studentinfo.presentation.fragments;
 
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +18,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import rs.devana.labs.studentinfo.R;
-import rs.devana.labs.studentinfo.domain.models.lecture.Lecture;
 import rs.devana.labs.studentinfo.infrastructure.dagger.Injector;
 import rs.devana.labs.studentinfo.infrastructure.json.parser.LectureParser;
 import rs.devana.labs.studentinfo.presentation.adapters.ScheduleFragmentPagerAdapter;
@@ -34,6 +31,8 @@ public class WeeklyScheduleFragment extends Fragment {
     SharedPreferences sharedPreferences;
 
     ViewPager viewPager;
+    List<Fragment> fragments;
+    ScheduleFragmentPagerAdapter scheduleFragmentPagerAdapter;
 
     private static final int MONDAY = 0;
     private static final int TUESDAY = 1;
@@ -70,7 +69,7 @@ public class WeeklyScheduleFragment extends Fragment {
         viewPager = (ViewPager) view.findViewById(R.id.viewPager);
 
         String lectures = sharedPreferences.getString("lectures", "");
-        List<Fragment> fragments = new ArrayList<>();
+        fragments = new ArrayList<>();
 
         try {
             fragments.add(DayFragment.newInstance(MONDAY , lectureParser.getLecturesForDay(MONDAY, new JSONArray(lectures))));
@@ -84,7 +83,7 @@ public class WeeklyScheduleFragment extends Fragment {
             e.printStackTrace();
         }
 
-        ScheduleFragmentPagerAdapter scheduleFragmentPagerAdapter = new ScheduleFragmentPagerAdapter(this.getActivity().getSupportFragmentManager(), fragments);
+        scheduleFragmentPagerAdapter = new ScheduleFragmentPagerAdapter(this.getActivity().getSupportFragmentManager(), fragments);
         viewPager.setAdapter(scheduleFragmentPagerAdapter);
         scheduleFragmentPagerAdapter.notifyDataSetChanged();
 

@@ -12,9 +12,7 @@ import java.util.List;
 
 import rs.devana.labs.studentinfo.R;
 import rs.devana.labs.studentinfo.domain.models.lecture.Lecture;
-import rs.devana.labs.studentinfo.domain.models.notification.Notification;
 import rs.devana.labs.studentinfo.presentation.adapters.LectureArrayAdapter;
-import rs.devana.labs.studentinfo.presentation.adapters.NotificationArrayAdapter;
 
 public class DayFragment extends Fragment {
     private int day;
@@ -44,7 +42,6 @@ public class DayFragment extends Fragment {
 
         return view;
     }
-
 
     public int getDay() {
         return day;

@@ -1,11 +1,11 @@
 package rs.devana.labs.studentinfo.presentation.main;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -17,8 +17,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-
-import org.json.JSONArray;
 
 import javax.inject.Inject;
 
@@ -55,18 +53,6 @@ public class NavigationDrawerActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_navigation_drawer);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-
-        Thread getGroups = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                JSONArray jsonGroups= apiDataFetch.getAllGroups();
-
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString("allGroups", jsonGroups.toString());
-                editor.apply();
-            }
-        });
-        getGroups.start();
 
         handleWeeklySchedule();
 
@@ -108,6 +94,7 @@ public class NavigationDrawerActivity extends AppCompatActivity {
         emailTextView.setText(email);
 
         if (Integer.valueOf(sharedPreferences.getString("groups", "0")) == 0){
+            navigationView.setCheckedItem(R.id.nav_settings);
             handleSettings();
         }
     }

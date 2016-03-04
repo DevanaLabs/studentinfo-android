@@ -2,11 +2,11 @@ package rs.devana.labs.studentinfo.presentation.adapters;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 
 import java.util.List;
 
-public class ScheduleFragmentPagerAdapter extends FragmentPagerAdapter {
+public class ScheduleFragmentPagerAdapter extends FragmentStatePagerAdapter {
 
     private List<Fragment> fragments;
 
