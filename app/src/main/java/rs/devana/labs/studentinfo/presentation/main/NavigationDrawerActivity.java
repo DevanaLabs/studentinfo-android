@@ -68,7 +68,7 @@ public class NavigationDrawerActivity extends AppCompatActivity {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+        drawer.addDrawerListener(toggle);
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -103,7 +103,7 @@ public class NavigationDrawerActivity extends AppCompatActivity {
         groupTextView = (TextView) v.findViewById(R.id.groupTextView);
 
         //TODO: Treba pronaci grupu po id-u jer sharedPreferences [groups] vraca id a ne ime grupe pa ce se prikazivati Grupa 15 umesto Grupa 107 npr.
-        groupTextView.setText("Grupa "+sharedPreferences.getString("groups", ""));
+        groupTextView.setText(String.format(getResources().getString(R.string.group), sharedPreferences.getString("groups", "")));
 
         if (Integer.valueOf(sharedPreferences.getString("groups", "0")) == 0){
             navigationView.setCheckedItem(R.id.nav_settings);
@@ -211,7 +211,7 @@ public class NavigationDrawerActivity extends AppCompatActivity {
 
     @Subscribe
     public void onGroupChangedEvent(GroupChangedEvent groupChangedEvent){
-        groupTextView.setText("Grupa "+groupChangedEvent.group);
+        groupTextView.setText(String.format(getResources().getString(R.string.group), groupChangedEvent.group));
     }
 
     @Override

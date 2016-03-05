@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import rs.devana.labs.studentinfo.R;
 import rs.devana.labs.studentinfo.domain.models.lecture.Lecture;
 
 public class LectureArrayAdapter extends BaseAdapter {
@@ -41,8 +42,8 @@ public class LectureArrayAdapter extends BaseAdapter {
         if (convertView == null) {
             convertView = inflater.inflate(android.R.layout.simple_list_item_1, parent, false);
             TextView lecture = (TextView)convertView.findViewById(android.R.id.text1);
-            lecture.setText("Pocetak:"+lectures.get(position).getConvertedStartsAt()+"h\n"
-                    +"Kraj:"+lectures.get(position).getConvertedEndsAt()+"h\n"
+            lecture.setText(context.getString(R.string.start)+lectures.get(position).getConvertedStartsAt()+"h\n"
+                    +context.getString(R.string.end)+lectures.get(position).getConvertedEndsAt()+"h\n"
                     +lectures.get(position).getLectureName()+"\n"
                         +lectures.get(position).getLectureClassroom());
         }

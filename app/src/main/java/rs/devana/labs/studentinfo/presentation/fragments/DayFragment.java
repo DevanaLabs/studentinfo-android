@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import rs.devana.labs.studentinfo.R;
@@ -39,6 +41,12 @@ public class DayFragment extends Fragment {
         ListView lecturesListView = (ListView) view.findViewById(R.id.lecturesListView);
 
         if (!lectures.isEmpty()) {
+            Collections.sort(lectures, new Comparator<Lecture>() {
+                @Override
+                public int compare(Lecture lhs, Lecture rhs) {
+                    return lhs.getStartsAt() - rhs.getStartsAt();
+                }
+            });
             LectureArrayAdapter lectureArrayAdapter = new LectureArrayAdapter(lectures, this.getActivity());
             lecturesListView.setAdapter(lectureArrayAdapter);
         }

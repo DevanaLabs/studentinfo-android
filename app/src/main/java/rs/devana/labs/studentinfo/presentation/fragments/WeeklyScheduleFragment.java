@@ -86,7 +86,7 @@ public class WeeklyScheduleFragment extends Fragment {
             e.printStackTrace();
         }
 
-        scheduleFragmentPagerAdapter = new ScheduleFragmentPagerAdapter(this.getActivity().getSupportFragmentManager(), fragments);
+        scheduleFragmentPagerAdapter = new ScheduleFragmentPagerAdapter(this.getActivity().getSupportFragmentManager(), fragments, getContext());
         viewPager.setAdapter(scheduleFragmentPagerAdapter);
         scheduleFragmentPagerAdapter.notifyDataSetChanged();
         tabLayout.setTabTextColors(Color.LTGRAY, Color.WHITE);

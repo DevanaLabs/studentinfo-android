@@ -1,21 +1,23 @@
 package rs.devana.labs.studentinfo.presentation.adapters;
 
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import java.util.Dictionary;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
+import rs.devana.labs.studentinfo.R;
 
 public class ScheduleFragmentPagerAdapter extends FragmentStatePagerAdapter {
 
     private List<Fragment> fragments;
+    private Context context;
 
-    public ScheduleFragmentPagerAdapter(FragmentManager fm, List<Fragment> fragments) {
+    public ScheduleFragmentPagerAdapter(FragmentManager fm, List<Fragment> fragments, Context context) {
         super(fm);
         this.fragments = fragments;
+        this.context = context;
     }
 
     @Override
@@ -37,24 +39,24 @@ public class ScheduleFragmentPagerAdapter extends FragmentStatePagerAdapter {
         String day;
         switch (position) {
             case 0:
-                day = "PON";
+                day = context.getString(R.string.monday);
                 break;
             case 1:
-                day = "UTO";
+                day = context.getString(R.string.tuesday);
                 break;
             case 2:
-                day = "SRE";
+                day = context.getString(R.string.wednesday);
                 break;
             case 3:
-                day = "ČET";
+                day = context.getString(R.string.thursday);
                 break;
             case 4:
-                day = "PET";
+                day = context.getString(R.string.friday);
                 break;
             case 5:
-                day = "SUB";
+                day = context.getString(R.string.saturday);
                 break;
-            default: day = "NED";
+            default: day = context.getString(R.string.sunday);
         }
         return day;
     }
