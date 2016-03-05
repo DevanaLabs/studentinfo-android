@@ -1,4 +1,4 @@
-package rs.devana.labs.studentinfo.presentation.main;
+package rs.devana.labs.studentinfo.presentation.login;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -37,6 +37,7 @@ import rs.devana.labs.studentinfo.domain.api.ApiAuth;
 import rs.devana.labs.studentinfo.infrastructure.dagger.Injector;
 import rs.devana.labs.studentinfo.infrastructure.services.gcm.RegistrationIntentService;
 import rs.devana.labs.studentinfo.infrastructure.services.groups.FetchGroupsService;
+import rs.devana.labs.studentinfo.presentation.main.NavigationDrawerActivity;
 
 public class LoginActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 

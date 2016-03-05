@@ -32,6 +32,7 @@ import rs.devana.labs.studentinfo.presentation.fragments.NotificationsFragment;
 import rs.devana.labs.studentinfo.presentation.fragments.SettingsFragment;
 import rs.devana.labs.studentinfo.presentation.fragments.WeeklyScheduleFragment;
 import rs.devana.labs.studentinfo.presentation.fragments.YearlyCalendarFragment;
+import rs.devana.labs.studentinfo.presentation.login.LoginActivity;
 
 public class NavigationDrawerActivity extends AppCompatActivity {
 
@@ -108,6 +109,8 @@ public class NavigationDrawerActivity extends AppCompatActivity {
             navigationView.setCheckedItem(R.id.nav_settings);
             handleSettings();
         }
+
+        getNotifications();
     }
 
     @Override
@@ -198,6 +201,12 @@ public class NavigationDrawerActivity extends AppCompatActivity {
 
         logout.start();
         Log.i(TAG, "Logging out.");
+    }
+
+    private void getNotifications(){
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("notifications", apiDataFetch.getAllNotifications().toString());
+        editor.apply();
     }
 
     @Subscribe

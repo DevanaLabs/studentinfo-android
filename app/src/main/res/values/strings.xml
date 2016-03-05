@@ -39,6 +39,7 @@
     <string name="vibrationDescription">Uključite ili isključite vibraciju</string>
     <string name="group">Grupa</string>
     <string name="chooseGroup">Izaberi grupu</string>
+    <string name="noClassesToday">Nema predavanja</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

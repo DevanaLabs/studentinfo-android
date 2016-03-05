@@ -14,17 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".presentation.main.MainActivity"
-            android:noHistory="true"
-            android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="rs.devana.labs.studentinfo.presentation.main.MainActivity" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".presentation.main.LoginActivity"
+            android:name=".presentation.login.LoginActivity"
             android:label="@string/app_name"
             android:noHistory="true"
             android:screenOrientation="portrait"

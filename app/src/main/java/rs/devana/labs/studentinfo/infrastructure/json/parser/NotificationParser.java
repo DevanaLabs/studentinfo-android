@@ -11,9 +11,14 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import rs.devana.labs.studentinfo.domain.models.notification.Notification;
 
 public class NotificationParser {
+
+    @Inject
+    public NotificationParser(){}
 
     public List<Notification> parse(JSONArray jsonNotifications){
 

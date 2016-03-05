@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -35,10 +36,17 @@ public class DayFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.fragment_day, container, false);
-
         ListView lecturesListView = (ListView) view.findViewById(R.id.lecturesListView);
-        LectureArrayAdapter lectureArrayAdapter = new LectureArrayAdapter(lectures, this.getActivity());
-        lecturesListView.setAdapter(lectureArrayAdapter);
+
+        if (!lectures.isEmpty()) {
+            LectureArrayAdapter lectureArrayAdapter = new LectureArrayAdapter(lectures, this.getActivity());
+            lecturesListView.setAdapter(lectureArrayAdapter);
+        }
+        else {
+            TextView noClassesToday = (TextView) view.findViewById(R.id.listEmptyView);
+            noClassesToday.setVisibility(View.VISIBLE);
+            lecturesListView.setEmptyView(noClassesToday);
+        }
 
         return view;
     }

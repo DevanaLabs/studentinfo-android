@@ -11,10 +11,10 @@ import rs.devana.labs.studentinfo.infrastructure.dagger.module.RepositoryModule;
 import rs.devana.labs.studentinfo.infrastructure.services.gcm.GcmListeningService;
 import rs.devana.labs.studentinfo.infrastructure.services.gcm.RegistrationIntentService;
 import rs.devana.labs.studentinfo.infrastructure.services.groups.FetchGroupsService;
+import rs.devana.labs.studentinfo.presentation.fragments.NotificationsFragment;
 import rs.devana.labs.studentinfo.presentation.fragments.SettingsFragment;
 import rs.devana.labs.studentinfo.presentation.fragments.WeeklyScheduleFragment;
-import rs.devana.labs.studentinfo.presentation.main.LoginActivity;
-import rs.devana.labs.studentinfo.presentation.main.MainActivity;
+import rs.devana.labs.studentinfo.presentation.login.LoginActivity;
 import rs.devana.labs.studentinfo.presentation.main.NavigationDrawerActivity;
 
 @Component(modules = {
@@ -27,7 +27,6 @@ import rs.devana.labs.studentinfo.presentation.main.NavigationDrawerActivity;
 
 @Singleton
 public interface ApplicationComponent {
-    void inject(MainActivity mainActivity);
 
     void inject(RegistrationIntentService registrationIntentService);
 
@@ -42,4 +41,6 @@ public interface ApplicationComponent {
     void inject(WeeklyScheduleFragment weeklyScheduleFragment);
 
     void inject(FetchGroupsService fetchGroupsService);
+
+    void inject(NotificationsFragment notificationsFragment);
 }

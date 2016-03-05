@@ -15,7 +15,7 @@ public class LectureParser {
     CourseParser courseParser;
     ClassroomParser classroomParser;
     LectureNotificationParser lectureNotificationParser;
-     private static final int secondsInDay = 86400;
+    private static final int secondsInDay = 86400;
 
     @Inject
     public LectureParser(CourseParser courseParser, ClassroomParser classroomParser, LectureNotificationParser lectureNotificationParser){

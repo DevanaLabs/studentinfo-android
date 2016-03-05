@@ -1,22 +1,36 @@
 package rs.devana.labs.studentinfo.presentation.fragments;
 
 
-import android.support.v4.app.Fragment;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import rs.devana.labs.studentinfo.R;
 import rs.devana.labs.studentinfo.domain.models.notification.Notification;
+import rs.devana.labs.studentinfo.infrastructure.dagger.Injector;
+import rs.devana.labs.studentinfo.infrastructure.json.parser.NotificationParser;
 import rs.devana.labs.studentinfo.presentation.adapters.NotificationArrayAdapter;
 
 public class NotificationsFragment extends Fragment {
+
+    @Inject
+    SharedPreferences sharedPreferences;
+    @Inject
+    NotificationParser notificationParser;
+
     public static NotificationsFragment newInstance() {
         NotificationsFragment fragment = new NotificationsFragment();
         Bundle args = new Bundle();
@@ -31,11 +45,26 @@ public class NotificationsFragment extends Fragment {
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Injector.INSTANCE.getApplicationComponent().inject(this);
+    }
+
+    @Override
     public void onStart() {
         super.onStart();
         ListView notificationsListView = (ListView) this.getActivity().findViewById(R.id.notificationsListView);
-        List<Notification> dummyData = generateDummyData();
-        NotificationArrayAdapter notificationArrayAdapter = new NotificationArrayAdapter(dummyData, this.getActivity());
+        String notifications = sharedPreferences.getString("notifications", "");
+        List<Notification> notificationsList = null;
+        if (!notifications.isEmpty()) {
+            try {
+                notificationsList = new ArrayList<>();
+                notificationsList = notificationParser.parse(new JSONArray(notifications));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        NotificationArrayAdapter notificationArrayAdapter = new NotificationArrayAdapter((notificationsList == null || notificationsList.isEmpty()) ? generateDummyData() : notificationsList, this.getActivity());
         notificationsListView.setAdapter(notificationArrayAdapter);
     }
 

@@ -17,7 +17,6 @@ import javax.inject.Inject;
 
 import rs.devana.labs.studentinfo.R;
 import rs.devana.labs.studentinfo.infrastructure.dagger.Injector;
-import rs.devana.labs.studentinfo.presentation.main.LoginActivity;
 import rs.devana.labs.studentinfo.presentation.main.NavigationDrawerActivity;
 
 public class GcmListeningService extends GcmListenerService {
