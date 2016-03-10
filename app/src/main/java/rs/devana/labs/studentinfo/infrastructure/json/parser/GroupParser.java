@@ -5,6 +5,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -33,6 +35,12 @@ public class GroupParser {
                 i++;
             }
         }
+        Collections.sort(groups, new Comparator<Group>() {
+            @Override
+            public int compare(Group lhs, Group rhs) {
+                return lhs.name.compareTo(rhs.name);
+            }
+        });
         return groups;
     }
 }

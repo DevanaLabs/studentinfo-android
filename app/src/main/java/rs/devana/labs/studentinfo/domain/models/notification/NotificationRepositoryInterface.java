@@ -1,7 +1,7 @@
 package rs.devana.labs.studentinfo.domain.models.notification;
 
-import java.util.List;
+import org.json.JSONArray;
 
 public interface NotificationRepositoryInterface {
-    List<Notification> getAllNotifications();
+    JSONArray getAllNotifications();
 }

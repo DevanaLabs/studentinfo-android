@@ -31,7 +31,7 @@ public class ApiDataFetch {
         String accessToken = sharedPreferences.getString("accessToken", "");
         String slug = sharedPreferences.getString("slug", "");
         try {
-            BufferedReader reader = httpClient.getStream(url + "/" + slug + "/group/" + groupId + "?access_token=" + accessToken);
+            BufferedReader reader = httpClient.getStream(url + "/" + slug + "/group/" + groupId + "?semester=2&access_token=" + accessToken);
             String response = responseReader.readResponse(reader);
             JSONObject json = new JSONObject(response);
 
@@ -57,8 +57,8 @@ public class ApiDataFetch {
             if (response.contains("success")) {
                 JSONObject json = new JSONObject(response);
                 JSONObject success = json.getJSONObject("success");
-                JSONObject data = success.getJSONObject("data");
-                return data.getJSONArray("groups");
+                return success.getJSONArray("data");
+
             }
         } catch (IOException | JSONException e) {
             e.printStackTrace();
@@ -77,7 +77,7 @@ public class ApiDataFetch {
             JSONObject success = json.getJSONObject("success");
 
             return success.getJSONArray("data");
-        } catch (Exception e) {
+        } catch (IOException | JSONException e) {
             e.printStackTrace();
         }
         return new JSONArray();

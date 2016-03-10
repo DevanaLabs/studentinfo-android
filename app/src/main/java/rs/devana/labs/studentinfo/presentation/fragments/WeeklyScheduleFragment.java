@@ -20,6 +20,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import rs.devana.labs.studentinfo.R;
+import rs.devana.labs.studentinfo.domain.models.lecture.Lecture;
 import rs.devana.labs.studentinfo.infrastructure.dagger.Injector;
 import rs.devana.labs.studentinfo.infrastructure.json.parser.LectureParser;
 import rs.devana.labs.studentinfo.presentation.adapters.ScheduleFragmentPagerAdapter;
@@ -73,15 +74,20 @@ public class WeeklyScheduleFragment extends Fragment {
 
         String lectures = sharedPreferences.getString("lectures", "");
         fragments = new ArrayList<>();
-
         try {
-            fragments.add(DayFragment.newInstance(MONDAY , lectureParser.getLecturesForDay(MONDAY, new JSONArray(lectures))));
-            fragments.add(DayFragment.newInstance(TUESDAY , lectureParser.getLecturesForDay(TUESDAY, new JSONArray(lectures))));
-            fragments.add(DayFragment.newInstance(WEDNESDAY , lectureParser.getLecturesForDay(WEDNESDAY, new JSONArray(lectures))));
-            fragments.add(DayFragment.newInstance(THURSDAY , lectureParser.getLecturesForDay(THURSDAY, new JSONArray(lectures))));
-            fragments.add(DayFragment.newInstance(FRIDAY , lectureParser.getLecturesForDay(FRIDAY, new JSONArray(lectures))));
-            fragments.add(DayFragment.newInstance(SATURDAY , lectureParser.getLecturesForDay(SATURDAY, new JSONArray(lectures))));
-            fragments.add(DayFragment.newInstance(SUNDAY , lectureParser.getLecturesForDay(SUNDAY, new JSONArray(lectures))));
+            JSONArray jsonLectures = new JSONArray(lectures);
+            fragments.add(DayFragment.newInstance(MONDAY , lectureParser.getLecturesForDay(MONDAY, jsonLectures)));
+            fragments.add(DayFragment.newInstance(TUESDAY , lectureParser.getLecturesForDay(TUESDAY, jsonLectures)));
+            fragments.add(DayFragment.newInstance(WEDNESDAY , lectureParser.getLecturesForDay(WEDNESDAY, jsonLectures)));
+            fragments.add(DayFragment.newInstance(THURSDAY , lectureParser.getLecturesForDay(THURSDAY, jsonLectures)));
+            fragments.add(DayFragment.newInstance(FRIDAY , lectureParser.getLecturesForDay(FRIDAY, jsonLectures)));
+            List<Lecture> saturdayLectures, sundayLectures;
+            if (!(saturdayLectures = lectureParser.getLecturesForDay(SATURDAY, jsonLectures)).isEmpty()) {
+                fragments.add(DayFragment.newInstance(SATURDAY, saturdayLectures));
+            }
+            if (!(sundayLectures = lectureParser.getLecturesForDay(SUNDAY, jsonLectures)).isEmpty()) {
+                fragments.add(DayFragment.newInstance(SUNDAY , sundayLectures));
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }

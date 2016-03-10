@@ -5,7 +5,8 @@
         <ListPreference
             android:key="groups"
             android:title="@string/chooseGroup"
-            android:dialogTitle="@string/chooseGroup" />
+            android:dialogTitle="@string/chooseGroup"
+            android:negativeButtonText="@string/back"/>
 
     </PreferenceCategory>
 

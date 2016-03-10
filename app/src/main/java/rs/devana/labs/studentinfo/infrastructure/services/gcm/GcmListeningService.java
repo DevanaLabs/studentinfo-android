@@ -13,10 +13,17 @@ import android.util.Log;
 
 import com.google.android.gms.gcm.GcmListenerService;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
+
 import javax.inject.Inject;
 
 import rs.devana.labs.studentinfo.R;
+import rs.devana.labs.studentinfo.domain.models.notification.event.EventNotification;
 import rs.devana.labs.studentinfo.infrastructure.dagger.Injector;
+import rs.devana.labs.studentinfo.infrastructure.json.parser.EventNotificationParser;
 import rs.devana.labs.studentinfo.presentation.main.NavigationDrawerActivity;
 
 public class GcmListeningService extends GcmListenerService {
@@ -25,6 +32,8 @@ public class GcmListeningService extends GcmListenerService {
 
     @Inject
     SharedPreferences sharedPreferences;
+    @Inject
+    EventNotificationParser eventNotificationParser;
 
     @Override
     public void onCreate() {
@@ -38,17 +47,29 @@ public class GcmListeningService extends GcmListenerService {
         Log.d(TAG, "From: " + from);
         Log.d(TAG, "Message: " + message);
 
-        if(sharedPreferences.getBoolean("pushNotifications", true)){
-            Log.i(TAG, "Push notification sent.");
-            sendNotification(message);
-        }
-        else {
-            Log.i(TAG, "Push notifications are disabled and the message is not sent.");
+        try {
+            EventNotification eventNotification = eventNotificationParser.parse(new JSONObject(message));
+            String description = eventNotification.getDescription();
+            String expiresAt = new SimpleDateFormat("dd-MM-yyyy").format(eventNotification.getExpiresAt());
+            if(sharedPreferences.getBoolean("pushNotifications", true)){
+                Log.i(TAG, "Push notification sent.");
+                sendNotification(description+expiresAt, "notifications");
+            }
+            else {
+                Log.i(TAG, "Push notifications are disabled and the message is not sent.");
+            }
+        } catch (JSONException e) {
+            Log.i("Sranje", "nebojsa majmune");
+            e.printStackTrace();
+        } catch (Exception e){
+            e.printStackTrace();
+            sendNotification(message, "notifications");
         }
     }
 
-    private void sendNotification(String message) {
+    private void sendNotification(String message, String fragment) {
         Intent intent = new Intent(this, NavigationDrawerActivity.class);
+        intent.putExtra("fragment", fragment);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
                 PendingIntent.FLAG_ONE_SHOT);

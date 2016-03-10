@@ -20,6 +20,7 @@ import javax.inject.Inject;
 
 import rs.devana.labs.studentinfo.R;
 import rs.devana.labs.studentinfo.domain.models.notification.Notification;
+import rs.devana.labs.studentinfo.domain.models.notification.NotificationRepositoryInterface;
 import rs.devana.labs.studentinfo.infrastructure.dagger.Injector;
 import rs.devana.labs.studentinfo.infrastructure.json.parser.NotificationParser;
 import rs.devana.labs.studentinfo.presentation.adapters.NotificationArrayAdapter;
@@ -30,6 +31,8 @@ public class NotificationsFragment extends Fragment {
     SharedPreferences sharedPreferences;
     @Inject
     NotificationParser notificationParser;
+    @Inject
+    NotificationRepositoryInterface notificationRepository;
 
     public static NotificationsFragment newInstance() {
         NotificationsFragment fragment = new NotificationsFragment();
@@ -54,8 +57,9 @@ public class NotificationsFragment extends Fragment {
     public void onStart() {
         super.onStart();
         ListView notificationsListView = (ListView) this.getActivity().findViewById(R.id.notificationsListView);
+        List<Notification> notificationsList = new ArrayList<>();
+
         String notifications = sharedPreferences.getString("notifications", "");
-        List<Notification> notificationsList = null;
         if (!notifications.isEmpty()) {
             try {
                 notificationsList = new ArrayList<>();

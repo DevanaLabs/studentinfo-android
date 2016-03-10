@@ -37,6 +37,8 @@
     <string name="groups">Групе</string>
     <string name="chooseGroup">Изабери групу</string>
     <string name="noClassesToday">Нема предавања</string>
+    <string name="notChosen"> није изабрана</string>
+    <string name="back">Назад</string>
 
     <string name="hello_blank_fragment">Ћао празни фрагменту</string>
     <string name="start">Почетак:</string>

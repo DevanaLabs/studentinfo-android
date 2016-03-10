@@ -6,14 +6,12 @@ import android.os.Bundle;
 import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
-import android.util.Log;
 
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
 
 import javax.inject.Inject;
 
@@ -71,6 +69,9 @@ public class SettingsFragment extends PreferenceFragmentCompat{
                 });
                 getLecturesForGroup.start();
                 CharSequence group = findEntryForValue((CharSequence) newValue);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("groupName", group.toString());
+                editor.apply();
                 listPreference.setSummary(group);
                 eventBus.post(new GroupChangedEvent(group.toString()));
 

@@ -20,12 +20,14 @@ import android.widget.TextView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.json.JSONArray;
 
 import javax.inject.Inject;
 
 import rs.devana.labs.studentinfo.R;
 import rs.devana.labs.studentinfo.domain.api.ApiAuth;
 import rs.devana.labs.studentinfo.domain.api.ApiDataFetch;
+import rs.devana.labs.studentinfo.domain.models.notification.NotificationRepositoryInterface;
 import rs.devana.labs.studentinfo.infrastructure.dagger.Injector;
 import rs.devana.labs.studentinfo.infrastructure.event_bus_events.GroupChangedEvent;
 import rs.devana.labs.studentinfo.presentation.fragments.NotificationsFragment;
@@ -45,6 +47,9 @@ public class NavigationDrawerActivity extends AppCompatActivity {
     @Inject
     public ApiDataFetch apiDataFetch;
 
+    @Inject
+    NotificationRepositoryInterface notificationRepository;
+
     private Toolbar toolbar;
     private static final String TAG = NavigationDrawerActivity.class.getSimpleName();
     String email;
@@ -61,7 +66,14 @@ public class NavigationDrawerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_navigation_drawer);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
 
-        handleWeeklySchedule();
+        Intent intent = this.getIntent();
+        if (intent!=null && intent.getStringExtra("fragment")!= null){
+            if (intent.getStringExtra("fragment").equals("notifications")) {
+                handleNotifications();
+            }
+        } else {
+            handleWeeklySchedule();
+        }
 
         setSupportActionBar(toolbar);
 
@@ -101,9 +113,8 @@ public class NavigationDrawerActivity extends AppCompatActivity {
         email = sharedPreferences.getString("email", "");
         emailTextView.setText(email);
         groupTextView = (TextView) v.findViewById(R.id.groupTextView);
-
-        //TODO: Treba pronaci grupu po id-u jer sharedPreferences [groups] vraca id a ne ime grupe pa ce se prikazivati Grupa 15 umesto Grupa 107 npr.
-        groupTextView.setText(String.format(getResources().getString(R.string.group), sharedPreferences.getString("groups", "")));
+        String group = sharedPreferences.getString("groupName", "");
+        groupTextView.setText(String.format(getResources().getString(R.string.group), group.equals("") ? getResources().getString(R.string.notChosen) : group));
 
         if (Integer.valueOf(sharedPreferences.getString("groups", "0")) == 0){
             navigationView.setCheckedItem(R.id.nav_settings);
@@ -204,9 +215,16 @@ public class NavigationDrawerActivity extends AppCompatActivity {
     }
 
     private void getNotifications(){
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("notifications", apiDataFetch.getAllNotifications().toString());
-        editor.apply();
+        Thread getNotifications = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                JSONArray notifications = notificationRepository.getAllNotifications();
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("notifications", notifications.toString());
+                editor.apply();
+            }
+        });
+        getNotifications.start();
     }
 
     @Subscribe
