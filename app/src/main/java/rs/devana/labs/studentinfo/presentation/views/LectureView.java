@@ -1,29 +1,30 @@
 package rs.devana.labs.studentinfo.presentation.views;
 
-import android.annotation.TargetApi;
-import android.content.Context;
-import android.os.Build;
-import android.util.AttributeSet;
-import android.widget.ListView;
+import java.util.Calendar;
 
-public class LectureView extends ListView {
+import rs.devana.labs.studentinfo.domain.models.lecture.Lecture;
+import rs.devana.labs.studentinfo.presentation.weekview.WeekViewEvent;
 
-    public LectureView(Context context) {
-        super(context);
+public class LectureView extends WeekViewEvent {
+
+    protected Lecture lecture;
+
+    public LectureView(Lecture lecture) {
+        super(lecture.getId(), lecture.getLectureName(), convert(lecture.getStartsAt()), convert(lecture.getEndsAt()));
+        this.lecture = lecture;
     }
 
-    public LectureView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-    }
+    private static Calendar convert(int time) {
+        Calendar calendar = Calendar.getInstance();
 
-    public LectureView(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-    }
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.clear(Calendar.MINUTE);
+        calendar.clear(Calendar.SECOND);
+        calendar.clear(Calendar.MILLISECOND);
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public LectureView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-    }
+        calendar.set(Calendar.DAY_OF_WEEK, calendar.getFirstDayOfWeek());
 
-    
+        calendar.add(Calendar.SECOND, time);
+        return calendar;
+    }
 }

@@ -1,6 +1,5 @@
 package rs.devana.labs.studentinfo.domain.models.lecture;
 
-import java.util.Calendar;
 import java.util.List;
 
 import rs.devana.labs.studentinfo.domain.models.classroom.Classroom;
@@ -8,6 +7,7 @@ import rs.devana.labs.studentinfo.domain.models.course.Course;
 import rs.devana.labs.studentinfo.domain.models.notification.lecture.LectureNotification;
 
 public class Lecture {
+
     private int id;
     private String type, teacher;
     private int startsAt, endsAt;
@@ -28,8 +28,12 @@ public class Lecture {
         this.lectureNotifications = lectureNotifications;
     }
 
+    public int getId() {
+        return id;
+    }
+
     public String getLectureName(){
-        return this.course.getName();
+        return course.getName() + " " + teacher + " " + type;
     }
 
     public String getLectureClassroom(){
@@ -49,7 +53,7 @@ public class Lecture {
     }
 
     public int getStartsAt() {
-        return convertTime(startsAt);
+        return startsAt;
     }
 
     public void setStartsAt(int startsAt) {
@@ -57,7 +61,7 @@ public class Lecture {
     }
 
     public int getEndsAt() {
-        return convertTime(endsAt);
+        return endsAt;
     }
 
     public void setEndsAt(int endsAt) {

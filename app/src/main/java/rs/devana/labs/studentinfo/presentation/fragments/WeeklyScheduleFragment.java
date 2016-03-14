@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -59,12 +60,6 @@ public class WeeklyScheduleFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.fragment_weekly_schedule, container, false);
@@ -96,7 +91,7 @@ public class WeeklyScheduleFragment extends Fragment {
         viewPager.setAdapter(scheduleFragmentPagerAdapter);
         scheduleFragmentPagerAdapter.notifyDataSetChanged();
         tabLayout.setTabTextColors(Color.LTGRAY, Color.WHITE);
-        tabLayout.setBackgroundColor(Color.parseColor("#3F51B5"));
+        tabLayout.setBackgroundColor(ContextCompat.getColor(this.getContext(), R.color.colorPrimary));
         tabLayout.setupWithViewPager(viewPager);
 
         return view;
