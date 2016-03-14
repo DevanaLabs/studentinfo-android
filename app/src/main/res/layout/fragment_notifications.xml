@@ -1,13 +1,21 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="rs.devana.labs.studentinfo.presentation.fragments.NotificationsFragment">
 
     <ListView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:id="@+id/notificationsListView"
         android:dividerHeight="@dimen/abc_control_corner_material"
         android:clickable="false" />
-</FrameLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/notificationsEmptyView"
+        android:text="@string/noNotifications"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        android:layout_below="@id/lecturesListView"/>
+</RelativeLayout>

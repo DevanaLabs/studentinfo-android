@@ -39,6 +39,10 @@
     <string name="noClassesToday">Нема предавања</string>
     <string name="notChosen"> није изабрана</string>
     <string name="back">Назад</string>
+    <string name="fetchingGroups">Дохватање група</string>
+    <string name="fetchingSchedule">Дохватање распореда</string>
+    <string name="pleaseWait">Молим Вас, сачекајте</string>
+    <string name="noNotifications">Нема обавештења</string>
 
     <string name="hello_blank_fragment">Ћао празни фрагменту</string>
     <string name="start">Почетак:</string>

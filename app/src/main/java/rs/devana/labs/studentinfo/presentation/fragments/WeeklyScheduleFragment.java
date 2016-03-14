@@ -62,7 +62,7 @@ public class WeeklyScheduleFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view =  inflater.inflate(R.layout.fragment_weekly_schedule, container, false);
+        View view = inflater.inflate(R.layout.fragment_weekly_schedule, container, false);
 
         viewPager = (ViewPager) view.findViewById(R.id.viewPager);
         TabLayout tabLayout = (TabLayout) view.findViewById(R.id.sliding_tabs);
@@ -71,17 +71,17 @@ public class WeeklyScheduleFragment extends Fragment {
         fragments = new ArrayList<>();
         try {
             JSONArray jsonLectures = new JSONArray(lectures);
-            fragments.add(DayFragment.newInstance(MONDAY , lectureParser.getLecturesForDay(MONDAY, jsonLectures)));
-            fragments.add(DayFragment.newInstance(TUESDAY , lectureParser.getLecturesForDay(TUESDAY, jsonLectures)));
-            fragments.add(DayFragment.newInstance(WEDNESDAY , lectureParser.getLecturesForDay(WEDNESDAY, jsonLectures)));
-            fragments.add(DayFragment.newInstance(THURSDAY , lectureParser.getLecturesForDay(THURSDAY, jsonLectures)));
-            fragments.add(DayFragment.newInstance(FRIDAY , lectureParser.getLecturesForDay(FRIDAY, jsonLectures)));
+            fragments.add(DayFragment.newInstance(MONDAY, lectureParser.getLecturesForDay(MONDAY, jsonLectures)));
+            fragments.add(DayFragment.newInstance(TUESDAY, lectureParser.getLecturesForDay(TUESDAY, jsonLectures)));
+            fragments.add(DayFragment.newInstance(WEDNESDAY, lectureParser.getLecturesForDay(WEDNESDAY, jsonLectures)));
+            fragments.add(DayFragment.newInstance(THURSDAY, lectureParser.getLecturesForDay(THURSDAY, jsonLectures)));
+            fragments.add(DayFragment.newInstance(FRIDAY, lectureParser.getLecturesForDay(FRIDAY, jsonLectures)));
             List<Lecture> saturdayLectures, sundayLectures;
             if (!(saturdayLectures = lectureParser.getLecturesForDay(SATURDAY, jsonLectures)).isEmpty()) {
                 fragments.add(DayFragment.newInstance(SATURDAY, saturdayLectures));
             }
             if (!(sundayLectures = lectureParser.getLecturesForDay(SUNDAY, jsonLectures)).isEmpty()) {
-                fragments.add(DayFragment.newInstance(SUNDAY , sundayLectures));
+                fragments.add(DayFragment.newInstance(SUNDAY, sundayLectures));
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -95,5 +95,10 @@ public class WeeklyScheduleFragment extends Fragment {
         tabLayout.setupWithViewPager(viewPager);
 
         return view;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
     }
 }

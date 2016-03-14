@@ -1,7 +1,9 @@
 package rs.devana.labs.studentinfo.presentation.main;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -30,6 +32,7 @@ import rs.devana.labs.studentinfo.domain.api.ApiDataFetch;
 import rs.devana.labs.studentinfo.domain.models.notification.NotificationRepositoryInterface;
 import rs.devana.labs.studentinfo.infrastructure.dagger.Injector;
 import rs.devana.labs.studentinfo.infrastructure.event_bus_events.GroupChangedEvent;
+import rs.devana.labs.studentinfo.infrastructure.event_bus_events.LogoutFinishedEvent;
 import rs.devana.labs.studentinfo.presentation.fragments.NotificationsFragment;
 import rs.devana.labs.studentinfo.presentation.fragments.SettingsFragment;
 import rs.devana.labs.studentinfo.presentation.fragments.WeeklyScheduleFragment;
@@ -50,10 +53,14 @@ public class NavigationDrawerActivity extends AppCompatActivity {
     @Inject
     NotificationRepositoryInterface notificationRepository;
 
+    @Inject
+    EventBus eventBus;
+
     private Toolbar toolbar;
     private static final String TAG = NavigationDrawerActivity.class.getSimpleName();
     String email;
     TextView groupTextView;
+    ProgressDialog loggingOutDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -197,20 +204,10 @@ public class NavigationDrawerActivity extends AppCompatActivity {
     }
 
     private void handleLogout() {
-        final Thread logout = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                String accessToken = sharedPreferences.getString("accessToken", "");
-                String deviceToken = sharedPreferences.getString("deviceToken", "");
-                logout(accessToken, deviceToken);
-                setPreferences();
-                Intent intent = new Intent(NavigationDrawerActivity.this, LoginActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
+        new UserLogoutTask().execute();
+        loggingOutDialog = ProgressDialog.show(this, getResources().getString(R.string.pleaseWait), getResources().getString(R.string.logout), true);
+        loggingOutDialog.show();
 
-        logout.start();
         Log.i(TAG, "Logging out.");
     }
 
@@ -232,9 +229,39 @@ public class NavigationDrawerActivity extends AppCompatActivity {
         groupTextView.setText(String.format(getResources().getString(R.string.group), groupChangedEvent.group));
     }
 
+    @Subscribe
+    public void onLogoutFinishedEvent(LogoutFinishedEvent logoutFinishedEvent){
+        loggingOutDialog.dismiss();
+    }
+
     @Override
     protected void onStop() {
         EventBus.getDefault().unregister(this);
         super.onStop();
+    }
+
+    public class UserLogoutTask extends AsyncTask<Void, Void, Boolean> {
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            String accessToken = sharedPreferences.getString("accessToken", "");
+            String deviceToken = sharedPreferences.getString("deviceToken", "");
+            boolean success = logout(accessToken, deviceToken);
+            setPreferences();
+
+            return success;
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+
+            if (success) {
+                Intent intent = new Intent(NavigationDrawerActivity.this, LoginActivity.class);
+                startActivity(intent);
+                finish();
+
+                eventBus.post(new LogoutFinishedEvent());
+            }
+        }
     }
 }

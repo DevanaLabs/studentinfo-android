@@ -13,7 +13,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -62,28 +61,15 @@ public class NotificationsFragment extends Fragment {
         String notifications = sharedPreferences.getString("notifications", "");
         if (!notifications.isEmpty()) {
             try {
-                notificationsList = new ArrayList<>();
                 notificationsList = notificationParser.parse(new JSONArray(notifications));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
-        NotificationArrayAdapter notificationArrayAdapter = new NotificationArrayAdapter((notificationsList == null || notificationsList.isEmpty()) ? generateDummyData() : notificationsList, this.getActivity());
+        NotificationArrayAdapter notificationArrayAdapter = new NotificationArrayAdapter(notificationsList, this.getActivity());
         notificationsListView.setAdapter(notificationArrayAdapter);
+        notificationsListView.setEmptyView(this.getActivity().findViewById(R.id.notificationsEmptyView));
     }
 
-    private List<Notification> generateDummyData() {
-        List<Notification> stringArrayList = new ArrayList<>();
-        stringArrayList.add(new Notification(1, "Vazno obavestenje 1", Calendar.getInstance()));
-        stringArrayList.add(new Notification(1, "Vrlo bitna stvar 2", Calendar.getInstance()));
-        stringArrayList.add(new Notification(1, "Bas jako bitna stvar 3", Calendar.getInstance()));
-        stringArrayList.add(new Notification(1, "Vrlo kul obavestenje 4", Calendar.getInstance()));
-        stringArrayList.add(new Notification(1, "Nesto 5", Calendar.getInstance()));
-        stringArrayList.add(new Notification(1, "Odlaze se cas 6", Calendar.getInstance()));
-        stringArrayList.add(new Notification(1, "Novi svet otkriven 7", Calendar.getInstance()));
-        stringArrayList.add(new Notification(1, "Nema vise skole 8", Calendar.getInstance()));
-        stringArrayList.add(new Notification(1, "ETF izgoreo do temelja 9", Calendar.getInstance()));
-        return stringArrayList;
-    }
 
 }

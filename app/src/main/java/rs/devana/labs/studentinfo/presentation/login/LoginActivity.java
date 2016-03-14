@@ -28,15 +28,19 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.greenrobot.eventbus.EventBus;
+import org.json.JSONArray;
+
 import java.util.concurrent.CountDownLatch;
 
 import javax.inject.Inject;
 
 import rs.devana.labs.studentinfo.R;
 import rs.devana.labs.studentinfo.domain.api.ApiAuth;
+import rs.devana.labs.studentinfo.domain.api.ApiDataFetch;
 import rs.devana.labs.studentinfo.infrastructure.dagger.Injector;
+import rs.devana.labs.studentinfo.infrastructure.event_bus_events.GroupsFetchedEvent;
 import rs.devana.labs.studentinfo.infrastructure.services.gcm.RegistrationIntentService;
-import rs.devana.labs.studentinfo.infrastructure.services.groups.FetchGroupsService;
 import rs.devana.labs.studentinfo.presentation.main.NavigationDrawerActivity;
 
 public class LoginActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -45,6 +49,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
     SharedPreferences sharedPreferences;
     @Inject
     ApiAuth apiAuth;
+    @Inject
+    ApiDataFetch apiDataFetch;
+    @Inject
+    EventBus eventBus;
 
     private UserLoginTask mAuthTask = null;
 
@@ -62,6 +70,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
         setContentView(R.layout.activity_login);
 
         Injector.INSTANCE.getApplicationComponent().inject(this);
+
         accessToken = sharedPreferences.getString("accessToken", "");
         final CountDownLatch latch = new CountDownLatch(1);
 
@@ -257,8 +266,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
             if (success) {
                 accessToken = sharedPreferences.getString("accessToken", "");
 
-                Intent fetchGroups = new Intent(LoginActivity.this, FetchGroupsService.class);
-                startService(fetchGroups);
+                new GroupFetchTask().execute();
 
                 Intent gcmRegister = new Intent(LoginActivity.this, RegistrationIntentService.class);
                 startService(gcmRegister);
@@ -290,5 +298,24 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
         toast.setGravity(Gravity.TOP, 0, 150);
 
         toast.show();
+    }
+
+    public class GroupFetchTask extends AsyncTask<Void, Void, JSONArray> {
+
+        @Override
+        protected JSONArray doInBackground(Void... params) {
+
+            return apiDataFetch.getAllGroups();
+        }
+
+        @Override
+        protected void onPostExecute(JSONArray jsonArray) {
+
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("allGroups", jsonArray.toString());
+            editor.apply();
+
+            eventBus.post(new GroupsFetchedEvent(jsonArray.toString()));
+        }
     }
 }

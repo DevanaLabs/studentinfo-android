@@ -7,7 +7,9 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 import rs.devana.labs.studentinfo.domain.models.notification.Notification;
 
@@ -43,8 +45,16 @@ public class NotificationArrayAdapter extends BaseAdapter {
         if (convertView == null) {
             convertView = inflater.inflate(android.R.layout.simple_list_item_1, parent, false);
             TextView lecture = (TextView) convertView.findViewById(android.R.id.text1);
-            lecture.setText(notifications.get(position).toString());
+            lecture.setText(formatNotification(notifications.get(position)));
         }
         return convertView;
+    }
+
+    private String formatNotification(Notification notification){
+        StringBuilder sb = new StringBuilder();
+        SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.getDefault());
+        String date = format.format(notification.getExpiresAt().getTime());
+        sb.append(date).append(" - ").append(notification.getDescription());
+        return sb.toString();
     }
 }

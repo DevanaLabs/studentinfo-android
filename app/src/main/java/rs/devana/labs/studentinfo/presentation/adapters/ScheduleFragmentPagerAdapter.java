@@ -56,7 +56,8 @@ public class ScheduleFragmentPagerAdapter extends FragmentStatePagerAdapter {
             case 5:
                 day = context.getString(R.string.saturday);
                 break;
-            default: day = context.getString(R.string.sunday);
+            default:
+                day = context.getString(R.string.sunday);
         }
         return day;
     }
