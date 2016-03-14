@@ -16,6 +16,5 @@
         android:id="@+id/notificationsEmptyView"
         android:text="@string/noNotifications"
         android:layout_centerInParent="true"
-        android:visibility="gone"
-        android:layout_below="@id/lecturesListView"/>
+        android:visibility="gone"/>
 </RelativeLayout>
