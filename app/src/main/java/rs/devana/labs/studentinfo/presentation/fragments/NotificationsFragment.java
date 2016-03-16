@@ -13,6 +13,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -66,10 +68,18 @@ public class NotificationsFragment extends Fragment {
                 e.printStackTrace();
             }
         }
+        Collections.sort(notificationsList, new NotificationComparator());
         NotificationArrayAdapter notificationArrayAdapter = new NotificationArrayAdapter(notificationsList, this.getActivity());
         notificationsListView.setAdapter(notificationArrayAdapter);
         notificationsListView.setEmptyView(this.getActivity().findViewById(R.id.notificationsEmptyView));
     }
 
+    private class NotificationComparator implements Comparator<Notification>{
+
+        @Override
+        public int compare(Notification lhs, Notification rhs) {
+            return lhs.getExpiresAt().compareTo(rhs.getExpiresAt());
+        }
+    }
 
 }

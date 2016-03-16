@@ -13,10 +13,10 @@ import android.util.Log;
 
 import com.google.android.gms.gcm.GcmListenerService;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -50,19 +50,16 @@ public class GcmListeningService extends GcmListenerService {
         try {
             EventNotification eventNotification = eventNotificationParser.parse(new JSONObject(message));
             String description = eventNotification.getDescription();
-            String expiresAt = new SimpleDateFormat("dd-MM-yyyy").format(eventNotification.getExpiresAt());
+            String expiresAt = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(eventNotification.getExpiresAt().getTime());
             if(sharedPreferences.getBoolean("pushNotifications", true)){
                 Log.i(TAG, "Push notification sent.");
-                sendNotification(description+expiresAt, "notifications");
+                sendNotification(expiresAt+"-"+description, "notifications");
             }
             else {
                 Log.i(TAG, "Push notifications are disabled and the message is not sent.");
             }
-        } catch (JSONException e) {
-            e.printStackTrace();
         } catch (Exception e){
             e.printStackTrace();
-            sendNotification(message, "notifications");
         }
     }
 

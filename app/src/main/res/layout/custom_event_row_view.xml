@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:baselineAligned="false">
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/activity_vertical_margin">
+        <TextView
+            android:id="@+id/dayTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/placeholderDate"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textStyle="bold"
+            android:textColor="@color/colorAccent"
+            android:layout_gravity="center_horizontal"/>
+        <TextView
+            android:id="@+id/monthTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/placeholderMonth"
+            android:layout_gravity="center_horizontal"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/eventDescriptionParentLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="8"
+        android:orientation="vertical"
+        android:padding="@dimen/activity_horizontal_margin">
+        <TextView
+            android:id="@+id/descriptionTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/placeholderEventDescription"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+        <TextView
+            android:id="@+id/additionalInfoTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/placeholderGroup"
+            android:textStyle="bold"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+    </LinearLayout>
+
+
+</LinearLayout>

@@ -16,6 +16,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -29,6 +30,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.json.JSONArray;
 
 import java.util.concurrent.CountDownLatch;
@@ -39,6 +41,7 @@ import rs.devana.labs.studentinfo.R;
 import rs.devana.labs.studentinfo.domain.api.ApiAuth;
 import rs.devana.labs.studentinfo.domain.api.ApiDataFetch;
 import rs.devana.labs.studentinfo.infrastructure.dagger.Injector;
+import rs.devana.labs.studentinfo.infrastructure.event_bus_events.EventsFetchedEvent;
 import rs.devana.labs.studentinfo.infrastructure.event_bus_events.GroupsFetchedEvent;
 import rs.devana.labs.studentinfo.infrastructure.services.gcm.RegistrationIntentService;
 import rs.devana.labs.studentinfo.presentation.main.NavigationDrawerActivity;
@@ -266,7 +269,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
             if (success) {
                 accessToken = sharedPreferences.getString("accessToken", "");
 
-                new GroupFetchTask().execute();
+                new GroupFetchTask().execute(); new EventsFetchTask().execute();
 
                 Intent gcmRegister = new Intent(LoginActivity.this, RegistrationIntentService.class);
                 startService(gcmRegister);
@@ -300,6 +303,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
         toast.show();
     }
 
+    @Subscribe
+    public void onEventsFetchedEvent(EventsFetchedEvent eventsFetchedEvent){
+        Log.i("WWWWWWWWWWWWWWWWW", eventsFetchedEvent.getGroups());
+    }
+
     public class GroupFetchTask extends AsyncTask<Void, Void, JSONArray> {
 
         @Override
@@ -316,6 +324,25 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
             editor.apply();
 
             eventBus.post(new GroupsFetchedEvent(jsonArray.toString()));
+        }
+    }
+
+    public class EventsFetchTask extends AsyncTask<Void, Void, JSONArray> {
+
+        @Override
+        protected JSONArray doInBackground(Void... params) {
+
+            return apiDataFetch.getAllEvents();
+        }
+
+        @Override
+        protected void onPostExecute(JSONArray jsonArray) {
+
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("allEvents", jsonArray.toString());
+            editor.apply();
+
+            eventBus.post(new EventsFetchedEvent(jsonArray.toString()));
         }
     }
 }

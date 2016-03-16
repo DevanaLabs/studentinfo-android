@@ -15,7 +15,7 @@
     <string name="logout">Одјава</string>
     <string name="sign_out">Одјави се</string>
     <string name="weeklySchedule">Недељни распоред</string>
-    <string name="yearlyCalender">Годишњи календар</string>
+    <string name="yearlyCalender">Календар активности</string>
     <string name="notifications">Обавештења</string>
     <string name="settings">Подешавања</string>
     <string name="off">Искљ.</string>
@@ -43,6 +43,10 @@
     <string name="fetchingSchedule">Дохватање распореда</string>
     <string name="pleaseWait">Молим Вас, сачекајте</string>
     <string name="noNotifications">Нема обавештења</string>
+    <string name="placeholderDate">17</string>
+    <string name="placeholderMonth">АВГ</string>
+    <string name="placeholderEventDescription">На данашњи дан се дешавају нека дешавања јако битна за људе који у њима учествују и саћемо да видимо шта се дешава са овим дешавањем ако се деси да је нереално дугачко јебига</string>
+
 
     <string name="hello_blank_fragment">Ћао празни фрагменту</string>
     <string name="start">Почетак:</string>
@@ -54,6 +58,21 @@
     <string name="friday">ПЕТ</string>
     <string name="saturday">СУБ</string>
     <string name="sunday">НЕД</string>
+
+    <string name="january">ЈАН</string>
+    <string name="february">ФЕБ</string>
+    <string name="march">МАР</string>
+    <string name="april">АПР</string>
+    <string name="may">МАЈ</string>
+    <string name="june">ЈУН</string>
+    <string name="july">ЈУЛ</string>
+    <string name="august">АВГ</string>
+    <string name="september">СЕП</string>
+    <string name="october">ОКТ</string>
+    <string name="november">НОВ</string>
+    <string name="december">ДЕЦ</string>
+
+
 
     <string name="Predavanje">Предавање</string>
     <string name="Vezbe">Вежбе</string>
