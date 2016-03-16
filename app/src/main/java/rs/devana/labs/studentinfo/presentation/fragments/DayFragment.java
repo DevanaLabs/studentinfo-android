@@ -15,12 +15,12 @@ import java.util.List;
 import rs.devana.labs.studentinfo.R;
 import rs.devana.labs.studentinfo.domain.models.lecture.Lecture;
 import rs.devana.labs.studentinfo.presentation.views.LectureView;
+import rs.devana.labs.studentinfo.presentation.views.LecturesView;
 import rs.devana.labs.studentinfo.presentation.weekview.MonthLoader;
 import rs.devana.labs.studentinfo.presentation.weekview.WeekView;
 import rs.devana.labs.studentinfo.presentation.weekview.WeekViewEvent;
-import rs.devana.labs.studentinfo.presentation.weekview.WeekViewLoader;
 
-public class DayFragment extends Fragment implements WeekView.EventClickListener, MonthLoader.MonthChangeListener, WeekView.EventLongPressListener, WeekView.EmptyViewLongPressListener, WeekViewLoader {
+public class DayFragment extends Fragment implements WeekView.EventClickListener, MonthLoader.MonthChangeListener, WeekView.EventLongPressListener, WeekView.EmptyViewLongPressListener {
     private int day;
     private List<Lecture> lectures;
 
@@ -41,15 +41,8 @@ public class DayFragment extends Fragment implements WeekView.EventClickListener
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.fragment_day, container, false);
-        WeekView weekView = (WeekView) view.findViewById(R.id.weekView);
-
-        weekView.setHourHeight((weekView.getMeasuredHeight() - weekView.getTextSize() - 2 * weekView.getHeaderRowPadding()) / 24);
-        weekView.goToHour(9);
-        weekView.setOnEventClickListener(this);
-        weekView.setMonthChangeListener(this);
-        weekView.setEventLongPressListener(this);
-        weekView.setEmptyViewLongPressListener(this);
-        weekView.setWeekViewLoader(this);
+        LecturesView lecturesView = (LecturesView) view.findViewById(R.id.lecturesView);
+        lecturesView.setLectures(lectures);
 
 //        if (!lectures.isEmpty()) {
 //            Collections.sort(lectures, new Comparator<Lecture>() {
@@ -102,29 +95,17 @@ public class DayFragment extends Fragment implements WeekView.EventClickListener
 
     }
 
-
     @Override
     public List<? extends WeekViewEvent> onMonthChange(int newYear, int newMonth) {
         List<WeekViewEvent> events = new ArrayList<>();
 
         for (int i = 0; i < lectures.size(); i++) {
             LectureView lectureView = new LectureView(lectures.get(i));
-            events.add(lectureView);
-        }
-        return events;
-    }
-
-    @Override
-    public double toWeekViewPeriodIndex(Calendar instance) {
-        return 0;
-    }
-
-    @Override
-    public List<? extends WeekViewEvent> onLoad(int periodIndex) {
-        List<WeekViewEvent> events = new ArrayList<>();
-
-        for (int i = 0; i < lectures.size(); i++) {
-            LectureView lectureView = new LectureView(lectures.get(i));
+            if (lectures.get(i).getType() == 0) {
+                lectureView.setColor(R.color.green);
+            } else {
+                lectureView.setColor(R.color.orange);
+            }
             events.add(lectureView);
         }
         return events;

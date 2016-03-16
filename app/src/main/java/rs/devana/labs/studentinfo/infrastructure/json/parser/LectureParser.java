@@ -26,7 +26,7 @@ public class LectureParser {
 
     public Lecture parse(JSONObject jsonLecture){
         try {
-            return new Lecture(jsonLecture.getInt("id"), jsonLecture.getString("type"), courseParser.parse(jsonLecture.getJSONObject("course")), jsonLecture.getJSONObject("time").getInt("startsAt"), jsonLecture.getJSONObject("time").getInt("endsAt"), jsonLecture.getJSONObject("teacher").getString("firstName"), classroomParser.parse(jsonLecture.getJSONObject("classroom")), lectureNotificationParser.parse(jsonLecture.getJSONArray("notifications")));
+            return new Lecture(jsonLecture.getInt("id"), jsonLecture.getInt("type"), courseParser.parse(jsonLecture.getJSONObject("course")), jsonLecture.getJSONObject("time").getInt("startsAt"), jsonLecture.getJSONObject("time").getInt("endsAt"), jsonLecture.getJSONObject("teacher").getString("firstName"), classroomParser.parse(jsonLecture.getJSONObject("classroom")), lectureNotificationParser.parse(jsonLecture.getJSONArray("notifications")));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -42,7 +42,7 @@ public class LectureParser {
             try {
                 JSONObject jsonLecture = jsonLectures.getJSONObject(i);
 
-                Lecture lecture = new Lecture(jsonLecture.getInt("id"), jsonLecture.getString("type"), courseParser.parse(jsonLecture.getJSONObject("course")), jsonLecture.getJSONObject("time").getInt("startsAt"), jsonLecture.getJSONObject("time").getInt("endsAt"), jsonLecture.getJSONObject("teacher").getString("firstName"), classroomParser.parse(jsonLecture.getJSONObject("classroom")), lectureNotificationParser.parse(jsonLecture.getJSONArray("notifications")));
+                Lecture lecture = new Lecture(jsonLecture.getInt("id"), jsonLecture.getInt("type"), courseParser.parse(jsonLecture.getJSONObject("course")), jsonLecture.getJSONObject("time").getInt("startsAt"), jsonLecture.getJSONObject("time").getInt("endsAt"), jsonLecture.getJSONObject("teacher").getString("firstName"), classroomParser.parse(jsonLecture.getJSONObject("classroom")), lectureNotificationParser.parse(jsonLecture.getJSONArray("notifications")));
 
                 lectures.add(lecture);
             } catch (JSONException e) {
@@ -63,7 +63,7 @@ public class LectureParser {
             try {
                 JSONObject jsonLecture = jsonLectures.getJSONObject(i);
                 if ((day*secondsInDay < jsonLecture.getJSONObject("time").getInt("startsAt") && jsonLecture.getJSONObject("time").getInt("startsAt") < (day+1)*secondsInDay)) {
-                    Lecture lecture = new Lecture(jsonLecture.getInt("id"), jsonLecture.getString("type"), courseParser.parse(jsonLecture.getJSONObject("course")), jsonLecture.getJSONObject("time").getInt("startsAt"), jsonLecture.getJSONObject("time").getInt("endsAt"), jsonLecture.getJSONObject("teacher").getString("firstName"), classroomParser.parse(jsonLecture.getJSONObject("classroom")), lectureNotificationParser.parse(jsonLecture.getJSONArray("notifications")));
+                    Lecture lecture = new Lecture(jsonLecture.getInt("id"), jsonLecture.getInt("type"), courseParser.parse(jsonLecture.getJSONObject("course")), jsonLecture.getJSONObject("time").getInt("startsAt"), jsonLecture.getJSONObject("time").getInt("endsAt"), jsonLecture.getJSONObject("teacher").getString("firstName") + " " + jsonLecture.getJSONObject("teacher").getString("lastName"), classroomParser.parse(jsonLecture.getJSONObject("classroom")), lectureNotificationParser.parse(jsonLecture.getJSONArray("notifications")));
 
                     lectures.add(lecture);
                 }

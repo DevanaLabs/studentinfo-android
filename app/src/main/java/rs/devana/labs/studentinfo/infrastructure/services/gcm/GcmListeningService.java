@@ -59,7 +59,6 @@ public class GcmListeningService extends GcmListenerService {
                 Log.i(TAG, "Push notifications are disabled and the message is not sent.");
             }
         } catch (JSONException e) {
-            Log.i("Sranje", "nebojsa majmune");
             e.printStackTrace();
         } catch (Exception e){
             e.printStackTrace();

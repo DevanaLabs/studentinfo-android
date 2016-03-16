@@ -55,5 +55,23 @@
     <string name="saturday">СУБ</string>
     <string name="sunday">НЕД</string>
 
+    <string name="Predavanje">Предавање</string>
+    <string name="Vezbe">Вежбе</string>
+    <string name="PredavanjaIVezbe">Предавања и вежбе</string>
+    <string name="Praktikum">Практикум</string>
+
+    <string name="hour09">09h</string>
+    <string name="hour10">10h</string>
+    <string name="hour11">11h</string>
+    <string name="hour12">12h</string>
+    <string name="hour13">13h</string>
+    <string name="hour14">14h</string>
+    <string name="hour15">15h</string>
+    <string name="hour16">16h</string>
+    <string name="hour17">17h</string>
+    <string name="hour18">18h</string>
+    <string name="hour19">19h</string>
+    <string name="hour20">20h</string>
+    <string name="hour21">21h</string>
 
 </resources>

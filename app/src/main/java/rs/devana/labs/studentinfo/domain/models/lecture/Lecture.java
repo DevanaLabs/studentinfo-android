@@ -8,8 +8,8 @@ import rs.devana.labs.studentinfo.domain.models.notification.lecture.LectureNoti
 
 public class Lecture {
 
-    private int id;
-    private String type, teacher;
+    private int id, type;
+    private String teacher;
     private int startsAt, endsAt;
     private Course course;
     private Classroom classroom;
@@ -17,7 +17,7 @@ public class Lecture {
     private static final int secondsInHour = 60*60;
     private static final int secondsInDay = 24*secondsInHour;
 
-    public  Lecture(int id, String type, Course course, int startsAt, int  endsAt, String teacher, Classroom classroom, List<LectureNotification> lectureNotifications){
+    public Lecture(int id, int type, Course course, int startsAt, int endsAt, String teacher, Classroom classroom, List<LectureNotification> lectureNotifications) {
         this.id = id;
         this.type = type;
         this.startsAt = startsAt;
@@ -52,6 +52,27 @@ public class Lecture {
                 ", notifications='" + lectureNotifications+ '\'';
     }
 
+    public String getTypeString() {
+        switch (type) {
+            case 1:
+                return "Вежбе";
+            case 2:
+                return "Предавања и вежбе";
+            case 3:
+                return "Практикум";
+            default:
+                return "Предавање";
+        }
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
     public int getStartsAt() {
         return startsAt;
     }
@@ -66,6 +87,22 @@ public class Lecture {
 
     public void setEndsAt(int endsAt) {
         this.endsAt = endsAt;
+    }
+
+    public Course getCourse() {
+        return course;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
+    }
+
+    public String getTeacher() {
+        return teacher;
+    }
+
+    public void setTeacher(String teacher) {
+        this.teacher = teacher;
     }
 
     public String getConvertedStartsAt(){
