@@ -11,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
 
+import rs.devana.labs.studentinfo.R;
 import rs.devana.labs.studentinfo.domain.models.notification.Notification;
 
 public class NotificationArrayAdapter extends BaseAdapter {
@@ -43,18 +44,16 @@ public class NotificationArrayAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
-            convertView = inflater.inflate(android.R.layout.simple_list_item_1, parent, false);
-            TextView lecture = (TextView) convertView.findViewById(android.R.id.text1);
-            lecture.setText(formatNotification(notifications.get(position)));
+            convertView = inflater.inflate(R.layout.custom_notification_card_view, parent, false);
+            Notification notification = notifications.get(position);
+            TextView additionalInfoNotificationTextView = (TextView) convertView.findViewById(R.id.additionalInfoNotificationTextView);
+            additionalInfoNotificationTextView.setText(notification.getAdditionalInfo());
+            TextView timeOfNotification = (TextView) convertView.findViewById(R.id.timeOfNotification);
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.getDefault());
+            timeOfNotification.setText(simpleDateFormat.format(notification.getExpiresAt().getTime()));
+            TextView notificationDescriptionTextView = (TextView) convertView.findViewById(R.id.notificationDescriptionTextView);
+            notificationDescriptionTextView.setText(notification.getDescription());
         }
         return convertView;
-    }
-
-    private String formatNotification(Notification notification){
-        StringBuilder sb = new StringBuilder();
-        SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.getDefault());
-        String date = format.format(notification.getExpiresAt().getTime());
-        sb.append(date).append(" - ").append(notification.getDescription());
-        return sb.toString();
     }
 }

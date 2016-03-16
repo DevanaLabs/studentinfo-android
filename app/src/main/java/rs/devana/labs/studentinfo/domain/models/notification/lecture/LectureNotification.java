@@ -18,4 +18,9 @@ public class LectureNotification extends Notification{
     public String toString() {
         return "lecture=" + lecture;
     }
+
+    @Override
+    public String getAdditionalInfo() {
+        return lecture.getCourse().getName();
+    }
 }

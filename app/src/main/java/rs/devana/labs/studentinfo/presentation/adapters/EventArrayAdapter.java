@@ -2,11 +2,11 @@ package rs.devana.labs.studentinfo.presentation.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -52,7 +52,7 @@ public class EventArrayAdapter extends BaseAdapter {
             TextView monthTextView = (TextView) convertView.findViewById(R.id.monthTextView);
             TextView descriptionTextView = (TextView) convertView.findViewById(R.id.descriptionTextView);
             TextView additionalInfoTextView = (TextView) convertView.findViewById(R.id.additionalInfoTextView);
-            LinearLayout eventDescriptionParentLayout = (LinearLayout) convertView.findViewById(R.id.eventDescriptionParentLayout);
+            CardView eventDescriptionParentLayout = (CardView) convertView.findViewById(R.id.eventDescriptionParentLayout);
             Event event = events.get(position);
 
             if (skipIndexes.contains(position)) {
@@ -72,7 +72,7 @@ public class EventArrayAdapter extends BaseAdapter {
         return convertView;
     }
 
-    private void setColor(LinearLayout eventDescriptionParentLayout, Event event) {
+    private void setColor(CardView cardView, Event event) {
         String colorToParse;
         switch (event.getType()) {
             //blue
@@ -96,7 +96,7 @@ public class EventArrayAdapter extends BaseAdapter {
             default:
                 colorToParse = "#FFE082";
         }
-        eventDescriptionParentLayout.setBackgroundColor(Color.parseColor(colorToParse));
+        cardView.setCardBackgroundColor(Color.parseColor(colorToParse));
     }
 
 

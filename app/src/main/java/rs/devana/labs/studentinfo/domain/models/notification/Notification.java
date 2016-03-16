@@ -1,9 +1,8 @@
 package rs.devana.labs.studentinfo.domain.models.notification;
 
 import java.util.Calendar;
-import java.util.Date;
 
-public class Notification {
+public class Notification implements NotificationInterface{
     int id;
     String description;
     Calendar expiresAt;
@@ -43,4 +42,8 @@ public class Notification {
         return "id: " + id + "  Description: " + description;
     }
 
+    @Override
+    public String getAdditionalInfo() {
+        return "Глобални догађај";
+    }
 }

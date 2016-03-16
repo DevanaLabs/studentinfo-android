@@ -8,6 +8,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/eventsListView"
-        android:clickable="true" />
+        android:clickable="true"
+        android:listSelector="@drawable/listview_entry"
+        android:divider="@null"/>
 
 </FrameLayout>

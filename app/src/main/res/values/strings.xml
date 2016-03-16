@@ -45,8 +45,10 @@
     <string name="noNotifications">Нема обавештења</string>
     <string name="placeholderDate">17</string>
     <string name="placeholderMonth">АВГ</string>
+    <string name="placeholderAgo">Пре 25мин</string>
+    <string name="placeholderInfoNotification">Дискретне структуре</string>
     <string name="placeholderEventDescription">На данашњи дан се дешавају нека дешавања јако битна за људе који у њима учествују и саћемо да видимо шта се дешава са овим дешавањем ако се деси да је нереално дугачко јебига</string>
-
+    <string name="rafLogoImageDescription">РАФ ЛОГО</string>
 
     <string name="hello_blank_fragment">Ћао празни фрагменту</string>
     <string name="start">Почетак:</string>

@@ -18,4 +18,9 @@ public class EventNotification extends Notification{
     public String toString() {
         return "event=" + event;
     }
+
+    @Override
+    public String getAdditionalInfo() {
+        return event.getType();
+    }
 }
