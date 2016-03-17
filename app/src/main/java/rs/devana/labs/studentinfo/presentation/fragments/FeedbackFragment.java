@@ -1,16 +1,13 @@
 package rs.devana.labs.studentinfo.presentation.fragments;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -27,8 +24,7 @@ public class FeedbackFragment extends Fragment {
     ApiFeedback apiFeedback;
 
     public static FeedbackFragment newInstance() {
-        FeedbackFragment fragment = new FeedbackFragment();
-        return fragment;
+        return new FeedbackFragment();
     }
 
     @Override
@@ -44,7 +40,7 @@ public class FeedbackFragment extends Fragment {
         View view = (View)inflater.inflate(R.layout.fragment_feedback, container, false);
         final EditText feedbackContent = (EditText)view.findViewById(R.id.feedbackContent);
         Button sendButton = (Button)view.findViewById(R.id.sendButton);
-
+        InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -53,6 +49,12 @@ public class FeedbackFragment extends Fragment {
                     feedbackContent.setError(getString(R.string.error_field_required));
                     feedbackContent.requestFocus();
                 } else {
+                    InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    try {
+                        inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                    } catch (NullPointerException e){
+                        e.printStackTrace();
+                    }
                     feedbackContent.setError(null);
                     new Thread(new Runnable() {
                         @Override

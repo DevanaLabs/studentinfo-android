@@ -42,7 +42,6 @@
     <string name="notChosen"> није изабрана</string>
     <string name="back">Назад</string>
     <string name="ok">ОК</string>
-    <string name="send">Пошаљи</string>
     <string name="fetchingGroups">Дохватање група</string>
     <string name="fetchingSchedule">Дохватање распореда</string>
     <string name="pleaseWait">Молим Вас, сачекајте</string>
@@ -56,6 +55,7 @@
     <string name="feedback">Повратне информације</string>
     <string name="send">Пошаљи</string>
     <string name="thankyou">Хвала Вам</string>
+    <string name="enterMessageText">Унесите текст поруке</string>
     <string name="somethingHappened">Дошло је до грешке</string>
     <string name="enterEmailForResettingPassword">Унесите Вашу адресу да бисте добили маил са инструкцијама за ресетовање шифре:</string>
     <string name="forgotPassword"><u>Заборавили сте шифру?</u></string>
