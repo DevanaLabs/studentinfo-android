@@ -33,6 +33,7 @@ import rs.devana.labs.studentinfo.domain.models.notification.NotificationReposit
 import rs.devana.labs.studentinfo.infrastructure.dagger.Injector;
 import rs.devana.labs.studentinfo.infrastructure.event_bus_events.GroupChangedEvent;
 import rs.devana.labs.studentinfo.infrastructure.event_bus_events.LogoutFinishedEvent;
+import rs.devana.labs.studentinfo.presentation.fragments.FeedbackFragment;
 import rs.devana.labs.studentinfo.presentation.fragments.NotificationsFragment;
 import rs.devana.labs.studentinfo.presentation.fragments.SettingsFragment;
 import rs.devana.labs.studentinfo.presentation.fragments.WeeklyScheduleFragment;
@@ -104,7 +105,10 @@ public class NavigationDrawerActivity extends AppCompatActivity {
                     handleLogout();
                 } else if (id == R.id.nav_notifications) {
                     handleNotifications();
-                } else if (id == R.id.nav_settings) {
+                } else if (id == R.id.nav_feedback) {
+                    handleFeedback();
+                }
+                else if (id == R.id.nav_settings) {
                     handleSettings();
                 }
 
@@ -209,6 +213,11 @@ public class NavigationDrawerActivity extends AppCompatActivity {
         loggingOutDialog.show();
 
         Log.i(TAG, "Logging out.");
+    }
+
+    private void handleFeedback() {
+        changeToFragment(FeedbackFragment.newInstance());
+        toolbar.setTitle(R.string.feedback);
     }
 
     private void getNotifications(){

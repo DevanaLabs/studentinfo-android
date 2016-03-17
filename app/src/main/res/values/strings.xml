@@ -49,6 +49,10 @@
     <string name="placeholderInfoNotification">Дискретне структуре</string>
     <string name="placeholderEventDescription">На данашњи дан се дешавају нека дешавања јако битна за људе који у њима учествују и саћемо да видимо шта се дешава са овим дешавањем ако се деси да је нереално дугачко јебига</string>
     <string name="rafLogoImageDescription">РАФ ЛОГО</string>
+    <string name="feedback">Повратне информације</string>
+    <string name="send">Пошаљи</string>
+    <string name="thankyou">Хвала Вам</string>
+    <string name="somethingHappened">Дошло је до грешке</string>
 
     <string name="hello_blank_fragment">Ћао празни фрагменту</string>
     <string name="start">Почетак:</string>
@@ -73,7 +77,6 @@
     <string name="october">ОКТ</string>
     <string name="november">НОВ</string>
     <string name="december">ДЕЦ</string>
-
 
 
     <string name="Predavanje">Предавање</string>

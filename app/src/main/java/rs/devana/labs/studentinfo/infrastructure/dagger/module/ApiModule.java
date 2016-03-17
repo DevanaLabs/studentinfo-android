@@ -8,6 +8,7 @@ import dagger.Module;
 import dagger.Provides;
 import rs.devana.labs.studentinfo.domain.api.ApiAuth;
 import rs.devana.labs.studentinfo.domain.api.ApiDataFetch;
+import rs.devana.labs.studentinfo.domain.api.ApiFeedback;
 import rs.devana.labs.studentinfo.domain.api.ApiPushNotifications;
 import rs.devana.labs.studentinfo.domain.api.ResponseReader;
 import rs.devana.labs.studentinfo.domain.http.HttpClientInterface;
@@ -32,5 +33,11 @@ public class ApiModule {
     @Singleton
     public ApiDataFetch provideApiDataFetch(SharedPreferences sharedPreferences, HttpClientInterface httpClientInterface, ResponseReader responseReader) {
         return new ApiDataFetch(sharedPreferences, httpClientInterface, responseReader);
+    }
+
+    @Provides
+    @Singleton
+    public ApiFeedback provideApiFeedback(SharedPreferences sharedPreferences, HttpClientInterface httpClientInterface, ResponseReader responseReader) {
+        return new ApiFeedback(sharedPreferences, httpClientInterface, responseReader);
     }
 }

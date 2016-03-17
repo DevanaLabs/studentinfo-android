@@ -10,6 +10,7 @@ import rs.devana.labs.studentinfo.infrastructure.dagger.module.HttpClientModule;
 import rs.devana.labs.studentinfo.infrastructure.dagger.module.RepositoryModule;
 import rs.devana.labs.studentinfo.infrastructure.services.gcm.GcmListeningService;
 import rs.devana.labs.studentinfo.infrastructure.services.gcm.RegistrationIntentService;
+import rs.devana.labs.studentinfo.presentation.fragments.FeedbackFragment;
 import rs.devana.labs.studentinfo.presentation.fragments.NotificationsFragment;
 import rs.devana.labs.studentinfo.presentation.fragments.SettingsFragment;
 import rs.devana.labs.studentinfo.presentation.fragments.WeeklyScheduleFragment;
@@ -43,4 +44,6 @@ public interface ApplicationComponent {
     void inject(NotificationsFragment notificationsFragment);
 
     void inject(YearlyCalendarFragment yearlyCalendarFragment);
+
+    void inject(FeedbackFragment feedbackFragment);
 }
