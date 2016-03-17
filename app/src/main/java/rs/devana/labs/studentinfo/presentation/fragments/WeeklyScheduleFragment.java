@@ -1,6 +1,8 @@
 package rs.devana.labs.studentinfo.presentation.fragments;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -12,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -23,6 +26,7 @@ import javax.inject.Inject;
 import rs.devana.labs.studentinfo.R;
 import rs.devana.labs.studentinfo.domain.models.lecture.Lecture;
 import rs.devana.labs.studentinfo.infrastructure.dagger.Injector;
+import rs.devana.labs.studentinfo.infrastructure.event_bus_events.ChooseGroupEvent;
 import rs.devana.labs.studentinfo.infrastructure.json.parser.LectureParser;
 import rs.devana.labs.studentinfo.presentation.adapters.ScheduleFragmentPagerAdapter;
 
@@ -33,6 +37,9 @@ public class WeeklyScheduleFragment extends Fragment {
 
     @Inject
     SharedPreferences sharedPreferences;
+
+    @Inject
+    EventBus eventBus;
 
     ViewPager viewPager;
     List<Fragment> fragments;
@@ -84,6 +91,7 @@ public class WeeklyScheduleFragment extends Fragment {
                 fragments.add(DayFragment.newInstance(SUNDAY, sundayLectures));
             }
         } catch (JSONException e) {
+            createChooseGroupDialog().show();
             e.printStackTrace();
         }
 
@@ -96,6 +104,20 @@ public class WeeklyScheduleFragment extends Fragment {
 
         return view;
     }
+
+    private AlertDialog createChooseGroupDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle(R.string.chooseGroup);
+        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                eventBus.post(new ChooseGroupEvent());
+                dialog.dismiss();
+            }
+        });
+
+        return builder.create();
+    }
+
 
     @Override
     public void onStop() {

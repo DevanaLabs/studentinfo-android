@@ -15,6 +15,7 @@ import rs.devana.labs.studentinfo.presentation.fragments.NotificationsFragment;
 import rs.devana.labs.studentinfo.presentation.fragments.SettingsFragment;
 import rs.devana.labs.studentinfo.presentation.fragments.WeeklyScheduleFragment;
 import rs.devana.labs.studentinfo.presentation.fragments.YearlyCalendarFragment;
+import rs.devana.labs.studentinfo.presentation.login.ForgotPasswordActivity;
 import rs.devana.labs.studentinfo.presentation.login.LoginActivity;
 import rs.devana.labs.studentinfo.presentation.main.NavigationDrawerActivity;
 
@@ -44,6 +45,8 @@ public interface ApplicationComponent {
     void inject(NotificationsFragment notificationsFragment);
 
     void inject(YearlyCalendarFragment yearlyCalendarFragment);
+
+    void inject(ForgotPasswordActivity forgotPasswordActivity);
 
     void inject(FeedbackFragment feedbackFragment);
 }

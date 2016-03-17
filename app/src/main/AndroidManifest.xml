@@ -51,15 +51,19 @@
         <activity
             android:name=".presentation.main.NavigationDrawerActivity"
             android:label="@string/title_activity_navigation_drawer"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
-            android:launchMode="singleTop">
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="rs.devana.labs.studentinfo.presentation.main.NavigationActivity" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".presentation.login.ForgotPasswordActivity"
+            android:label="@string/title_activity_forgot_password"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

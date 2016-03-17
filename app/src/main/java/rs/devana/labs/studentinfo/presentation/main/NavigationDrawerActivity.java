@@ -31,6 +31,7 @@ import rs.devana.labs.studentinfo.domain.api.ApiAuth;
 import rs.devana.labs.studentinfo.domain.api.ApiDataFetch;
 import rs.devana.labs.studentinfo.domain.models.notification.NotificationRepositoryInterface;
 import rs.devana.labs.studentinfo.infrastructure.dagger.Injector;
+import rs.devana.labs.studentinfo.infrastructure.event_bus_events.ChooseGroupEvent;
 import rs.devana.labs.studentinfo.infrastructure.event_bus_events.GroupChangedEvent;
 import rs.devana.labs.studentinfo.infrastructure.event_bus_events.LogoutFinishedEvent;
 import rs.devana.labs.studentinfo.presentation.fragments.FeedbackFragment;
@@ -59,9 +60,12 @@ public class NavigationDrawerActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
     private static final String TAG = NavigationDrawerActivity.class.getSimpleName();
+    private static final int SETTINGS_INDEX = 3;
+
     String email;
     TextView groupTextView;
     ProgressDialog loggingOutDialog;
+    NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +95,7 @@ public class NavigationDrawerActivity extends AppCompatActivity {
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
@@ -196,6 +200,7 @@ public class NavigationDrawerActivity extends AppCompatActivity {
 
         Fragment fragment = SettingsFragment.newInstance();
         changeToFragment(fragment);
+        navigationView.getMenu().getItem(SETTINGS_INDEX).setChecked(true);
 
         toolbar.setTitle(R.string.settings);
     }
@@ -241,6 +246,11 @@ public class NavigationDrawerActivity extends AppCompatActivity {
     @Subscribe
     public void onLogoutFinishedEvent(LogoutFinishedEvent logoutFinishedEvent){
         loggingOutDialog.dismiss();
+    }
+
+    @Subscribe
+    public void onChooseGroupEvent(ChooseGroupEvent chooseGroupEvent){
+        handleSettings();
     }
 
     @Override

@@ -11,5 +11,5 @@
     <dimen name="paddingScheduleHourTop">7dp</dimen>
     <dimen name="paddingScheduleHourBottom">7dp</dimen>
 
-    <dimen name="notification_view_padding">12sp</dimen>
+    <dimen name="notification_view_padding">8dp</dimen>
 </resources>

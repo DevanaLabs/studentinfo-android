@@ -142,6 +142,15 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
                 }
             });
 
+            TextView forgotPasswordTextView = (TextView) findViewById(R.id.forgotPasswordTextView);
+            forgotPasswordTextView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent forgotPasswordIntent = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
+                    startActivity(forgotPasswordIntent);
+                }
+            });
+
             mLoginFormView = findViewById(R.id.login_form);
             mProgressView = findViewById(R.id.login_progress);
         }
