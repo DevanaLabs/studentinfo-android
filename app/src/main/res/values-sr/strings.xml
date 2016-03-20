@@ -52,5 +52,13 @@
     <string name="saturday">SUB</string>
     <string name="sunday">NED</string>
 
+    <string name="mondayLong">Ponedeljak</string>
+    <string name="tuesdayLong">Utorak</string>
+    <string name="wednesdayLong">Sreda</string>
+    <string name="thursdayLong">Četvrtak</string>
+    <string name="fridayLong">Petak</string>
+    <string name="saturdayLong">Subota</string>
+    <string name="sundayLong">Nedelja</string>
+
 
 </resources>

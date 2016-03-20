@@ -43,6 +43,7 @@ public class DayFragment extends Fragment implements WeekView.EventClickListener
         View view =  inflater.inflate(R.layout.fragment_day, container, false);
         LecturesView lecturesView = (LecturesView) view.findViewById(R.id.lecturesView);
         lecturesView.setLectures(lectures);
+        lecturesView.setDay(day);
 
 //        if (!lectures.isEmpty()) {
 //            Collections.sort(lectures, new Comparator<Lecture>() {

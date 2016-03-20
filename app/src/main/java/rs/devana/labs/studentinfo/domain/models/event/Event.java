@@ -5,6 +5,8 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
+import javax.inject.Inject;
+
 import rs.devana.labs.studentinfo.domain.models.classroom.Classroom;
 import rs.devana.labs.studentinfo.domain.models.notification.Notification;
 
@@ -16,7 +18,10 @@ public class Event {
     private List<Classroom> classrooms;
     private List<Notification> notifications;
 
-    public Event(){}
+    @Inject
+    public Event() {
+
+    }
 
     public Event(int id, String type, String description, Calendar startsAt, Calendar endsAt, List<Classroom> classrooms, List<Notification> notifications){
         this.id = id;

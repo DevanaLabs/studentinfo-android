@@ -18,6 +18,15 @@ public class GroupParser {
     public GroupParser(){
     }
 
+    public Group parse(JSONObject jsonGroup) {
+        try {
+            return new Group(jsonGroup.getInt("id"), jsonGroup.getInt("year"), jsonGroup.getString("name"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public List<Group> parse(JSONArray jsonGroups){
         List<Group> groups = new ArrayList<>();
 

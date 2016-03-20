@@ -13,9 +13,7 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:background="@color/grey"
-        android:paddingStart="@dimen/paddingScheduleHourLeft"
-        android:paddingLeft="@dimen/paddingScheduleHourLeft"
-        android:paddingBottom="@dimen/paddingScheduleHourBottom">
+        android:paddingLeft="@dimen/paddingScheduleHourLeft">
 
         <LinearLayout
             android:orientation="horizontal"
@@ -26,8 +24,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:lines="1"
-                android:text="@string/hour09" />
+                android:text="@string/hour09"
+                android:includeFontPadding="false" />
         </LinearLayout>
 
         <LinearLayout
@@ -39,8 +37,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:lines="1"
-                android:text="@string/hour10" />
+                android:text="@string/hour10"
+                android:includeFontPadding="false" />
         </LinearLayout>
 
         <LinearLayout
@@ -52,8 +50,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:lines="1"
-                android:text="@string/hour11" />
+                android:text="@string/hour11"
+                android:includeFontPadding="false" />
         </LinearLayout>
 
         <LinearLayout
@@ -65,8 +63,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:lines="1"
-                android:text="@string/hour12" />
+                android:text="@string/hour12"
+                android:includeFontPadding="false" />
         </LinearLayout>
 
         <LinearLayout
@@ -78,8 +76,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:lines="1"
-                android:text="@string/hour13" />
+                android:text="@string/hour13"
+                android:includeFontPadding="false" />
         </LinearLayout>
 
         <LinearLayout
@@ -91,8 +89,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:lines="1"
-                android:text="@string/hour14" />
+                android:text="@string/hour14"
+                android:includeFontPadding="false" />
         </LinearLayout>
 
         <LinearLayout
@@ -104,8 +102,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:lines="1"
-                android:text="@string/hour15" />
+                android:text="@string/hour15"
+                android:includeFontPadding="false" />
         </LinearLayout>
 
         <LinearLayout
@@ -117,8 +115,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:lines="1"
-                android:text="@string/hour16" />
+                android:text="@string/hour16"
+                android:includeFontPadding="false" />
         </LinearLayout>
 
         <LinearLayout
@@ -130,8 +128,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:lines="1"
-                android:text="@string/hour17" />
+                android:text="@string/hour17"
+                android:includeFontPadding="false" />
         </LinearLayout>
 
         <LinearLayout
@@ -143,8 +141,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:lines="1"
-                android:text="@string/hour18" />
+                android:text="@string/hour18"
+                android:includeFontPadding="false" />
         </LinearLayout>
 
         <LinearLayout
@@ -156,8 +154,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:lines="1"
-                android:text="@string/hour19" />
+                android:text="@string/hour19"
+                android:includeFontPadding="false" />
         </LinearLayout>
 
         <LinearLayout
@@ -169,8 +167,21 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:lines="1"
-                android:text="@string/hour20" />
+                android:text="@string/hour20"
+                android:includeFontPadding="false" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/hour21"
+                android:id="@+id/textView21"
+                android:includeFontPadding="false" />
         </LinearLayout>
     </LinearLayout>
 

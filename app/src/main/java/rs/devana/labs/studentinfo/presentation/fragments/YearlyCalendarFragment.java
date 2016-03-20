@@ -8,8 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import java.util.ArrayList;
-import java.util.Calendar;
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -52,7 +53,15 @@ public class YearlyCalendarFragment extends Fragment {
     public void onStart() {
         super.onStart();
         ListView eventsListView = (ListView) this.getActivity().findViewById(R.id.eventsListView);
-        List<Event> eventsList = new ArrayList<>();
+        List<Event> eventsList = null;
+        try {
+            eventsList = eventParser.parse(new JSONArray(sharedPreferences.getString("allEvents", "")));
+            Collections.sort(eventsList, new EventComparator());
+            EventArrayAdapter eventArrayAdapter = new EventArrayAdapter(eventsList, this.getActivity());
+            eventsListView.setAdapter(eventArrayAdapter);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
 //        String notifications = sharedPreferences.getString("notifications", "");
 //        if (!notifications.isEmpty()) {
@@ -62,15 +71,6 @@ public class YearlyCalendarFragment extends Fragment {
 //                e.printStackTrace();
 //            }
 //        }
-        eventsList.add(new Event(1, "Испит", "Испит из неког небитног уопште предмета типа АОР. Умри АОР-е.", Calendar.getInstance(), Calendar.getInstance(), null, null));
-        eventsList.add(new Event(2, "Колоквијум", "Јако важан и крајње битан догађај се догађа", Calendar.getInstance(), Calendar.getInstance(), null, null));
-        eventsList.add(new Event(3, "Специјалан догађај", "Никола Стерлу ништа не ради и није вредан уопште лик оно у глобалу", Calendar.getInstance(), Calendar.getInstance(), null, null));
-        Calendar c = Calendar.getInstance();
-        c.set(2016, 4, 3);
-        eventsList.add(new Event(3, "Нерадни дани", "Никола Нинковић је јако добар и паметан дечак", c, Calendar.getInstance(), null, null));
-        Collections.sort(eventsList, new EventComparator());
-        EventArrayAdapter eventArrayAdapter = new EventArrayAdapter(eventsList, this.getActivity());
-        eventsListView.setAdapter(eventArrayAdapter);
     }
 
     private class EventComparator implements Comparator<Event> {

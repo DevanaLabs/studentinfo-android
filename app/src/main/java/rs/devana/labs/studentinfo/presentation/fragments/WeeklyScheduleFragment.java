@@ -19,7 +19,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -74,6 +76,7 @@ public class WeeklyScheduleFragment extends Fragment {
         viewPager = (ViewPager) view.findViewById(R.id.viewPager);
         TabLayout tabLayout = (TabLayout) view.findViewById(R.id.sliding_tabs);
 
+        boolean sat = false, sun = false;
         String lectures = sharedPreferences.getString("lectures", "");
         fragments = new ArrayList<>();
         try {
@@ -86,9 +89,11 @@ public class WeeklyScheduleFragment extends Fragment {
             List<Lecture> saturdayLectures, sundayLectures;
             if (!(saturdayLectures = lectureParser.getLecturesForDay(SATURDAY, jsonLectures)).isEmpty()) {
                 fragments.add(DayFragment.newInstance(SATURDAY, saturdayLectures));
+                sat = true;
             }
             if (!(sundayLectures = lectureParser.getLecturesForDay(SUNDAY, jsonLectures)).isEmpty()) {
                 fragments.add(DayFragment.newInstance(SUNDAY, sundayLectures));
+                sun = true;
             }
         } catch (JSONException e) {
             createChooseGroupDialog().show();
@@ -101,6 +106,7 @@ public class WeeklyScheduleFragment extends Fragment {
         tabLayout.setTabTextColors(Color.LTGRAY, Color.WHITE);
         tabLayout.setBackgroundColor(ContextCompat.getColor(this.getContext(), R.color.colorPrimary));
         tabLayout.setupWithViewPager(viewPager);
+        setTab(viewPager, sat, sun);
 
         return view;
     }
@@ -119,8 +125,34 @@ public class WeeklyScheduleFragment extends Fragment {
     }
 
 
-    @Override
-    public void onStop() {
-        super.onStop();
+    private void setTab(ViewPager viewPager, boolean sat, boolean sun) {
+        Calendar calendar = Calendar.getInstance();
+        String dayLongName = calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, Locale.getDefault());
+        switch (dayLongName) {
+            case "Mon":
+                viewPager.setCurrentItem(0);
+                break;
+            case "Tue":
+                viewPager.setCurrentItem(1);
+                break;
+            case "Wed":
+                viewPager.setCurrentItem(2);
+                break;
+            case "Thu":
+                viewPager.setCurrentItem(3);
+                break;
+            case "Fri":
+                viewPager.setCurrentItem(4);
+                break;
+            case "Sat":
+                if (sat) viewPager.setCurrentItem(5);
+                break;
+            case "Sun":
+                if (sun) viewPager.setCurrentItem(6);
+                break;
+            default:
+                viewPager.setCurrentItem(0);
+                break;
+        }
     }
 }

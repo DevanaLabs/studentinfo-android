@@ -71,6 +71,14 @@
     <string name="saturday">СУБ</string>
     <string name="sunday">НЕД</string>
 
+    <string name="mondayLong">Понедељак</string>
+    <string name="tuesdayLong">Уторак</string>
+    <string name="wednesdayLong">Среда</string>
+    <string name="thursdayLong">Четвртак</string>
+    <string name="fridayLong">Петак</string>
+    <string name="saturdayLong">Субота</string>
+    <string name="sundayLong">Недеља</string>
+
     <string name="january">ЈАН</string>
     <string name="february">ФЕБ</string>
     <string name="march">МАР</string>
@@ -103,6 +111,7 @@
     <string name="hour19">19h</string>
     <string name="hour20">20h</string>
     <string name="hour21">21h</string>
+    <string name="title_activity_lecture_details">LectureDetails</string>
     <string name="title_activity_forgot_password">Заборављена шифра</string>
 
 </resources>

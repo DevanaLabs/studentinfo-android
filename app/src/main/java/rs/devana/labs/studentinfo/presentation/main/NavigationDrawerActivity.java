@@ -29,11 +29,13 @@ import javax.inject.Inject;
 import rs.devana.labs.studentinfo.R;
 import rs.devana.labs.studentinfo.domain.api.ApiAuth;
 import rs.devana.labs.studentinfo.domain.api.ApiDataFetch;
+import rs.devana.labs.studentinfo.domain.models.lecture.Lecture;
 import rs.devana.labs.studentinfo.domain.models.notification.NotificationRepositoryInterface;
 import rs.devana.labs.studentinfo.infrastructure.dagger.Injector;
 import rs.devana.labs.studentinfo.infrastructure.event_bus_events.ChooseGroupEvent;
 import rs.devana.labs.studentinfo.infrastructure.event_bus_events.GroupChangedEvent;
 import rs.devana.labs.studentinfo.infrastructure.event_bus_events.LogoutFinishedEvent;
+import rs.devana.labs.studentinfo.infrastructure.event_bus_events.OpenLectureFragmentEvent;
 import rs.devana.labs.studentinfo.presentation.fragments.FeedbackFragment;
 import rs.devana.labs.studentinfo.presentation.fragments.NotificationsFragment;
 import rs.devana.labs.studentinfo.presentation.fragments.SettingsFragment;
@@ -70,7 +72,6 @@ public class NavigationDrawerActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EventBus.getDefault().register(this);
         Injector.INSTANCE.getApplicationComponent().inject(this);
 
         PreferenceManager.setDefaultValues(this, R.xml.settings_fragment, false);
@@ -140,6 +141,12 @@ public class NavigationDrawerActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
         return true;
@@ -205,6 +212,13 @@ public class NavigationDrawerActivity extends AppCompatActivity {
         toolbar.setTitle(R.string.settings);
     }
 
+    private void handleLecture(Lecture lecture) {
+        Log.i(TAG, "Entering lecture view.");
+
+        Intent intent = new Intent(this, LectureDetails.class).putExtra("lectureId", lecture.getId());
+        startActivity(intent);
+    }
+
     private void changeToFragment(Fragment fragment){
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
@@ -246,6 +260,17 @@ public class NavigationDrawerActivity extends AppCompatActivity {
     @Subscribe
     public void onLogoutFinishedEvent(LogoutFinishedEvent logoutFinishedEvent){
         loggingOutDialog.dismiss();
+    }
+
+    @Subscribe
+    public void onOpenLectureFragmentEvent(OpenLectureFragmentEvent openLectureFragmentEvent) {
+        handleLecture(openLectureFragmentEvent.getLecture());
+    }
+
+    @Override
+    protected void onPause() {
+        EventBus.getDefault().unregister(this);
+        super.onPause();
     }
 
     @Subscribe

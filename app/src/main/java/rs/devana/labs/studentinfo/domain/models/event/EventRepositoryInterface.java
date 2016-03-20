@@ -1,9 +1,7 @@
 package rs.devana.labs.studentinfo.domain.models.event;
 
-import org.json.JSONObject;
-
-import java.util.List;
+import org.json.JSONArray;
 
 public interface EventRepositoryInterface {
-    List<Event> getEvents();
+    JSONArray getEvents();
 }

@@ -260,7 +260,6 @@ public class WeekView extends View {
                     mEmptyViewClickListener.onEmptyViewClicked(selectedTime);
                 }
             }
-
             return super.onSingleTapConfirmed(e);
         }
 

@@ -6,10 +6,25 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="nav_header_vertical_spacing">16dp</dimen>
     <dimen name="nav_header_height">160dp</dimen>
-    <dimen name="paddingScheduleHourLeft">5dp</dimen>
+    <dimen name="paddingScheduleHourLeft">7sp</dimen>
     <dimen name="paddingScheduleHourRight">5dp</dimen>
     <dimen name="paddingScheduleHourTop">7dp</dimen>
     <dimen name="paddingScheduleHourBottom">7dp</dimen>
 
     <dimen name="notification_view_padding">8dp</dimen>
+
+    <dimen name="courseNameFor3">20sp</dimen>
+    <dimen name="teacherNameFor3">15sp</dimen>
+    <dimen name="classroomNameFor3">10sp</dimen>
+
+    <dimen name="courseNameFor2">16sp</dimen>
+    <dimen name="teacherNameFor2">12sp</dimen>
+    <dimen name="classroomNameFor2">8sp</dimen>
+
+    <dimen name="courseNameFor1">12sp</dimen>
+    <dimen name="teacherNameFor1">9sp</dimen>
+    <dimen name="classroomNameFor1">6sp</dimen>
+
+    <dimen name="lecturePaddingLeft">5sp</dimen>
+    <dimen name="lecturePaddingTop">5sp</dimen>
 </resources>

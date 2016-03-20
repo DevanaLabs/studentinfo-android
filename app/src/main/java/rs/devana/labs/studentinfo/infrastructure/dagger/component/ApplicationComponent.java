@@ -11,13 +11,16 @@ import rs.devana.labs.studentinfo.infrastructure.dagger.module.RepositoryModule;
 import rs.devana.labs.studentinfo.infrastructure.services.gcm.GcmListeningService;
 import rs.devana.labs.studentinfo.infrastructure.services.gcm.RegistrationIntentService;
 import rs.devana.labs.studentinfo.presentation.fragments.FeedbackFragment;
+import rs.devana.labs.studentinfo.presentation.fragments.LectureFragment;
 import rs.devana.labs.studentinfo.presentation.fragments.NotificationsFragment;
 import rs.devana.labs.studentinfo.presentation.fragments.SettingsFragment;
 import rs.devana.labs.studentinfo.presentation.fragments.WeeklyScheduleFragment;
 import rs.devana.labs.studentinfo.presentation.fragments.YearlyCalendarFragment;
 import rs.devana.labs.studentinfo.presentation.login.ForgotPasswordActivity;
 import rs.devana.labs.studentinfo.presentation.login.LoginActivity;
+import rs.devana.labs.studentinfo.presentation.main.LectureDetails;
 import rs.devana.labs.studentinfo.presentation.main.NavigationDrawerActivity;
+import rs.devana.labs.studentinfo.presentation.views.LecturesView;
 
 @Component(modules = {
         ApplicationContextModule.class,
@@ -49,4 +52,10 @@ public interface ApplicationComponent {
     void inject(ForgotPasswordActivity forgotPasswordActivity);
 
     void inject(FeedbackFragment feedbackFragment);
+
+    void inject(LectureFragment lectureFragment);
+
+    void inject(LecturesView lecturesView);
+
+    void inject(LectureDetails lectureDetails);
 }

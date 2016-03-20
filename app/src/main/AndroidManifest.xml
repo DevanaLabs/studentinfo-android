@@ -64,6 +64,10 @@
             android:name=".presentation.login.ForgotPasswordActivity"
             android:label="@string/title_activity_forgot_password"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".presentation.main.LectureDetails"
+            android:label="@string/title_activity_lecture_details"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

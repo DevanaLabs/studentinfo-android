@@ -1,7 +1,11 @@
 package rs.devana.labs.studentinfo.infrastructure.json.parser;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -20,5 +24,18 @@ public class ClassroomParser {
             e.printStackTrace();
         }
         return  null;
+    }
+
+    public List<Classroom> parse(JSONArray jsonClassrooms) {
+        List<Classroom> classrooms = new ArrayList<>();
+
+        for (int i = 0; i < jsonClassrooms.length(); i++) {
+            try {
+                classrooms.add(new Classroom(jsonClassrooms.getJSONObject(i).getInt("id"), jsonClassrooms.getJSONObject(i).getString("name"), jsonClassrooms.getJSONObject(i).getInt("floor"), null));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return classrooms;
     }
 }

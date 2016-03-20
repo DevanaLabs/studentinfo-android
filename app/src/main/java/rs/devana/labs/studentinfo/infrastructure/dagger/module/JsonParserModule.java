@@ -1,11 +1,16 @@
 package rs.devana.labs.studentinfo.infrastructure.dagger.module;
 
+import android.content.SharedPreferences;
+
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
 import rs.devana.labs.studentinfo.infrastructure.json.parser.ClassroomParser;
+import rs.devana.labs.studentinfo.infrastructure.json.parser.CourseEventParser;
 import rs.devana.labs.studentinfo.infrastructure.json.parser.CourseParser;
+import rs.devana.labs.studentinfo.infrastructure.json.parser.GlobalEventParser;
+import rs.devana.labs.studentinfo.infrastructure.json.parser.GroupEventParser;
 import rs.devana.labs.studentinfo.infrastructure.json.parser.GroupParser;
 import rs.devana.labs.studentinfo.infrastructure.json.parser.LectureNotificationParser;
 import rs.devana.labs.studentinfo.infrastructure.json.parser.LectureParser;
@@ -16,8 +21,8 @@ public class JsonParserModule {
 
     @Provides
     @Singleton
-    public LectureParser provideLectureParser(CourseParser courseParser, ClassroomParser classroomParser, LectureNotificationParser lectureNotificationParser) {
-        return new LectureParser(courseParser, classroomParser, lectureNotificationParser);
+    public LectureParser provideLectureParser(CourseParser courseParser, ClassroomParser classroomParser, LectureNotificationParser lectureNotificationParser, SharedPreferences sharedPreferences) {
+        return new LectureParser(courseParser, classroomParser, lectureNotificationParser, sharedPreferences);
     }
 
     @Provides
@@ -42,6 +47,24 @@ public class JsonParserModule {
     @Singleton
     public GroupParser provideGroupParser() {
         return new GroupParser();
+    }
+
+    @Provides
+    @Singleton
+    public GroupEventParser provideGroupEventParser(ClassroomParser classroomParser, NotificationParser notificationParser, GroupParser groupParser) {
+        return new GroupEventParser(classroomParser, notificationParser, groupParser);
+    }
+
+    @Provides
+    @Singleton
+    public GlobalEventParser provideGlobalEventParser(ClassroomParser classroomParser, NotificationParser notificationParser) {
+        return new GlobalEventParser(classroomParser, notificationParser);
+    }
+
+    @Provides
+    @Singleton
+    public CourseEventParser provideCourseEventParser(ClassroomParser classroomParser, NotificationParser notificationParser, CourseParser courseParser) {
+        return new CourseEventParser(classroomParser, notificationParser, courseParser);
     }
 
 }

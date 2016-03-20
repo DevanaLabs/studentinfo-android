@@ -97,6 +97,14 @@ public class Lecture {
         this.course = course;
     }
 
+    public Classroom getClassroom() {
+        return classroom;
+    }
+
+    public void setClassroom(Classroom classroom) {
+        this.classroom = classroom;
+    }
+
     public String getTeacher() {
         return teacher;
     }
