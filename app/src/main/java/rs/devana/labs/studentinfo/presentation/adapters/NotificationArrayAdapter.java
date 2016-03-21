@@ -1,6 +1,8 @@
 package rs.devana.labs.studentinfo.presentation.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,6 +47,10 @@ public class NotificationArrayAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.custom_notification_card_view, parent, false);
+
+            CardView cardView = (CardView) convertView.findViewById(R.id.card_view_notifications);
+            setBackgroundColor(cardView, position);
+
             Notification notification = notifications.get(position);
             TextView additionalInfoNotificationTextView = (TextView) convertView.findViewById(R.id.additionalInfoNotificationTextView);
             additionalInfoNotificationTextView.setText(notification.getAdditionalInfo());
@@ -55,5 +61,9 @@ public class NotificationArrayAdapter extends BaseAdapter {
             notificationDescriptionTextView.setText(notification.getDescription());
         }
         return convertView;
+    }
+
+    private void setBackgroundColor(CardView cardView, int position){
+        cardView.setCardBackgroundColor(position % 2 == 0 ? Color.parseColor("#eeeeee") : Color.parseColor("#ffffff"));
     }
 }

@@ -27,7 +27,7 @@ public class EventParser {
         this.courseEventParser = courseEventParser;
     }
 
-    public Event parse(JSONObject jsonEvent){
+    public Event parse(JSONObject jsonObject){
         return null;
     }
 

@@ -55,18 +55,14 @@ public class FeedbackFragment extends Fragment {
                     } catch (NullPointerException e){
                         e.printStackTrace();
                     }
+                    Toast.makeText(getContext(), R.string.thankyou, Toast.LENGTH_SHORT).show();
                     feedbackContent.setError(null);
+                    feedbackContent.setText("");
+
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            if (apiFeedback.sendFeedback(content)) {
-                                getActivity().runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        Toast.makeText(getContext(), R.string.thankyou, Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                            } else {
+                            if (!apiFeedback.sendFeedback(content)) {
                                 getActivity().runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {

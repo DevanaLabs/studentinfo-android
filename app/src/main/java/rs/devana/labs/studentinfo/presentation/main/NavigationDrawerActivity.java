@@ -1,6 +1,9 @@
 package rs.devana.labs.studentinfo.presentation.main;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -36,6 +39,7 @@ import rs.devana.labs.studentinfo.infrastructure.event_bus_events.ChooseGroupEve
 import rs.devana.labs.studentinfo.infrastructure.event_bus_events.GroupChangedEvent;
 import rs.devana.labs.studentinfo.infrastructure.event_bus_events.LogoutFinishedEvent;
 import rs.devana.labs.studentinfo.infrastructure.event_bus_events.OpenLectureFragmentEvent;
+import rs.devana.labs.studentinfo.infrastructure.event_bus_events.ScheduleFetchedEvent;
 import rs.devana.labs.studentinfo.presentation.fragments.FeedbackFragment;
 import rs.devana.labs.studentinfo.presentation.fragments.NotificationsFragment;
 import rs.devana.labs.studentinfo.presentation.fragments.SettingsFragment;
@@ -62,6 +66,7 @@ public class NavigationDrawerActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
     private static final String TAG = NavigationDrawerActivity.class.getSimpleName();
+    private static final int WEEKLY_SCHEDULE_INDEX = 0;
     private static final int SETTINGS_INDEX = 3;
 
     String email;
@@ -79,15 +84,6 @@ public class NavigationDrawerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_navigation_drawer);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
 
-        Intent intent = this.getIntent();
-        if (intent!=null && intent.getStringExtra("fragment")!= null){
-            if (intent.getStringExtra("fragment").equals("notifications")) {
-                handleNotifications();
-            }
-        } else {
-            handleWeeklySchedule();
-        }
-
         setSupportActionBar(toolbar);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -97,6 +93,16 @@ public class NavigationDrawerActivity extends AppCompatActivity {
         toggle.syncState();
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
+
+        Intent intent = this.getIntent();
+        if (intent!=null && intent.getStringExtra("fragment")!= null){
+            if (intent.getStringExtra("fragment").equals("notifications")) {
+                handleNotifications();
+            }
+        } else {
+            handleWeeklySchedule();
+        }
+
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
@@ -158,7 +164,7 @@ public class NavigationDrawerActivity extends AppCompatActivity {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            drawer.openDrawer(GravityCompat.START);
         }
     }
 
@@ -180,6 +186,7 @@ public class NavigationDrawerActivity extends AppCompatActivity {
 
         Fragment fragment = WeeklyScheduleFragment.newInstance();
         changeToFragment(fragment);
+        navigationView.getMenu().getItem(WEEKLY_SCHEDULE_INDEX).setChecked(true);
 
         toolbar.setTitle(R.string.weeklySchedule);
     }
@@ -227,11 +234,26 @@ public class NavigationDrawerActivity extends AppCompatActivity {
     }
 
     private void handleLogout() {
-        new UserLogoutTask().execute();
-        loggingOutDialog = ProgressDialog.show(this, getResources().getString(R.string.pleaseWait), getResources().getString(R.string.logout), true);
-        loggingOutDialog.show();
+        final Context context = this;
+        new AlertDialog.Builder(this)
+                .setIcon(R.drawable.ic_menu_logout)
+                .setTitle(getString(R.string.logout))
+                .setMessage(getString(R.string.logoutConfirmation))
+                .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        new UserLogoutTask().execute();
+                        loggingOutDialog = ProgressDialog.show(context, getResources().getString(R.string.pleaseWait), getResources().getString(R.string.logout), true);
+                        loggingOutDialog.show();
 
-        Log.i(TAG, "Logging out.");
+                        Log.i(TAG, "Logging out.");
+                    }
+
+                })
+                .setNegativeButton(getString(R.string.no), null)
+                .show();
+
     }
 
     private void handleFeedback() {
@@ -255,6 +277,11 @@ public class NavigationDrawerActivity extends AppCompatActivity {
     @Subscribe
     public void onGroupChangedEvent(GroupChangedEvent groupChangedEvent){
         groupTextView.setText(String.format(getResources().getString(R.string.group), groupChangedEvent.group));
+    }
+
+    @Subscribe
+    public void onScheduleFetchedEvent(ScheduleFetchedEvent scheduleFetchedEvent){
+        handleWeeklySchedule();
     }
 
     @Subscribe
@@ -308,4 +335,5 @@ public class NavigationDrawerActivity extends AppCompatActivity {
             }
         }
     }
+
 }

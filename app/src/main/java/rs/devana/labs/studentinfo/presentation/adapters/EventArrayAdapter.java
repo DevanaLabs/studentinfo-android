@@ -45,29 +45,45 @@ public class EventArrayAdapter extends BaseAdapter {
     }
 
     @Override
+    public int getViewTypeCount() {
+        return getCount();
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
+    @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        final ViewHolder viewHolder;
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.custom_event_row_view, parent, false);
-            TextView dayTextView = (TextView) convertView.findViewById(R.id.dayTextView);
-            TextView monthTextView = (TextView) convertView.findViewById(R.id.monthTextView);
-            TextView descriptionTextView = (TextView) convertView.findViewById(R.id.descriptionTextView);
-            TextView additionalInfoTextView = (TextView) convertView.findViewById(R.id.additionalInfoTextView);
-            CardView eventDescriptionParentLayout = (CardView) convertView.findViewById(R.id.eventDescriptionParentLayout);
+            viewHolder = new ViewHolder();
+
+            viewHolder.dayTextView = (TextView) convertView.findViewById(R.id.dayTextView);
+            viewHolder.monthTextView = (TextView) convertView.findViewById(R.id.monthTextView);
+            viewHolder.descriptionTextView = (TextView) convertView.findViewById(R.id.descriptionTextView);
+            viewHolder.additionalInfoTextView = (TextView) convertView.findViewById(R.id.additionalInfoTextView);
+            viewHolder.eventDescriptionParentLayout = (CardView) convertView.findViewById(R.id.eventDescriptionParentLayout);
             Event event = events.get(position);
 
             if (skipIndexes.contains(position)) {
-                dayTextView.setVisibility(View.INVISIBLE);
-                monthTextView.setVisibility(View.INVISIBLE);
+                viewHolder.dayTextView.setVisibility(View.INVISIBLE);
+                viewHolder.monthTextView.setVisibility(View.INVISIBLE);
             } else {
-                dayTextView.setVisibility(View.VISIBLE);
-                monthTextView.setVisibility(View.VISIBLE);
+                viewHolder.dayTextView.setVisibility(View.VISIBLE);
+                viewHolder.monthTextView.setVisibility(View.VISIBLE);
             }
-            dayTextView.setText(event.getDayOfTheMonth());
-            monthTextView.setText(translate(event.getMonth()));
-            descriptionTextView.setText("" + event.getDescription());
-            additionalInfoTextView.setText("" + event.getType());
-            setColor(eventDescriptionParentLayout, event);
+            viewHolder.dayTextView.setText(event.getDayOfTheMonth());
+            viewHolder.monthTextView.setText(translate(event.getMonth()));
+            viewHolder.descriptionTextView.setText("" + event.getDescription());
+            viewHolder.additionalInfoTextView.setText("" + event.getType());
+            setColor(viewHolder.eventDescriptionParentLayout, event);
 
+            convertView.setTag(viewHolder);
+        } else {
+            viewHolder = (ViewHolder) convertView.getTag();
         }
         return convertView;
     }
@@ -155,5 +171,13 @@ public class EventArrayAdapter extends BaseAdapter {
             previous = current;
             i++;
         }
+    }
+
+    private static class ViewHolder {
+        TextView dayTextView;
+        TextView monthTextView;
+        TextView descriptionTextView;
+        TextView additionalInfoTextView;
+        CardView eventDescriptionParentLayout;
     }
 }

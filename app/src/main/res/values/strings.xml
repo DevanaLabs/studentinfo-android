@@ -13,6 +13,7 @@
     <string name="error_field_required">Ово поље је обавезно</string>
 
     <string name="logout">Одјава</string>
+    <string name="logoutConfirmation">Да ли сте сигурни да желите да се одјавите?</string>
     <string name="sign_out">Одјави се</string>
     <string name="weeklySchedule">Недељни распоред</string>
     <string name="yearlyCalender">Календар активности</string>
@@ -20,6 +21,8 @@
     <string name="settings">Подешавања</string>
     <string name="off">Искљ.</string>
     <string name="on">Укљ.</string>
+    <string name="yes">Да</string>
+    <string name="no">Не</string>
     <string name="emailSent">Емаил послат</string>
     <string name="emailNotSent">Емаил није послат, покушајте поново</string>
     <string name="networkConnection">Проверите интернет конекцију</string>
@@ -52,7 +55,7 @@
     <string name="placeholderInfoNotification">Дискретне структуре</string>
     <string name="placeholderEventDescription">На данашњи дан се дешавају нека дешавања јако битна за људе који у њима учествују и саћемо да видимо шта се дешава са овим дешавањем ако се деси да је нереално дугачко јебига</string>
     <string name="rafLogoImageDescription">РАФ ЛОГО</string>
-    <string name="feedback">Повратне информације</string>
+    <string name="feedback">Утисци и сугестије</string>
     <string name="send">Пошаљи</string>
     <string name="thankyou">Хвала Вам</string>
     <string name="enterMessageText">Унесите текст поруке</string>

@@ -11,6 +11,7 @@ import android.widget.ListView;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -53,24 +54,25 @@ public class YearlyCalendarFragment extends Fragment {
     public void onStart() {
         super.onStart();
         ListView eventsListView = (ListView) this.getActivity().findViewById(R.id.eventsListView);
-        List<Event> eventsList = null;
+        List<Event> eventsList;
         try {
             eventsList = eventParser.parse(new JSONArray(sharedPreferences.getString("allEvents", "")));
             Collections.sort(eventsList, new EventComparator());
             EventArrayAdapter eventArrayAdapter = new EventArrayAdapter(eventsList, this.getActivity());
             eventsListView.setAdapter(eventArrayAdapter);
+            eventsListView.setSelection(findPositionOfTodayDate(eventsList));
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
 
-//        String notifications = sharedPreferences.getString("notifications", "");
-//        if (!notifications.isEmpty()) {
-//            try {
-//                eventsList = eventParser.parse(new JSONArray(notifications));
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
-//        }
+    private int findPositionOfTodayDate(List<Event> eventList){
+        Calendar currentDate = Calendar.getInstance();
+        for (int i = 0; i < eventList.size(); i++) {
+            if (currentDate.compareTo(eventList.get(i).getStartsAt()) > 0) continue;
+            return i;
+        }
+        return eventList.size();
     }
 
     private class EventComparator implements Comparator<Event> {
