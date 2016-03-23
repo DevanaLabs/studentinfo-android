@@ -15,13 +15,13 @@ import android.widget.Toast;
 import javax.inject.Inject;
 
 import rs.devana.labs.studentinfo.R;
-import rs.devana.labs.studentinfo.domain.api.ApiForgotPassword;
+import rs.devana.labs.studentinfo.domain.api.ApiAccount;
 import rs.devana.labs.studentinfo.infrastructure.dagger.Injector;
 
 public class ForgotPasswordActivity extends AppCompatActivity {
 
     @Inject
-    ApiForgotPassword apiForgotPassword;
+    ApiAccount apiAccount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +72,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
         @Override
         protected Boolean doInBackground(String... params) {
-            return apiForgotPassword.sendRecoveryEmail(params[0]);
+            return apiAccount.sendRecoveryEmail(params[0]);
         }
 
         @Override

@@ -17,7 +17,7 @@ import rs.devana.labs.studentinfo.domain.models.lecture.Lecture;
 import rs.devana.labs.studentinfo.infrastructure.dagger.Injector;
 import rs.devana.labs.studentinfo.infrastructure.json.parser.LectureParser;
 
-public class LectureDetails extends AppCompatActivity {
+public class LectureDetailsActivity extends AppCompatActivity {
 
     @Inject
     LectureParser lectureParser;

@@ -8,7 +8,7 @@ import javax.inject.Inject;
 
 import rs.devana.labs.studentinfo.domain.http.HttpClientInterface;
 
-public class ApiForgotPassword {
+public class ApiAccount {
 
     SharedPreferences sharedPreferences;
     HttpClientInterface httpClient;
@@ -17,7 +17,7 @@ public class ApiForgotPassword {
     static String url = "http://api.studentinfo.rs";
 
     @Inject
-    public ApiForgotPassword(SharedPreferences sharedPreferences, HttpClientInterface httpClient, ResponseReader responseReader) {
+    public ApiAccount(SharedPreferences sharedPreferences, HttpClientInterface httpClient, ResponseReader responseReader) {
         this.sharedPreferences = sharedPreferences;
         this.httpClient = httpClient;
         this.responseReader = responseReader;
@@ -32,5 +32,10 @@ public class ApiForgotPassword {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public boolean changePassword(String password, String newPassword){
+        //TODO: Implement properly
+        return false;
     }
 }

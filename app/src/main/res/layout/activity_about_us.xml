@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".presentation.main.LectureDetailsActivity">
+    tools:context="rs.devana.labs.studentinfo.presentation.settings.AboutUsActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -13,7 +13,7 @@
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+            android:id="@+id/aboutUsToolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
@@ -21,6 +21,5 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_lecture_details" />
-
+    <include layout="@layout/content_about_us" />
 </android.support.design.widget.CoordinatorLayout>

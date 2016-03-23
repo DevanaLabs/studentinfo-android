@@ -162,7 +162,7 @@ public class NavigationDrawerActivity extends AppCompatActivity {
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
+            finish();
         } else {
             drawer.openDrawer(GravityCompat.START);
         }
@@ -222,7 +222,7 @@ public class NavigationDrawerActivity extends AppCompatActivity {
     private void handleLecture(Lecture lecture) {
         Log.i(TAG, "Entering lecture view.");
 
-        Intent intent = new Intent(this, LectureDetails.class).putExtra("lectureId", lecture.getId());
+        Intent intent = new Intent(this, LectureDetailsActivity.class).putExtra("lectureId", lecture.getId());
         startActivity(intent);
     }
 
@@ -266,9 +266,11 @@ public class NavigationDrawerActivity extends AppCompatActivity {
             @Override
             public void run() {
                 JSONArray notifications = notificationRepository.getAllNotifications();
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString("notifications", notifications.toString());
-                editor.apply();
+                if (notifications.length() > 0) {
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("notifications", notifications.toString());
+                    editor.apply();
+                }
             }
         });
         getNotifications.start();

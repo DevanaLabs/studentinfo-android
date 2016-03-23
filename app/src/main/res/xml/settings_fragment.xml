@@ -27,4 +27,20 @@
 
     </PreferenceCategory>
 
+    <PreferenceCategory
+        android:title="@string/account">
+        <Preference
+            android:key="changePassword"
+            android:title="@string/changePassword"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/information">
+        <Preference
+            android:key="aboutUs"
+            android:title="@string/aboutUs"/>
+
+    </PreferenceCategory>
+
 </PreferenceScreen>

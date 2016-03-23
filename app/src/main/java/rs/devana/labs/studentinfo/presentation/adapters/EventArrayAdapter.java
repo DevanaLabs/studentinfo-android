@@ -1,7 +1,7 @@
 package rs.devana.labs.studentinfo.presentation.adapters;
 
 import android.content.Context;
-import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -89,30 +89,26 @@ public class EventArrayAdapter extends BaseAdapter {
     }
 
     private void setColor(CardView cardView, Event event) {
-        String colorToParse;
+        int colorToParse;
         switch (event.getType()) {
-            //blue
             case "Испитни рок":
             case "Испит":
-                colorToParse = "#1080CC";
+                colorToParse = R.color.eventBlue;
                 break;
-            //orange
             case "Колоквијум":
             case "Колоквијумска недеља":
-                colorToParse = "#F07D52";
+                colorToParse = R.color.eventOrange;
                 break;
-            //green
             case "Плаћање школарине":
-                colorToParse = "#66BB6A";
+                colorToParse = R.color.eventGreen;
                 break;
             case "Нерадни дани":
-                colorToParse = "#808080";
+                colorToParse =  R.color.eventGray;
                 break;
-            //yellow
             default:
-                colorToParse = "#FFE082";
+                colorToParse =  R.color.eventYellow;
         }
-        cardView.setCardBackgroundColor(Color.parseColor(colorToParse));
+        cardView.setCardBackgroundColor(ContextCompat.getColor(context, colorToParse));
     }
 
 

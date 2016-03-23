@@ -4,12 +4,12 @@
 
     <!-- Strings related to login -->
     <string name="prompt_email">Емаил</string>
-    <string name="prompt_password">Шифра</string>
+    <string name="prompt_password">Лозинка</string>
     <string name="action_sign_in">Пријави се</string>
     <string name="action_sign_in_short">Пријави се</string>
     <string name="error_invalid_email">Емаил адреса није валидна</string>
-    <string name="error_invalid_password">Шифра је прекратка</string>
-    <string name="error_incorrect_password">Шифра је нетачна</string>
+    <string name="error_invalid_password">Лозинка је прекратка</string>
+    <string name="error_incorrect_password">Лозинка је нетачна</string>
     <string name="error_field_required">Ово поље је обавезно</string>
 
     <string name="logout">Одјава</string>
@@ -27,6 +27,31 @@
     <string name="emailNotSent">Емаил није послат, покушајте поново</string>
     <string name="networkConnection">Проверите интернет конекцију</string>
     <string name="title_activity_navigation_drawer">Навигациона фиока</string>
+    <string name="unableToChangeGroup">Тренутно није могуће променити групу. Проверите Вашу интернет конекцију.</string>
+    <string name="information">Информације</string>
+    <string name="aboutUs">О нама</string>
+    <string name="raf.edu.rs">raf.edu.rs</string>
+    <string name="devana.rs">devana.rs</string>
+    <string name="rafPhone1">(011) 2627613</string>
+    <string name="rafPhone2">(011) 2633321</string>
+    <string name="rafEmail1">raf@raf.edu.rs</string>
+    <string name="rafEmail2">sekretarijat@raf.edu.rs</string>
+    <string name="rafEmail3">marketing@raf.edu.rs</string>
+    <string name="projectMakers">Учесници пројекта:</string>
+    <string name="nikolaVukovic">Никола Вуковић</string>
+    <string name="milanVucic">Милан Вучић</string>
+    <string name="nikolaNinkovic">Никола Нинковић</string>
+    <string name="nebojsaUrosevic">Небојша Урошевић</string>
+    <string name="mentors">Ментори:</string>
+    <string name="vladimirPrelovac">Владимир Преловац</string>
+    <string name="andrejBencic">Андреј Бенчић</string>
+    <string name="account">Налог</string>
+    <string name="changePassword">Промена лозинке</string>
+    <string name="newPassword">Нова лозинка</string>
+    <string name="confirmPassword">Потврди лозинку</string>
+    <string name="passwordsDoNotMatch">Лозинке се не поклапају</string>
+    <string name="passwordChangeSuccessful">Промена лозинке је успела</string>
+    <string name="passwordChangeNotSuccessful">Промена лозинке није успела</string>
 
     <string name="navigation_drawer_open">Отвори навигациону фиоку</string>
     <string name="navigation_drawer_close">Затвори навигациону фиоку</string>
@@ -58,10 +83,11 @@
     <string name="feedback">Утисци и сугестије</string>
     <string name="send">Пошаљи</string>
     <string name="thankyou">Хвала Вам</string>
+    <string name="notificationSound">Звук обавештења</string>
     <string name="enterMessageText">Унесите текст поруке</string>
     <string name="somethingHappened">Дошло је до грешке</string>
-    <string name="enterEmailForResettingPassword">Унесите Вашу адресу да бисте добили маил са инструкцијама за ресетовање шифре:</string>
-    <string name="forgotPassword"><u>Заборавили сте шифру?</u></string>
+    <string name="enterEmailForResettingPassword">Унесите Вашу адресу да бисте добили маил са инструкцијама за ресетовање лозинке:</string>
+    <string name="forgotPassword"><u>Заборавили сте лозинку?</u></string>
 
     <string name="hello_blank_fragment">Ћао празни фрагменту</string>
     <string name="start">Почетак:</string>
@@ -114,7 +140,8 @@
     <string name="hour19">19h</string>
     <string name="hour20">20h</string>
     <string name="hour21">21h</string>
-    <string name="title_activity_lecture_details">LectureDetails</string>
-    <string name="title_activity_forgot_password">Заборављена шифра</string>
+    <string name="title_activity_lecture_details">Детаљи о предавању</string>
+    <string name="title_activity_forgot_password">Заборављена лозинка</string>
+    <string name="title_activity_about_us">AboutUsActivity</string>
 
 </resources>

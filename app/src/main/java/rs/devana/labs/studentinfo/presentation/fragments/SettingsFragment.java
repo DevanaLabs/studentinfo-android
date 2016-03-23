@@ -2,12 +2,16 @@ package rs.devana.labs.studentinfo.presentation.fragments;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.preference.CheckBoxPreference;
 import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
+import android.text.TextUtils;
+import android.widget.Toast;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -26,8 +30,10 @@ import rs.devana.labs.studentinfo.infrastructure.event_bus_events.GroupChangedEv
 import rs.devana.labs.studentinfo.infrastructure.event_bus_events.GroupsFetchedEvent;
 import rs.devana.labs.studentinfo.infrastructure.event_bus_events.ScheduleFetchedEvent;
 import rs.devana.labs.studentinfo.infrastructure.json.parser.GroupParser;
+import rs.devana.labs.studentinfo.presentation.settings.AboutUsActivity;
+import rs.devana.labs.studentinfo.presentation.settings.ChangePasswordActivity;
 
-public class SettingsFragment extends PreferenceFragmentCompat{
+public class SettingsFragment extends PreferenceFragmentCompat {
 
     @Inject
     ApiDataFetch apiDataFetch;
@@ -41,7 +47,9 @@ public class SettingsFragment extends PreferenceFragmentCompat{
     ListPreference listPreference;
     private CharSequence[] entries;
     private CharSequence[] entryValues;
+    private CharSequence newGroupId;
     ProgressDialog groupFetchDialog, scheduleFetchDialog;
+    boolean successfulScheduleFetch;
 
     public static SettingsFragment newInstance() {
         SettingsFragment fragment = new SettingsFragment();
@@ -57,29 +65,57 @@ public class SettingsFragment extends PreferenceFragmentCompat{
         Injector.INSTANCE.getApplicationComponent().inject(this);
         EventBus.getDefault().register(this);
 
+        successfulScheduleFetch = false;
+
         listPreference = (ListPreference) findPreference("groups");
         listPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, final Object newValue) {
 
-                new ScheduleFetchTask().execute((String)newValue);
+                new ScheduleFetchTask(getActivity()).execute((String) newValue);
                 scheduleFetchDialog = ProgressDialog.show(getActivity(), getResources().getString(R.string.pleaseWait), getResources().getString(R.string.fetchingSchedule), true);
-                CharSequence group = findEntryForValue((CharSequence) newValue);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString("groupName", group.toString());
-                editor.apply();
-                listPreference.setSummary(group);
-                eventBus.post(new GroupChangedEvent(group.toString()));
+                newGroupId = (CharSequence) newValue;
 
                 return true;
             }
         });
         if (sharedPreferences.getString("allGroups", "").isEmpty()) {
-            groupFetchDialog = ProgressDialog.show(getActivity(),  getResources().getString(R.string.pleaseWait), getResources().getString(R.string.fetchingGroups), true);
+            groupFetchDialog = ProgressDialog.show(getActivity(), getResources().getString(R.string.pleaseWait), getResources().getString(R.string.fetchingGroups), true);
         } else {
             setListPreferenceData(listPreference);
         }
         listPreference.setSummary(listPreference.getEntry());
+
+        CheckBoxPreference pushNotifications = (CheckBoxPreference) findPreference("pushNotifications");
+        final CheckBoxPreference vibrationEnabled = (CheckBoxPreference) findPreference("vibrationEnabled");
+        vibrationEnabled.setEnabled(sharedPreferences.getBoolean("pushNotifications", true));
+        pushNotifications.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object o) {
+                vibrationEnabled.setEnabled(!sharedPreferences.getBoolean("pushNotifications", true));
+                return true;
+            }
+        });
+
+        Preference aboutUsPreference = findPreference("aboutUs");
+        aboutUsPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                Intent intent = new Intent(getActivity(), AboutUsActivity.class);
+                startActivity(intent);
+                return true;
+            }
+        });
+
+        Preference changePasswordPreference = findPreference("changePassword");
+        changePasswordPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                Intent intent = new Intent(getActivity(), ChangePasswordActivity.class);
+                startActivity(intent);
+                return true;
+            }
+        });
     }
 
     @Override
@@ -93,7 +129,7 @@ public class SettingsFragment extends PreferenceFragmentCompat{
     }
 
     @Override
-    public void onDetach()   {
+    public void onDetach() {
         super.onDetach();
     }
 
@@ -116,7 +152,17 @@ public class SettingsFragment extends PreferenceFragmentCompat{
         }
     }
 
-    private CharSequence findEntryForValue(CharSequence value){
+    private int findIndexForGroupName(String groupName) {
+        int i = 0;
+        for (; i < entries.length; i++) {
+            if (entries[i].equals(groupName)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private CharSequence findEntryForValue(CharSequence value) {
         int i = 0;
         for (CharSequence entryValue : entryValues) {
             if (entryValue == value) {
@@ -128,7 +174,7 @@ public class SettingsFragment extends PreferenceFragmentCompat{
     }
 
     @Subscribe
-    public void onGroupsFetchedEvent(GroupsFetchedEvent groupsFetchedEvent){
+    public void onGroupsFetchedEvent(GroupsFetchedEvent groupsFetchedEvent) {
         groupFetchDialog.dismiss();
         setListPreferenceData(listPreference);
     }
@@ -140,6 +186,11 @@ public class SettingsFragment extends PreferenceFragmentCompat{
     }
 
     private class ScheduleFetchTask extends AsyncTask<String, Void, JSONArray> {
+        private Context context;
+
+        public ScheduleFetchTask(Context context) {
+            this.context = context;
+        }
 
         @Override
         protected JSONArray doInBackground(String... params) {
@@ -148,11 +199,25 @@ public class SettingsFragment extends PreferenceFragmentCompat{
 
         @Override
         protected void onPostExecute(JSONArray jsonArray) {
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString("lectures", jsonArray.toString());
-            editor.apply();
+            if (jsonArray.length() > 0) {
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("lectures", jsonArray.toString());
+                editor.apply();
+                eventBus.post(new ScheduleFetchedEvent(jsonArray.toString()));
+
+                CharSequence groupName = findEntryForValue(newGroupId);
+                editor.putString("groupName", groupName.toString());
+                editor.apply();
+                listPreference.setSummary(groupName);
+                eventBus.post(new GroupChangedEvent(groupName.toString()));
+            } else {
+                String groupName = sharedPreferences.getString("groupName", "");
+                if (!TextUtils.isEmpty(groupName)) {
+                    listPreference.setValueIndex(findIndexForGroupName(groupName));
+                }
+                Toast.makeText(context, context.getString(R.string.unableToChangeGroup), Toast.LENGTH_LONG).show();
+            }
             scheduleFetchDialog.dismiss();
-            eventBus.post(new ScheduleFetchedEvent(jsonArray.toString()));
         }
     }
 }

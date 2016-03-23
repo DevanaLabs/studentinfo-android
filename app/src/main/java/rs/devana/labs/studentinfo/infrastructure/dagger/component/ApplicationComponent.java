@@ -18,7 +18,7 @@ import rs.devana.labs.studentinfo.presentation.fragments.WeeklyScheduleFragment;
 import rs.devana.labs.studentinfo.presentation.fragments.YearlyCalendarFragment;
 import rs.devana.labs.studentinfo.presentation.login.ForgotPasswordActivity;
 import rs.devana.labs.studentinfo.presentation.login.LoginActivity;
-import rs.devana.labs.studentinfo.presentation.main.LectureDetails;
+import rs.devana.labs.studentinfo.presentation.main.LectureDetailsActivity;
 import rs.devana.labs.studentinfo.presentation.main.NavigationDrawerActivity;
 import rs.devana.labs.studentinfo.presentation.views.LecturesView;
 
@@ -57,5 +57,5 @@ public interface ApplicationComponent {
 
     void inject(LecturesView lecturesView);
 
-    void inject(LectureDetails lectureDetails);
+    void inject(LectureDetailsActivity lectureDetailsActivity);
 }

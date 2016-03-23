@@ -63,11 +63,16 @@
         <activity
             android:name=".presentation.login.ForgotPasswordActivity"
             android:label="@string/title_activity_forgot_password"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".presentation.main.LectureDetails"
+            android:name=".presentation.main.LectureDetailsActivity"
             android:label="@string/title_activity_lecture_details"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".presentation.settings.AboutUsActivity"
+            android:label="@string/aboutUs"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".presentation.settings.ChangePasswordActivity"></activity>
     </application>
 
 </manifest>
