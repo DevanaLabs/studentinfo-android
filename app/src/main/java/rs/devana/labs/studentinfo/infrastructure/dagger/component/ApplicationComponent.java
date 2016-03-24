@@ -20,6 +20,7 @@ import rs.devana.labs.studentinfo.presentation.login.ForgotPasswordActivity;
 import rs.devana.labs.studentinfo.presentation.login.LoginActivity;
 import rs.devana.labs.studentinfo.presentation.main.LectureDetailsActivity;
 import rs.devana.labs.studentinfo.presentation.main.NavigationDrawerActivity;
+import rs.devana.labs.studentinfo.presentation.settings.ChangePasswordActivity;
 import rs.devana.labs.studentinfo.presentation.views.LecturesView;
 
 @Component(modules = {
@@ -58,4 +59,6 @@ public interface ApplicationComponent {
     void inject(LecturesView lecturesView);
 
     void inject(LectureDetailsActivity lectureDetailsActivity);
+
+    void inject(ChangePasswordActivity changePasswordActivity);
 }

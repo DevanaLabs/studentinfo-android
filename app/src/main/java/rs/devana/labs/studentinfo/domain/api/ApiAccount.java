@@ -35,7 +35,17 @@ public class ApiAccount {
     }
 
     public boolean changePassword(String password, String newPassword){
-        //TODO: Implement properly
-        return false;
+        try {
+            int userId = sharedPreferences.getInt("userId", 0);
+            String accessToken = sharedPreferences.getString("accessToken", "");
+
+            final String payload = "{\"currentPassword\": \"" + password + "\", \"password\": \"" + newPassword + "\", \"password_confirmation\": \"" + newPassword + "\", \"access_token\": \"" + accessToken + "\"}";
+            BufferedReader reader = httpClient.postStream(url + "/user/" + userId, payload);
+            String response = responseReader.readResponse(reader);
+            return response.contains("success");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

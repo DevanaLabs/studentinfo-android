@@ -32,6 +32,7 @@
     <string name="navigation_drawer_close">Затвори навигациону фиоку</string>
 
     <string name="action_settings">Подешавања</string>
+    <string name="action_send">Пoшаљи</string>
     <string name="placeholderUsername">android.studio@android.com</string>
     <string name="placeholderGroup">Група 101</string>
     <string name="pushNotifications">Push нотификације</string>

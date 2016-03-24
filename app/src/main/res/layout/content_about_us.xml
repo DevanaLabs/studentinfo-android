@@ -39,7 +39,7 @@
                     android:layout_gravity="center_vertical"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:drawablePadding="@dimen/activity_horizontal_margin"
-                    android:padding="@dimen/lecturePaddingTop"
+                    android:padding="@dimen/activity_horizontal_margin"
                     android:autoLink="all"/>
                 <TextView
                     android:layout_width="wrap_content"
@@ -97,7 +97,7 @@
             android:text="@string/devana.rs"
             android:layout_gravity="center_vertical"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:padding="@dimen/lecturePaddingTop"
+            android:padding="@dimen/activity_horizontal_margin"
             android:autoLink="all"
             android:gravity="center_horizontal"/>
         <LinearLayout
