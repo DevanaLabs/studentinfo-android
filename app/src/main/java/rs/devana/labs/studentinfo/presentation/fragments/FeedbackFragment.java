@@ -1,6 +1,7 @@
 package rs.devana.labs.studentinfo.presentation.fragments;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
@@ -25,6 +26,12 @@ public class FeedbackFragment extends Fragment {
     @Inject
     ApiFeedback apiFeedback;
 
+    @Inject
+    SharedPreferences sharedPreferences;
+
+    EditText feedbackContent;
+    InputMethodManager inputMethodManager;
+
     public static FeedbackFragment newInstance() {
         return new FeedbackFragment();
     }
@@ -39,7 +46,15 @@ public class FeedbackFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_feedback, container, false);
+        View view = inflater.inflate(R.layout.fragment_feedback, container, false);
+        feedbackContent = (EditText)view.findViewById(R.id.feedbackContent);
+        feedbackContent.setText(sharedPreferences.getString("textFeedback", ""));
+        feedbackContent.setSelection(feedbackContent.getText().length());
+        feedbackContent.requestFocus();
+        inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.showSoftInput(feedbackContent, InputMethodManager.SHOW_IMPLICIT);
+
+        return view;
     }
 
     @Override
@@ -52,22 +67,23 @@ public class FeedbackFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         if ((item.getItemId() == R.id.action_send) && (getView() != null)) {
 
-            final EditText feedbackContent = (EditText) getView().findViewById(R.id.feedbackContent);
             final String content = feedbackContent.getText().toString();
 
             if (TextUtils.isEmpty(content)) {
                 feedbackContent.setError(getString(R.string.error_field_required));
                 feedbackContent.requestFocus();
             } else {
-                InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                 try {
-                    inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                    inputMethodManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                 } catch (NullPointerException e) {
                     e.printStackTrace();
                 }
                 Toast.makeText(getContext(), R.string.thankyou, Toast.LENGTH_SHORT).show();
                 feedbackContent.setError(null);
                 feedbackContent.setText("");
+
+                sharedPreferences.edit().remove("textFeedback");
+                sharedPreferences.edit().apply();
 
                 new Thread(new Runnable() {
                     @Override
@@ -86,5 +102,19 @@ public class FeedbackFragment extends Fragment {
             }
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onDetach() {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("textFeedback", feedbackContent.getText().toString());
+        editor.apply();
+        try {
+            inputMethodManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+
+        super.onDetach();
     }
 }
