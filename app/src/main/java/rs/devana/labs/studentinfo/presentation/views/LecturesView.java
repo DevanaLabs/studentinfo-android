@@ -8,8 +8,10 @@ import android.graphics.Typeface;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GestureDetectorCompat;
+import android.text.Layout;
+import android.text.StaticLayout;
+import android.text.TextPaint;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.SoundEffectConstants;
@@ -41,18 +43,16 @@ public class LecturesView extends View {
     private final static int LECTURES_IN_DAY = 12;
     private final static int START_DELAY_HOURS = 9;
     private final static float TEXT_SEPARATOR = 1 / 3f;
+
     private float lecturePaddingLeft;
-    private float lecturePaddingTop;
-    private float timeLineMargin;
     private float hourHeight;
-    private int[] ind;
+    private int[] lectureViews;
+    private GestureDetectorCompat mGestureDetector;
+    private float margin;
+
     private List<Lecture> lectures;
     private int day;
     private Context context;
-    private float mDownX;
-    private float mDownY;
-    private boolean isOnClick;
-    private GestureDetectorCompat mGestureDetector;
 
     public LecturesView(Context context) {
         super(context);
@@ -82,14 +82,14 @@ public class LecturesView extends View {
         Injector.INSTANCE.getApplicationComponent().inject(this);
         mGestureDetector = new GestureDetectorCompat(context, mGestureListener);
         lecturePaddingLeft = getResources().getDimensionPixelSize(R.dimen.lecturePaddingLeft);
-        timeLineMargin = getResources().getDimensionPixelSize(R.dimen.timeLineMargin);
-        ind = new int[13];
+        lectureViews = new int[13];
+
         for (int i = 0; i < 13; i++) {
-            ind[i] = -1;
+            lectureViews[i] = -1;
         }
 
-        TextView textView = new TextView(context);
-        float margin = textView.getTextSize() / 2;
+        margin = new TextView(context).getTextSize() / 2;
+
         float height = getHeight();
         hourHeight = (height - 2 * margin) / LECTURES_IN_DAY;
         float width = getWidth();
@@ -99,44 +99,44 @@ public class LecturesView extends View {
             for (int i = 0; i < lectures.size(); i++) {
                 int startHour = ((lectures.get(i).getStartsAt() % SECONDS_IN_DAY) - START_DELAY_SECONDS) / SECONDS_IN_HOUR;
                 int endHour = (lectures.get(i).getEndsAt() % SECONDS_IN_DAY) / SECONDS_IN_HOUR;
+                int hours = endHour - startHour;
 
                 paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.NORMAL));
-                paint.setTextSize(width / 25);
                 paint.setTextAlign(Paint.Align.LEFT);
-//                paint.setColor(ContextCompat.getColor(context, R.color.white));
-//                canvas.drawLine(0, hourHeight * (endHour - START_DELAY_HOURS) + margin, width, hourHeight * (endHour - START_DELAY_HOURS) + margin, paint);
 
                 if (lectures.get(i).getType() == 0) {
                     paint.setColor(ContextCompat.getColor(context, R.color.blue));
                 } else {
                     paint.setColor(ContextCompat.getColor(context, R.color.orange));
                 }
+
                 canvas.drawRect(0, hourHeight * (startHour - START_DELAY_HOURS) + margin, width, hourHeight * (endHour - START_DELAY_HOURS) + margin, paint);
-
-                int hours = endHour - startHour;
-
-                drawClassroomName(canvas, lectures.get(i).getClassroom().getName(), hourHeight * (startHour - START_DELAY_HOURS + TEXT_SEPARATOR) + getCourseTextSize(hours) + getTeacherTextSize(hours) + margin, hours);
-                drawTeacherName(canvas, lectures.get(i).getTeacher(), hourHeight * (startHour - START_DELAY_HOURS + TEXT_SEPARATOR) + getCourseTextSize(hours) + margin, hours);
-                drawCourseName(canvas, lectures.get(i).getCourse().getName(), hourHeight * (startHour - START_DELAY_HOURS + TEXT_SEPARATOR) + margin, hours);
+                drawNames(canvas, lectures.get(i).getCourse().getName(), lectures.get(i).getTeacher(), lectures.get(i).getClassroom().getName(), hourHeight * (startHour - START_DELAY_HOURS + TEXT_SEPARATOR) + margin, hours);
 
                 for (int j = startHour; j < endHour; j++) {
-                    ind[j - 9] = i;
+                    lectureViews[j - 9] = i;
                 }
             }
         }
+
         paint.setColor(ContextCompat.getColor(context, R.color.grey));
-        canvas.drawRect(0, 0, width, margin, paint);
 
-        canvas.drawRect(0, height - margin, width, height, paint);
+        canvas.drawRect(0, 0, width, margin, paint); //top margin
 
-        drawTimeLine(canvas, height + margin, width);
+        canvas.drawRect(0, height - margin, width, height, paint); //bottom margin
 
+        drawTimeLine(canvas, height + margin, width); //time line
+
+        drawLines(canvas, paint, margin, width); //lines between lectures and in empty part of view
+    }
+
+    private void drawLines(Canvas canvas, Paint paint, float margin, float width) {
         for (int i = 1; i < 12; i++) {
-            if ((ind[i] < 0) && (ind[i - 1] < 0)) {
+            if ((lectureViews[i] < 0) && (lectureViews[i - 1] < 0)) {
                 paint.setColor(ContextCompat.getColor(context, R.color.black));
                 canvas.drawLine(0, hourHeight * i + margin, width, hourHeight * i + margin, paint);
             }
-            if ((ind[i - 1] >= 0) && (ind[i - 1] != ind[i])) {
+            if ((lectureViews[i - 1] >= 0) && (lectureViews[i - 1] != lectureViews[i])) {
                 paint.setColor(ContextCompat.getColor(context, R.color.white));
                 canvas.drawLine(0, hourHeight * i + margin, width, hourHeight * i + margin, paint);
             }
@@ -144,26 +144,38 @@ public class LecturesView extends View {
         }
     }
 
-    private void drawCourseName(Canvas canvas, String name, float height, int hours) {
+    private void drawNames(Canvas canvas, String courseName, String teacherName, String classroomName, float height, int hours) {
         Paint paint = getPaint();
         paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
         paint.setTextSize(getCourseTextSize(hours));
 
-        canvas.drawText(name, lecturePaddingLeft, height + getLecturePaddingTop(hours), paint);
-    }
+        TextPaint textPaint = getTextPaint();
+        textPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+        textPaint.setTextSize(getCourseTextSize(hours));
 
-    private void drawTeacherName(Canvas canvas, String name, float height, int hours) {
-        Paint paint = getPaint();
-        paint.setTextSize(getTeacherTextSize(hours));
+        StaticLayout staticLayoutCourseName = new StaticLayout(courseName, textPaint, getWidth(), Layout.Alignment.ALIGN_NORMAL, 1, 1, false);
+        StaticLayout staticLayoutTeacherName = new StaticLayout(teacherName, textPaint, getWidth(), Layout.Alignment.ALIGN_NORMAL, 1, 1, false);
+        StaticLayout staticLayoutClassroomName = new StaticLayout(classroomName, textPaint, getWidth(), Layout.Alignment.ALIGN_NORMAL, 1, 1, false);
 
-        canvas.drawText(name, lecturePaddingLeft, height + getLecturePaddingTop(hours), paint);
-    }
+        canvas.save();
+        canvas.translate(lecturePaddingLeft, height + getLecturePaddingTop(hours) - margin - getResources().getDimensionPixelSize(R.dimen.paddingScheduleHourLeft));
+        staticLayoutCourseName.draw(canvas);
+        canvas.restore();
 
-    private void drawClassroomName(Canvas canvas, String name, float height, int hours) {
-        Paint paint = getPaint();
-        paint.setTextSize(getClassroomTextSize(hours));
+        canvas.save();
+        textPaint.setTextSize(getTeacherTextSize(hours));
+        textPaint.setTextSize(getClassroomTextSize(hours));
+        textPaint.setAlpha(255 * 7 / 10);
+        canvas.translate(lecturePaddingLeft, height + getLecturePaddingTop(hours) - margin - getResources().getDimensionPixelSize(R.dimen.paddingScheduleHourLeft) + staticLayoutCourseName.getHeight());
+        staticLayoutTeacherName.draw(canvas);
+        canvas.restore();
 
-        canvas.drawText(name, lecturePaddingLeft, height + getLecturePaddingTop(hours), paint);
+        canvas.save();
+        textPaint.setTextSize(getClassroomTextSize(hours));
+        textPaint.setAlpha(255 * 7 / 10);
+        canvas.translate(lecturePaddingLeft, height + getLecturePaddingTop(hours) - margin - getResources().getDimensionPixelSize(R.dimen.paddingScheduleHourLeft) + staticLayoutCourseName.getHeight() + staticLayoutTeacherName.getHeight());
+        staticLayoutClassroomName.draw(canvas);
+        canvas.restore();
     }
 
     private Paint getPaint() {
@@ -173,16 +185,24 @@ public class LecturesView extends View {
         return paint;
     }
 
+    private TextPaint getTextPaint() {
+        TextPaint textPaint = new TextPaint();
+        textPaint.setColor(ContextCompat.getColor(context, R.color.white));
+        textPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.NORMAL));
+        return textPaint;
+    }
+
     private void drawTimeLine(Canvas canvas, float height, float width) {
         Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
+        float timeLineMargin = getResources().getDimensionPixelSize(R.dimen.timeLineMargin);
         int today = calendar.get(Calendar.DAY_OF_WEEK) - 2;
         if (today == -1) {
             today = 6;
         }
         if (today == day) {
             Paint paint = new Paint();
-            paint.setColor(ContextCompat.getColor(context, R.color.silver));
-            paint.setAlpha(127);
+            paint.setColor(ContextCompat.getColor(context, R.color.black));
+            paint.setAlpha(255 * 2 / 10);
 
             long seconds = ((calendar.getTimeInMillis() + calendar.getTimeZone().getRawOffset()) / 1000 % SECONDS_IN_DAY) - 9 * SECONDS_IN_HOUR;
             canvas.drawRect(0, height * seconds / SECONDS_IN_HALF_DAY - timeLineMargin, width, height * seconds / SECONDS_IN_HALF_DAY + timeLineMargin, paint);
@@ -235,33 +255,9 @@ public class LecturesView extends View {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-//        boolean val = mGestureDetector.onTouchEvent(event);
-//        if (event.getAction() == MotionEvent.ACTION_UP && val){
-//            String a = "yeaaaaah";
-//        }
-        switch (event.getAction() & MotionEvent.ACTION_MASK) {
-            case MotionEvent.ACTION_DOWN:
-                mDownX = event.getX();
-                mDownY = event.getY();
-                isOnClick = true;
-                break;
-            case MotionEvent.ACTION_CANCEL:
-            case MotionEvent.ACTION_UP:
-                if (isOnClick) {
-                    if (ind[(int) (event.getY() / hourHeight)] >= 0) {
-                        playSoundEffect(SoundEffectConstants.CLICK);
-                        eventBus.post(new OpenLectureFragmentEvent(lectures.get(ind[(int) (event.getY() / hourHeight)])));
-                    }
-                }
-                break;
-            case MotionEvent.ACTION_MOVE:
-                float SCROLL_THRESHOLD = 3;
-                if (isOnClick && (Math.abs(mDownX - event.getX()) > SCROLL_THRESHOLD || Math.abs(mDownY - event.getY()) > SCROLL_THRESHOLD)) {
-                    isOnClick = false;
-                }
-                break;
-            default:
-                break;
+        boolean click = mGestureDetector.onTouchEvent(event);
+        if (event.getAction() == MotionEvent.ACTION_UP && click) {
+            return true;
         }
         return true;
     }
@@ -274,72 +270,19 @@ public class LecturesView extends View {
         this.day = day;
     }
 
-
     private final GestureDetector.SimpleOnGestureListener mGestureListener = new GestureDetector.SimpleOnGestureListener() {
-//
-//        @Override
-//        public boolean onSingleTapUp(MotionEvent e) {
-//            return super.onSingleTapUp(e);
-//        }
-//
-//        @Override
-//        public void onLongPress(MotionEvent e) {
-//            super.onLongPress(e);
-//        }
-//
-//        @Override
-//        public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-//            return super.onScroll(e1, e2, distanceX, distanceY);
-//        }
-//
-//        @Override
-//        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-//            return super.onFling(e1, e2, velocityX, velocityY);
-//        }
-//
-//        @Override
-//        public void onShowPress(MotionEvent e) {
-//            super.onShowPress(e);
-//        }
-//
-//        @Override
-//        public boolean onDown(MotionEvent e) {
-//            return super.onDown(e);
-//        }
-//
-//        @Override
-//        public boolean onDoubleTap(MotionEvent e) {
-//            return super.onDoubleTap(e);
-//        }
-//
-//        @Override
-//        public boolean onDoubleTapEvent(MotionEvent e) {
-//            return super.onDoubleTapEvent(e);
-//        }
-//
-//        @Override
-//        public boolean onContextClick(MotionEvent e) {
-//            return super.onContextClick(e);
-//        }
 
         @Override
-        public boolean onSingleTapConfirmed(MotionEvent event) {
+        public boolean onSingleTapUp(MotionEvent event) {
 
-            Log.i("Krompir", "Ja sam prvi krompir");
-
-            // If the tap was on an event then trigger the callback.
-            if (ind[(int) (event.getY() / hourHeight)] >= 0) {
+            if (lectureViews[(int) (event.getY() / hourHeight)] >= 0) {
                 playSoundEffect(SoundEffectConstants.CLICK);
-                eventBus.post(new OpenLectureFragmentEvent(lectures.get(ind[(int) (event.getY() / hourHeight)])));
-
-                Log.i("Krompir", "Ja nisam mali krompir.");
+                eventBus.post(new OpenLectureFragmentEvent(lectures.get(lectureViews[(int) (event.getY() / hourHeight)])));
 
                 return true;
             }
 
-            Log.i("Krompir", "Ja sam mali krompir.");
-
-            return super.onSingleTapConfirmed(event);
+            return super.onSingleTapUp(event);
         }
     };
 }

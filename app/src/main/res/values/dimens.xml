@@ -15,15 +15,15 @@
 
     <dimen name="courseNameFor3">20sp</dimen>
     <dimen name="teacherNameFor3">15sp</dimen>
-    <dimen name="classroomNameFor3">10sp</dimen>
+    <dimen name="classroomNameFor3">15sp</dimen>
 
     <dimen name="courseNameFor2">16sp</dimen>
     <dimen name="teacherNameFor2">12sp</dimen>
-    <dimen name="classroomNameFor2">8sp</dimen>
+    <dimen name="classroomNameFor2">12sp</dimen>
 
     <dimen name="courseNameFor1">12sp</dimen>
     <dimen name="teacherNameFor1">9sp</dimen>
-    <dimen name="classroomNameFor1">6sp</dimen>
+    <dimen name="classroomNameFor1">9sp</dimen>
 
     <dimen name="lecturePaddingLeft">5sp</dimen>
     <dimen name="lecturePaddingTopFor3">5sp</dimen>
