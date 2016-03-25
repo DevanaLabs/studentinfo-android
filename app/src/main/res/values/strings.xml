@@ -144,6 +144,7 @@
     <string name="hour21">21h</string>
     <string name="title_activity_lecture_details">Детаљи о предавању</string>
     <string name="title_activity_forgot_password">Заборављена лозинка</string>
-    <string name="title_activity_about_us">AboutUsActivity</string>
+    <string name="title_activity_about_us">О нама</string>
+    <string name="title_activity_change_password">Промена лозинке</string>
 
 </resources>
