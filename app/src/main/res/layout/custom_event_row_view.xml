@@ -34,28 +34,46 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         card_view:cardCornerRadius="4dp"
-        android:layout_weight="8">
+        android:layout_weight="8"
+        card_view:cardBackgroundColor="@color/blue">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="@dimen/notification_view_padding">
-        <TextView
-            android:id="@+id/additionalInfoTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/placeholderGroup"
-            android:textStyle="bold"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textColor="@color/white"/>
-            <TextView
-                android:id="@+id/descriptionTextView"
-                android:layout_width="match_parent"
+            android:orientation="horizontal">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="20"
                 android:layout_height="wrap_content"
-                android:text="@string/placeholderEventDescription"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textColor="@color/white"
-                />
+                android:orientation="vertical"
+                android:padding="@dimen/notification_view_padding">
+                <TextView
+                    android:id="@+id/additionalInfoTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/placeholderGroup"
+                    android:textStyle="bold"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textColor="@color/white"/>
+                <TextView
+                    android:id="@+id/descriptionTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/placeholderEventDescription"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textColor="@color/white"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/notificationsAlertImageView"
+                    android:src="@android:drawable/ic_dialog_alert"
+                    android:layout_gravity="bottom"
+                    android:visibility="gone"/>
+            </LinearLayout>
         </LinearLayout>
     </android.support.v7.widget.CardView>
 

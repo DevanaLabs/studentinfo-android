@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -66,6 +67,7 @@ public class EventArrayAdapter extends BaseAdapter {
             viewHolder.descriptionTextView = (TextView) convertView.findViewById(R.id.descriptionTextView);
             viewHolder.additionalInfoTextView = (TextView) convertView.findViewById(R.id.additionalInfoTextView);
             viewHolder.eventDescriptionParentLayout = (CardView) convertView.findViewById(R.id.eventDescriptionParentLayout);
+            viewHolder.notificationsAlertImageView = (ImageView) convertView.findViewById(R.id.notificationsAlertImageView);
             Event event = events.get(position);
 
             if (skipIndexes.contains(position)) {
@@ -79,6 +81,10 @@ public class EventArrayAdapter extends BaseAdapter {
             viewHolder.monthTextView.setText(translate(event.getMonth()));
             viewHolder.descriptionTextView.setText("" + event.getDescription());
             viewHolder.additionalInfoTextView.setText("" + event.getType());
+
+            if (event.getNotifications() != null && !event.getNotifications().isEmpty()){
+                viewHolder.notificationsAlertImageView.setVisibility(View.VISIBLE);
+            }
             setColor(viewHolder.eventDescriptionParentLayout, event);
 
             convertView.setTag(viewHolder);
@@ -103,10 +109,10 @@ public class EventArrayAdapter extends BaseAdapter {
                 colorToParse = R.color.eventGreen;
                 break;
             case "Нерадни дани":
-                colorToParse =  R.color.eventGray;
+                colorToParse = R.color.eventGray;
                 break;
             default:
-                colorToParse =  R.color.eventYellow;
+                colorToParse = R.color.eventYellow;
         }
         cardView.setCardBackgroundColor(ContextCompat.getColor(context, colorToParse));
     }
@@ -175,5 +181,6 @@ public class EventArrayAdapter extends BaseAdapter {
         TextView descriptionTextView;
         TextView additionalInfoTextView;
         CardView eventDescriptionParentLayout;
+        ImageView notificationsAlertImageView;
     }
 }
