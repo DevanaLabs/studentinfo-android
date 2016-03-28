@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="rs.devana.labs.studentinfo.presentation.fragments.YearlyCalendarFragment">
+    tools:context="rs.devana.labs.studentinfoapp.presentation.fragments.YearlyCalendarFragment">
 
     <ListView
         android:layout_width="match_parent"

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="rs.devana.labs.studentinfo.presentation.fragments.WeeklyScheduleFragment">
+    tools:context="rs.devana.labs.studentinfoapp.presentation.fragments.WeeklyScheduleFragment">
     <android.support.design.widget.TabLayout
         android:id="@+id/sliding_tabs"
         android:layout_width="match_parent"

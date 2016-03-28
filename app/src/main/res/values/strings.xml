@@ -32,11 +32,13 @@
     <string name="aboutUs">О нама</string>
     <string name="raf.edu.rs">raf.edu.rs</string>
     <string name="devana.rs">devana.rs</string>
-    <string name="rafPhone1">(011) 2627613</string>
-    <string name="rafPhone2">(011) 2633321</string>
+    <string name="rafPhone1">(011)2627613</string>
+    <string name="rafPhone2">(011)2633321</string>
     <string name="rafEmail1">raf@raf.edu.rs</string>
     <string name="rafEmail2">sekretarijat@raf.edu.rs</string>
     <string name="rafEmail3">marketing@raf.edu.rs</string>
+    <string name="inCollaborationWith">У сарадњи са:</string>
+
     <string name="projectMakers">Учесници пројекта:</string>
     <string name="nikolaVukovic">Никола Вуковић</string>
     <string name="milanVucic">Милан Вучић</string>

@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="rs.devana.labs.studentinfo.presentation.fragments.FeedbackFragment">
+    tools:context="rs.devana.labs.studentinfoapp.presentation.fragments.FeedbackFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,6 +17,7 @@
             android:background="@color/grey"
             android:gravity="top|start"
             android:scrollbars="vertical"
+            android:padding="@dimen/activity_horizontal_margin"
             android:hint="@string/enterMessageText"/>
 
     </LinearLayout>

@@ -39,10 +39,10 @@
     {
       "client_info": {
         "mobilesdk_app_id": "1:494149022047:android:6a799f82df216645",
-        "client_id": "android:rs.devana.labs.studentinfo",
+        "client_id": "android:rs.devana.labs.studentinfoapp",
         "client_type": 1,
         "android_client_info": {
-          "package_name": "rs.devana.labs.studentinfo"
+          "package_name": "rs.devana.labs.studentinfoapp"
         }
       },
       "oauth_client": [],

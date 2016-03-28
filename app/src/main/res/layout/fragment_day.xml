@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="rs.devana.labs.studentinfo.presentation.fragments.DayFragment"
+    tools:context="rs.devana.labs.studentinfoapp.presentation.fragments.DayFragment"
     android:baselineAligned="false"
     android:padding="@dimen/paddingScheduleHourLeft"
     android:background="@color/grey">
@@ -193,7 +193,7 @@
         android:id="@+id/lectureLayout"
         android:background="@color/white">
 
-        <rs.devana.labs.studentinfo.presentation.views.LecturesView
+        <rs.devana.labs.studentinfoapp.presentation.views.LecturesView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/lecturesView" />

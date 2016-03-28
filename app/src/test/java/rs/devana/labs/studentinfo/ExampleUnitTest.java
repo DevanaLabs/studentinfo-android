@@ -1,4 +1,4 @@
-package rs.devana.labs.studentinfo;
+package rs.devana.labs.studentinfoapp;
 
 import org.junit.Test;
 
