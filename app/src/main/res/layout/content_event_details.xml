@@ -10,8 +10,8 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".presentation.main.LectureDetailsActivity"
-    tools:showIn="@layout/activity_lecture_details">
+    tools:context="rs.devana.labs.studentinfo.presentation.main.EventDetailsActivity"
+    tools:showIn="@layout/activity_event_details">
 
     <TextView
         android:layout_width="wrap_content"
@@ -19,15 +19,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Large Text"
         android:textStyle="bold"
-        android:id="@+id/teacherName" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Medium Text"
-        android:textStyle="italic"
-        android:id="@+id/lectureType" />
+        android:id="@+id/description" />
 
     <View
         android:layout_width="match_parent"
@@ -41,14 +33,14 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Medium Text"
-        android:id="@+id/lectureTime" />
+        android:id="@+id/startTime" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Medium Text"
-        android:id="@+id/classroomName"
+        android:id="@+id/endTime"
         android:layout_marginBottom="@dimen/activity_vertical_margin" />
 
     <ListView

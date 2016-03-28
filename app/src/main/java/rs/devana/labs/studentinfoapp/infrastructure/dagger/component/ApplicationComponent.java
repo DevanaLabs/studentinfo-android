@@ -18,6 +18,7 @@ import rs.devana.labs.studentinfoapp.presentation.fragments.WeeklyScheduleFragme
 import rs.devana.labs.studentinfoapp.presentation.fragments.YearlyCalendarFragment;
 import rs.devana.labs.studentinfoapp.presentation.login.ForgotPasswordActivity;
 import rs.devana.labs.studentinfoapp.presentation.login.LoginActivity;
+import rs.devana.labs.studentinfoapp.presentation.main.EventDetailsActivity;
 import rs.devana.labs.studentinfoapp.presentation.main.LectureDetailsActivity;
 import rs.devana.labs.studentinfoapp.presentation.main.NavigationDrawerActivity;
 import rs.devana.labs.studentinfoapp.presentation.settings.ChangePasswordActivity;
@@ -61,4 +62,6 @@ public interface ApplicationComponent {
     void inject(LectureDetailsActivity lectureDetailsActivity);
 
     void inject(ChangePasswordActivity changePasswordActivity);
+
+    void inject(EventDetailsActivity eventDetailsActivity);
 }

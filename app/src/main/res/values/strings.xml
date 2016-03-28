@@ -125,6 +125,27 @@
     <string name="november">НОВ</string>
     <string name="december">ДЕЦ</string>
 
+    <string name="years">година</string>
+    <string name="year">годину</string>
+    <string name="months">месеци</string>
+    <string name="month">месец</string>
+    <string name="weeks">недеља</string>
+    <string name="week">недељу</string>
+    <string name="days">дана</string>
+    <string name="day">дан</string>
+    <string name="hours">сати</string>
+    <string name="hour">сат</string>
+    <string name="minutes">минута</string>
+    <string name="minute">минут</string>
+    <string name="seconds">секунди</string>
+    <string name="second">секунду</string>
+
+    <string name="before">Пре</string>
+    <string name="notificationExpiresAt">Нотификација Истиче</string>
+
+    <string name="startTime">Почетак</string>
+    <string name="endTime">Крај</string>
+    <string name="description">Опис</string>
 
     <string name="Predavanje">Предавање</string>
     <string name="Vezbe">Вежбе</string>
@@ -148,5 +169,6 @@
     <string name="title_activity_forgot_password">Заборављена лозинка</string>
     <string name="title_activity_about_us">О нама</string>
     <string name="title_activity_change_password">Промена лозинке</string>
+    <string name="title_activity_event_details">EventDetailsActivity</string>
 
 </resources>

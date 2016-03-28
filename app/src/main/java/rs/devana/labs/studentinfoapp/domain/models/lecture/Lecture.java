@@ -113,6 +113,10 @@ public class Lecture {
         this.teacher = teacher;
     }
 
+    public List<LectureNotification> getLectureNotifications() {
+        return lectureNotifications;
+    }
+
     public String getConvertedStartsAt(){
         StringBuilder result = new StringBuilder();
         int convertedTime = convertTime(startsAt);

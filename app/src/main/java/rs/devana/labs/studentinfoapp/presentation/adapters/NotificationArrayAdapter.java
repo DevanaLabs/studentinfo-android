@@ -10,6 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -18,11 +19,18 @@ import rs.devana.labs.studentinfoapp.domain.models.notification.Notification;
 
 public class NotificationArrayAdapter extends BaseAdapter {
 
-    List<Notification> notifications;
+    private static final int SECONDS_IN_MINUTES = 60;
+    private static final int MINUTES_IN_HOURS = 60;
+    private static final int HOURS_IN_DAY = 24;
+    private static final int DAYS_IN_WEEK = 7;
+    private static final int DAYS_IN_MONTH = 30;
+    private static final int DAY_IN_YEAR = 365;
+
+    List<? extends Notification> notifications;
     Context context;
     LayoutInflater inflater;
 
-    public NotificationArrayAdapter(List<Notification> notifications, Context context) {
+    public NotificationArrayAdapter(List<? extends Notification> notifications, Context context) {
         this.notifications = notifications;
         this.context = context;
         this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -44,6 +52,16 @@ public class NotificationArrayAdapter extends BaseAdapter {
     }
 
     @Override
+    public int getViewTypeCount() {
+        return getCount();
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
+    @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.custom_notification_card_view, parent, false);
@@ -54,16 +72,77 @@ public class NotificationArrayAdapter extends BaseAdapter {
             Notification notification = notifications.get(position);
             TextView additionalInfoNotificationTextView = (TextView) convertView.findViewById(R.id.additionalInfoNotificationTextView);
             additionalInfoNotificationTextView.setText(notification.getAdditionalInfo());
+
             TextView timeOfNotification = (TextView) convertView.findViewById(R.id.timeOfNotification);
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.getDefault());
-            timeOfNotification.setText(simpleDateFormat.format(notification.getExpiresAt().getTime()));
+            String time = context.getString(R.string.before) + " " + calculateTimeDiff(notification.getArrived());
+            timeOfNotification.setText(time);
+
             TextView notificationDescriptionTextView = (TextView) convertView.findViewById(R.id.notificationDescriptionTextView);
-            notificationDescriptionTextView.setText(notification.getDescription());
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.getDefault());
+            String description = notification.getDescription() + "\n" + context.getString(R.string.notificationExpiresAt) + ": " + simpleDateFormat.format(notification.getExpiresAt().getTime());
+            notificationDescriptionTextView.setText(description);
         }
         return convertView;
     }
 
     private void setBackgroundColor(CardView cardView, int position){
         cardView.setCardBackgroundColor(position % 2 == 0 ? Color.parseColor("#eeeeee") : Color.parseColor("#ffffff"));
+    }
+
+    private String calculateTimeDiff(Calendar calendar) {
+        long secondsNow = Calendar.getInstance().getTimeInMillis();
+        long diff = (secondsNow - calendar.getTimeInMillis()) / 1000;
+
+        if (diff > 2 * SECONDS_IN_MINUTES * MINUTES_IN_HOURS * HOURS_IN_DAY * DAY_IN_YEAR) {
+            return String.valueOf(diff / (SECONDS_IN_MINUTES * MINUTES_IN_HOURS * HOURS_IN_DAY * DAY_IN_YEAR)) + " " + context.getString(R.string.years);
+        }
+        if (diff > SECONDS_IN_MINUTES * MINUTES_IN_HOURS * HOURS_IN_DAY * DAY_IN_YEAR) {
+            return String.valueOf(diff / (SECONDS_IN_MINUTES * MINUTES_IN_HOURS * HOURS_IN_DAY * DAY_IN_YEAR)) + " " + context.getString(R.string.year);
+        }
+
+        if (diff > 2 * SECONDS_IN_MINUTES * MINUTES_IN_HOURS * HOURS_IN_DAY * DAYS_IN_MONTH) {
+            return String.valueOf(diff / (SECONDS_IN_MINUTES * MINUTES_IN_HOURS * HOURS_IN_DAY * DAYS_IN_MONTH)) + " " + context.getString(R.string.months);
+        }
+        if (diff > SECONDS_IN_MINUTES * MINUTES_IN_HOURS * HOURS_IN_DAY * DAYS_IN_MONTH) {
+            return String.valueOf(diff / (SECONDS_IN_MINUTES * MINUTES_IN_HOURS * HOURS_IN_DAY * DAYS_IN_MONTH)) + " " + context.getString(R.string.month);
+        }
+
+        if (diff > 2 * SECONDS_IN_MINUTES * MINUTES_IN_HOURS * HOURS_IN_DAY * DAYS_IN_WEEK) {
+            return String.valueOf(diff / (SECONDS_IN_MINUTES * MINUTES_IN_HOURS * HOURS_IN_DAY * DAYS_IN_WEEK)) + " " + context.getString(R.string.weeks);
+        }
+        if (diff > SECONDS_IN_MINUTES * MINUTES_IN_HOURS * HOURS_IN_DAY * DAYS_IN_WEEK) {
+            return String.valueOf(diff / (SECONDS_IN_MINUTES * MINUTES_IN_HOURS * HOURS_IN_DAY * DAYS_IN_WEEK)) + " " + context.getString(R.string.week);
+        }
+
+        if (diff > 2 * SECONDS_IN_MINUTES * MINUTES_IN_HOURS * HOURS_IN_DAY) {
+            return String.valueOf(diff / (SECONDS_IN_MINUTES * MINUTES_IN_HOURS * HOURS_IN_DAY)) + " " + context.getString(R.string.days);
+        }
+        if (diff > SECONDS_IN_MINUTES * MINUTES_IN_HOURS * HOURS_IN_DAY) {
+            return String.valueOf(diff / (SECONDS_IN_MINUTES * MINUTES_IN_HOURS * HOURS_IN_DAY)) + " " + context.getString(R.string.day);
+        }
+
+        if (diff > 2 * SECONDS_IN_MINUTES * MINUTES_IN_HOURS) {
+            return String.valueOf(diff / (SECONDS_IN_MINUTES * MINUTES_IN_HOURS)) + " " + context.getString(R.string.hours);
+        }
+        if (diff > SECONDS_IN_MINUTES * MINUTES_IN_HOURS) {
+            return String.valueOf(diff / (SECONDS_IN_MINUTES * MINUTES_IN_HOURS)) + " " + context.getString(R.string.hour);
+        }
+
+        if (diff > 2 * SECONDS_IN_MINUTES) {
+            return String.valueOf(diff / (SECONDS_IN_MINUTES)) + " " + context.getString(R.string.minutes);
+        }
+        if (diff > SECONDS_IN_MINUTES) {
+            return String.valueOf(diff / (SECONDS_IN_MINUTES)) + " " + context.getString(R.string.minute);
+        }
+
+        if (diff > 2) {
+            return String.valueOf(diff) + " " + context.getString(R.string.seconds);
+        }
+
+        return String.valueOf(diff) + " " + context.getString(R.string.second);
+    }
+
+    public void setNotifications(List<? extends Notification> notifications) {
+        this.notifications = notifications;
     }
 }

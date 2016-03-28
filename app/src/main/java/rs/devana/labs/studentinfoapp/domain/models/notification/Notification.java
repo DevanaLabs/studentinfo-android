@@ -1,16 +1,20 @@
 package rs.devana.labs.studentinfoapp.domain.models.notification;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 
 public class Notification implements NotificationInterface{
     int id;
-    String description;
-    Calendar expiresAt;
+    String description, additionalInfo;
+    Calendar expiresAt, arrived;
 
-    public Notification(int id, String description, Calendar expiresAt) {
+    public Notification(int id, String description, Calendar expiresAt, Calendar arrived, String additionalInfo) {
         this.id = id;
         this.description = description;
         this.expiresAt = expiresAt;
+        this.arrived = arrived;
+        this.additionalInfo = additionalInfo;
     }
 
     public int getId() {
@@ -37,13 +41,23 @@ public class Notification implements NotificationInterface{
         this.expiresAt = expiresAt;
     }
 
+    public Calendar getArrived() {
+        return arrived;
+    }
+
+    public void setArrived(Calendar arrived) {
+        this.arrived = arrived;
+    }
+
     @Override
     public String toString() {
-        return "id: " + id + "  Description: " + description;
+        return getAdditionalInfo() + "\n"
+                + description + "\n"
+                + "Нотификација истиче: " + new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(expiresAt.getTime());
     }
 
     @Override
     public String getAdditionalInfo() {
-        return "Глобални догађај";
+        return additionalInfo;
     }
 }

@@ -7,14 +7,14 @@
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
     <application
-        android:name="rs.devana.labs.studentinfoapp.infrastructure.core.StudentInfoApplication"
+        android:name=".infrastructure.core.StudentInfoApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_studentinfo_logo"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="rs.devana.labs.studentinfoapp.presentation.login.LoginActivity"
+            android:name=".presentation.login.LoginActivity"
             android:label="@string/app_name"
             android:noHistory="true"
             android:screenOrientation="portrait"
@@ -38,18 +38,18 @@
         </receiver>
 
         <service
-            android:name="rs.devana.labs.studentinfoapp.infrastructure.services.gcm.GcmListeningService"
+            android:name=".infrastructure.services.gcm.GcmListeningService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
             </intent-filter>
         </service>
         <service
-            android:name="rs.devana.labs.studentinfoapp.infrastructure.services.gcm.RegistrationIntentService"
+            android:name=".infrastructure.services.gcm.RegistrationIntentService"
             android:exported="false" />
 
         <activity
-            android:name="rs.devana.labs.studentinfoapp.presentation.main.NavigationDrawerActivity"
+            android:name=".presentation.main.NavigationDrawerActivity"
             android:label="@string/title_activity_navigation_drawer"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
@@ -61,17 +61,21 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="rs.devana.labs.studentinfoapp.presentation.login.ForgotPasswordActivity"
+            android:name=".presentation.login.ForgotPasswordActivity"
             android:label="@string/title_activity_forgot_password"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="rs.devana.labs.studentinfoapp.presentation.main.LectureDetailsActivity"
+            android:name=".presentation.main.LectureDetailsActivity"
             android:label="@string/title_activity_lecture_details"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="rs.devana.labs.studentinfoapp.presentation.settings.ChangePasswordActivity"
+            android:name=".presentation.settings.ChangePasswordActivity"
             android:label="@string/title_activity_change_password"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".presentation.main.EventDetailsActivity"
+            android:label="@string/title_activity_event_details"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

@@ -14,13 +14,13 @@ import rs.devana.labs.studentinfoapp.domain.models.event.GroupEvent.GroupEvent;
 
 public class GroupEventParser {
     ClassroomParser classroomParser;
-    NotificationParser notificationParser;
     GroupParser groupParser;
+    EventNotificationParser eventNotificationParser;
 
     @Inject
-    public GroupEventParser(ClassroomParser classroomParser, NotificationParser notificationParser, GroupParser groupParser) {
+    public GroupEventParser(ClassroomParser classroomParser, EventNotificationParser eventNotificationParser, GroupParser groupParser) {
         this.classroomParser = classroomParser;
-        this.notificationParser = notificationParser;
+        this.eventNotificationParser = eventNotificationParser;
         this.groupParser = groupParser;
     }
 
@@ -37,7 +37,7 @@ public class GroupEventParser {
             Calendar endsAtCalendar = Calendar.getInstance();
             endsAtCalendar.setTime(df.parse(endsAt));
 
-            return new GroupEvent(jsonGroupEvent.getInt("id"), jsonGroupEvent.getString("type"), jsonGroupEvent.getString("description"), groupParser.parse(jsonGroupEvent.getJSONObject("course")), startsAtCalendar, endsAtCalendar, classroomParser.parse(jsonGroupEvent.getJSONArray("classrooms")), notificationParser.parse(jsonGroupEvent.getJSONArray("notifications")));
+            return new GroupEvent(jsonGroupEvent.getInt("id"), jsonGroupEvent.getString("type"), jsonGroupEvent.getString("description"), groupParser.parse(jsonGroupEvent.getJSONObject("course")), startsAtCalendar, endsAtCalendar, classroomParser.parse(jsonGroupEvent.getJSONArray("classrooms")), eventNotificationParser.parse(jsonGroupEvent.getJSONArray("notifications")));
         } catch (JSONException | ParseException e) {
             e.printStackTrace();
         }

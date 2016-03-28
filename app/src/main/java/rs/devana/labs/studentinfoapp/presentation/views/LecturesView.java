@@ -2,6 +2,8 @@ package rs.devana.labs.studentinfoapp.presentation.views;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Typeface;
@@ -22,12 +24,14 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 import java.util.TimeZone;
 
 import javax.inject.Inject;
 
 import rs.devana.labs.studentinfoapp.R;
 import rs.devana.labs.studentinfoapp.domain.models.lecture.Lecture;
+import rs.devana.labs.studentinfoapp.domain.models.notification.lecture.LectureNotification;
 import rs.devana.labs.studentinfoapp.infrastructure.dagger.Injector;
 import rs.devana.labs.studentinfoapp.infrastructure.event_bus_events.OpenLectureFragmentEvent;
 
@@ -75,6 +79,7 @@ public class LecturesView extends View {
         this.context = context;
     }
 
+
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
@@ -112,6 +117,7 @@ public class LecturesView extends View {
 
                 canvas.drawRect(0, hourHeight * (startHour - START_DELAY_HOURS) + margin, width, hourHeight * (endHour - START_DELAY_HOURS) + margin, paint);
                 drawNames(canvas, lectures.get(i).getCourse().getName(), lectures.get(i).getTeacher(), lectures.get(i).getClassroom().getName(), hourHeight * (startHour - START_DELAY_HOURS + TEXT_SEPARATOR) + margin, hours);
+                drawNotificationCircle(canvas, lectures.get(i), hourHeight * (endHour - START_DELAY_HOURS) + margin, width);
 
                 for (int j = startHour; j < endHour; j++) {
                     lectureViews[j - 9] = i;
@@ -128,6 +134,21 @@ public class LecturesView extends View {
         drawTimeLine(canvas, height + margin, width); //time line
 
         drawLines(canvas, paint, margin, width); //lines between lectures and in empty part of view
+    }
+
+    private void drawNotificationCircle(Canvas canvas, Lecture lecture, float height, float width) {
+        List<LectureNotification> lectureNotifications = lecture.getLectureNotifications();
+        if (lectureNotifications!= null && !lectureNotifications.isEmpty()){
+            for (int i = 0; i < lectureNotifications.size(); i++){
+                if (lectureNotifications.get(i).getExpiresAt().getTimeInMillis() > Calendar.getInstance().getTimeInMillis()){
+                    Paint paint = getPaint();
+                    Bitmap icon = BitmapFactory.decodeResource(context.getResources(),
+                            android.R.drawable.ic_dialog_alert);
+                    canvas.drawBitmap(icon, width - icon.getWidth() - context.getResources().getDimensionPixelSize(R.dimen.notificationCirclePadding), height - icon.getHeight() - context.getResources().getDimensionPixelSize(R.dimen.notificationCirclePadding), paint);
+                    break;
+                }
+            }
+        }
     }
 
     private void drawLines(Canvas canvas, Paint paint, float margin, float width) {
@@ -193,7 +214,7 @@ public class LecturesView extends View {
     }
 
     private void drawTimeLine(Canvas canvas, float height, float width) {
-        Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
+        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT+1"));
         float timeLineMargin = getResources().getDimensionPixelSize(R.dimen.timeLineMargin);
         int today = calendar.get(Calendar.DAY_OF_WEEK) - 2;
         if (today == -1) {

@@ -9,18 +9,13 @@ public class LectureNotification extends Notification{
 
     private Lecture lecture;
 
-    public LectureNotification(int id, String description, Calendar expiresAt, Lecture lecture) {
-        super(id, description, expiresAt);
+    public LectureNotification(int id, String description, Calendar expiresAt, Calendar arrived, String additionalInfo, Lecture lecture) {
+        super(id, description, expiresAt, arrived, additionalInfo);
         this.lecture = lecture;
     }
 
     @Override
     public String toString() {
-        return "lecture=" + lecture;
-    }
-
-    @Override
-    public String getAdditionalInfo() {
-        return lecture.getCourse().getName();
+        return super.toString();
     }
 }

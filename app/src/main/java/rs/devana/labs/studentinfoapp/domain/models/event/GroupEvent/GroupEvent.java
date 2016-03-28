@@ -8,7 +8,7 @@ import javax.inject.Inject;
 import rs.devana.labs.studentinfoapp.domain.models.classroom.Classroom;
 import rs.devana.labs.studentinfoapp.domain.models.event.Event;
 import rs.devana.labs.studentinfoapp.domain.models.group.Group;
-import rs.devana.labs.studentinfoapp.domain.models.notification.Notification;
+import rs.devana.labs.studentinfoapp.domain.models.notification.event.EventNotification;
 
 public class GroupEvent extends Event {
     protected Group group;
@@ -18,8 +18,8 @@ public class GroupEvent extends Event {
 
     }
 
-    public GroupEvent(int id, String type, String description, Group group, Calendar startsAt, Calendar endsAt, List<Classroom> classrooms, List<Notification> notifications) {
-        super(id, type, description, startsAt, endsAt, classrooms, notifications);
+    public GroupEvent(int id, String type, String description, Group group, Calendar startsAt, Calendar endsAt, List<Classroom> classrooms, List<EventNotification> eventNotifications) {
+        super(id, type, description, startsAt, endsAt, classrooms, eventNotifications);
         this.group = group;
     }
 }

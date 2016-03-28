@@ -14,13 +14,13 @@ import rs.devana.labs.studentinfoapp.domain.models.event.CourseEvent.CourseEvent
 
 public class CourseEventParser {
     ClassroomParser classroomParser;
-    NotificationParser notificationParser;
+    EventNotificationParser eventNotificationParser;
     CourseParser courseParser;
 
     @Inject
-    public CourseEventParser(ClassroomParser classroomParser, NotificationParser notificationParser, CourseParser courseParser) {
+    public CourseEventParser(ClassroomParser classroomParser, EventNotificationParser eventNotificationParser, CourseParser courseParser) {
         this.classroomParser = classroomParser;
-        this.notificationParser = notificationParser;
+        this.eventNotificationParser = eventNotificationParser;
         this.courseParser = courseParser;
     }
 
@@ -37,7 +37,7 @@ public class CourseEventParser {
             Calendar endsAtCalendar = Calendar.getInstance();
             endsAtCalendar.setTime(df.parse(endsAt));
 
-            return new CourseEvent(jsonCourseEvent.getInt("id"), jsonCourseEvent.getString("type"), jsonCourseEvent.getString("description"), courseParser.parse(jsonCourseEvent.getJSONObject("course")), startsAtCalendar, endsAtCalendar, classroomParser.parse(jsonCourseEvent.getJSONArray("classrooms")), notificationParser.parse(jsonCourseEvent.getJSONArray("notifications")));
+            return new CourseEvent(jsonCourseEvent.getInt("id"), jsonCourseEvent.getString("type"), jsonCourseEvent.getString("description"), courseParser.parse(jsonCourseEvent.getJSONObject("course")), startsAtCalendar, endsAtCalendar, classroomParser.parse(jsonCourseEvent.getJSONArray("classrooms")), eventNotificationParser.parse(jsonCourseEvent.getJSONArray("notifications")));
         } catch (JSONException | ParseException e) {
             e.printStackTrace();
         }

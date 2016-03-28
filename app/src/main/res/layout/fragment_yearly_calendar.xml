@@ -4,12 +4,19 @@
     android:layout_height="match_parent"
     tools:context="rs.devana.labs.studentinfoapp.presentation.fragments.YearlyCalendarFragment">
 
-    <ListView
+    <android.support.v4.widget.SwipeRefreshLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/eventsListView"
-        android:clickable="true"
-        android:listSelector="@drawable/listview_entry"
-        android:divider="@null"/>
+        android:id="@+id/swipeRefreshLayout">
+        
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/eventsListView"
+            android:clickable="true"
+            android:listSelector="@drawable/listview_entry"
+            android:divider="@null"/>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </FrameLayout>

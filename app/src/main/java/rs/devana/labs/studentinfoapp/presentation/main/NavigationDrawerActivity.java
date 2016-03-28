@@ -26,18 +26,21 @@ import android.widget.TextView;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.json.JSONArray;
+import org.json.JSONException;
 
 import javax.inject.Inject;
 
 import rs.devana.labs.studentinfoapp.R;
 import rs.devana.labs.studentinfoapp.domain.api.ApiAuth;
 import rs.devana.labs.studentinfoapp.domain.api.ApiDataFetch;
+import rs.devana.labs.studentinfoapp.domain.models.event.Event;
 import rs.devana.labs.studentinfoapp.domain.models.lecture.Lecture;
 import rs.devana.labs.studentinfoapp.domain.models.notification.NotificationRepositoryInterface;
 import rs.devana.labs.studentinfoapp.infrastructure.dagger.Injector;
 import rs.devana.labs.studentinfoapp.infrastructure.event_bus_events.ChooseGroupEvent;
 import rs.devana.labs.studentinfoapp.infrastructure.event_bus_events.GroupChangedEvent;
 import rs.devana.labs.studentinfoapp.infrastructure.event_bus_events.LogoutFinishedEvent;
+import rs.devana.labs.studentinfoapp.infrastructure.event_bus_events.OpenEventActivityEvent;
 import rs.devana.labs.studentinfoapp.infrastructure.event_bus_events.OpenLectureFragmentEvent;
 import rs.devana.labs.studentinfoapp.infrastructure.event_bus_events.ScheduleFetchedEvent;
 import rs.devana.labs.studentinfoapp.presentation.fragments.AboutFragment;
@@ -145,8 +148,6 @@ public class NavigationDrawerActivity extends AppCompatActivity {
             navigationView.setCheckedItem(R.id.nav_settings);
             handleSettings();
         }
-
-        getNotifications();
     }
 
     @Override
@@ -258,6 +259,13 @@ public class NavigationDrawerActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    private void handleEvent(Event event) {
+        Log.i(TAG, "Entering event view.");
+
+        Intent intent = new Intent(this, EventDetailsActivity.class).putExtra("eventId", event.getId());
+        startActivity(intent);
+    }
+
     private void changeToFragment(Fragment fragment){
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
@@ -271,8 +279,7 @@ public class NavigationDrawerActivity extends AppCompatActivity {
                 .setIcon(R.drawable.ic_menu_logout)
                 .setTitle(getString(R.string.logout))
                 .setMessage(getString(R.string.logoutConfirmation))
-                .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener()
-                {
+                .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         new UserLogoutTask().execute();
@@ -297,21 +304,6 @@ public class NavigationDrawerActivity extends AppCompatActivity {
         }
     }
 
-    private void getNotifications(){
-        Thread getNotifications = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                JSONArray notifications = notificationRepository.getAllNotifications();
-                if (notifications.length() > 0) {
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putString("notifications", notifications.toString());
-                    editor.apply();
-                }
-            }
-        });
-        getNotifications.start();
-    }
-
     @Subscribe
     public void onGroupChangedEvent(GroupChangedEvent groupChangedEvent){
         groupTextView.setText(String.format(getResources().getString(R.string.group), groupChangedEvent.group));
@@ -327,9 +319,15 @@ public class NavigationDrawerActivity extends AppCompatActivity {
         loggingOutDialog.dismiss();
     }
 
+
     @Subscribe
     public void onOpenLectureFragmentEvent(OpenLectureFragmentEvent openLectureFragmentEvent) {
         handleLecture(openLectureFragmentEvent.getLecture());
+    }
+
+    @Subscribe
+    public void onOpenEventActivityEvent(OpenEventActivityEvent openEventActivityEvent) {
+        handleEvent(openEventActivityEvent.getEvent());
     }
 
     @Override

@@ -31,8 +31,14 @@ public class EventParser {
         this.sharedPreferences = sharedPreferences;
     }
 
-    public Event parse(JSONObject jsonObject){
-        return null;
+    public Event parse(JSONObject jsonEvent) {
+        if (jsonEvent.has("group")) {
+            return groupEventParser.parse(jsonEvent);
+        } else if (jsonEvent.has("course")) {
+            return courseEventParser.parse(jsonEvent);
+        } else {
+            return globalEventParser.parse(jsonEvent);
+        }
     }
 
     public List<Event> parse(JSONArray jsonEvents) {
@@ -62,5 +68,37 @@ public class EventParser {
             }
         }
         return events;
+    }
+
+    public Event getEvent(int id) {
+        try {
+            JSONArray jsonEvent = new JSONArray(sharedPreferences.getString("allEvents", "[]"));
+            for (int i = 0; i < jsonEvent.length(); i++) {
+                if (jsonEvent.getJSONObject(i).getInt("id") == id) {
+                    return parse(jsonEvent.getJSONObject(i));
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public void addNotificationToEvent(JSONObject jsonNotification) {
+        try {
+            JSONArray jsonEvents = new JSONArray(sharedPreferences.getString("allEvents", "[]"));
+
+            for (int i = 0; i < jsonEvents.length(); i++) {
+                if (jsonEvents.getJSONObject(i).getInt("id") == jsonNotification.getJSONObject("event").getInt("id")) {
+                    jsonEvents.getJSONObject(i).getJSONArray("notifications").put(jsonNotification);
+                }
+            }
+
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("allEvents", jsonEvents.toString());
+            editor.apply();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -40,7 +40,6 @@ public class DayFragment extends Fragment {
         return view;
     }
 
-
     public void setDay(int day) {
         this.day = day;
     }
@@ -48,6 +47,4 @@ public class DayFragment extends Fragment {
     public void setLectures(List<Lecture> lectures) {
         this.lectures = lectures;
     }
-
-
 }

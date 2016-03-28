@@ -25,11 +25,14 @@ public class LectureNotificationParser {
         try {
             String stringNotification = jsonLectureNotification.getString("expiresAt").substring(0, 19) + ".000-" + jsonLectureNotification.getString("expiresAt").substring(20, 24);
 
-            DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
             Calendar calendar = Calendar.getInstance();
-            calendar.setTime(df.parse(stringNotification));
+            calendar.setTime(dateFormat.parse(stringNotification));
 
-            return new LectureNotification(jsonLectureNotification.getInt("id"), jsonLectureNotification.getString("description"), calendar, null);
+            Calendar calendarArrived = Calendar.getInstance();
+            calendarArrived.setTime(dateFormat.parse(jsonLectureNotification.getString("arrived")));
+
+            return new LectureNotification(jsonLectureNotification.getInt("id"), jsonLectureNotification.getString("description"), calendar, calendarArrived, jsonLectureNotification.getJSONObject("lecture").getJSONObject("course").getString("name"), null);
         } catch (JSONException | ParseException e) {
             e.printStackTrace();
         }
@@ -40,18 +43,20 @@ public class LectureNotificationParser {
     public List<LectureNotification> parse(JSONArray jsonLectureNotifications) {
         List<LectureNotification> lectureNotifications = new ArrayList<>();
 
-        int i = 0;
-        while (i < jsonLectureNotifications.length()) {
+        for (int i = 0; i < jsonLectureNotifications.length(); i++) {
             try {
                 JSONObject jsonLectureNotification = jsonLectureNotifications.getJSONObject(i);
 
                 String stringNotification = jsonLectureNotification.getString("expiresAt").substring(0, 19) + ".000-" + jsonLectureNotification.getString("expiresAt").substring(20, 24);
 
-                DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
                 Calendar calendar = Calendar.getInstance();
-                calendar.setTime(df.parse(stringNotification));
+                calendar.setTime(dateFormat.parse(stringNotification));
 
-                LectureNotification lectureNotification = new LectureNotification(jsonLectureNotification.getInt("id"), jsonLectureNotification.getString("description"), calendar, null);
+                Calendar calendarArrived = Calendar.getInstance();
+                calendarArrived.setTime(dateFormat.parse(jsonLectureNotification.getString("arrived")));
+
+                LectureNotification lectureNotification = new LectureNotification(jsonLectureNotification.getInt("id"), jsonLectureNotification.getString("description"), calendar, calendarArrived, jsonLectureNotification.getJSONObject("lecture").getJSONObject("course").getString("name"), null);
                 lectureNotifications.add(lectureNotification);
             } catch (JSONException | ParseException e) {
                 e.printStackTrace();

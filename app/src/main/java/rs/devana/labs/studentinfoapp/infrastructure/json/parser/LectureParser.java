@@ -82,7 +82,7 @@ public class LectureParser {
 
     public Lecture getLecture(int id) {
         try {
-            JSONArray jsonLectures = new JSONArray(sharedPreferences.getString("lectures", ""));
+            JSONArray jsonLectures = new JSONArray(sharedPreferences.getString("lectures", "[]"));
             for (int i = 0; i < jsonLectures.length(); i++) {
                 if (jsonLectures.getJSONObject(i).getInt("id") == id) {
                     return parse(jsonLectures.getJSONObject(i));
@@ -92,5 +92,23 @@ public class LectureParser {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public void addNotificationToLecture(JSONObject jsonNotification) {
+        try {
+            JSONArray jsonLectures = new JSONArray(sharedPreferences.getString("lectures", "[]"));
+
+            for (int i = 0; i < jsonLectures.length(); i++) {
+                if (jsonLectures.getJSONObject(i).getInt("id") == jsonNotification.getJSONObject("lecture").getInt("id")) {
+                    jsonLectures.getJSONObject(i).getJSONArray("notifications").put(jsonNotification);
+                }
+            }
+
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("lectures", jsonLectures.toString());
+            editor.apply();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }

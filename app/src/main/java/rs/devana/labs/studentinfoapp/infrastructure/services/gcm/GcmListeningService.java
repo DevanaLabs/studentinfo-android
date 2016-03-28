@@ -13,17 +13,21 @@ import android.util.Log;
 
 import com.google.android.gms.gcm.GcmListenerService;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Locale;
 
 import javax.inject.Inject;
 
 import rs.devana.labs.studentinfoapp.R;
-import rs.devana.labs.studentinfoapp.domain.models.notification.event.EventNotification;
+import rs.devana.labs.studentinfoapp.domain.models.notification.Notification;
 import rs.devana.labs.studentinfoapp.infrastructure.dagger.Injector;
-import rs.devana.labs.studentinfoapp.infrastructure.json.parser.EventNotificationParser;
+import rs.devana.labs.studentinfoapp.infrastructure.json.parser.EventParser;
+import rs.devana.labs.studentinfoapp.infrastructure.json.parser.LectureParser;
+import rs.devana.labs.studentinfoapp.infrastructure.json.parser.NotificationParser;
 import rs.devana.labs.studentinfoapp.presentation.main.NavigationDrawerActivity;
 
 public class GcmListeningService extends GcmListenerService {
@@ -32,8 +36,15 @@ public class GcmListeningService extends GcmListenerService {
 
     @Inject
     SharedPreferences sharedPreferences;
+
     @Inject
-    EventNotificationParser eventNotificationParser;
+    NotificationParser notificationParser;
+
+    @Inject
+    LectureParser lectureParser;
+
+    @Inject
+    EventParser eventParser;
 
     @Override
     public void onCreate() {
@@ -48,12 +59,25 @@ public class GcmListeningService extends GcmListenerService {
         Log.d(TAG, "Message: " + message);
 
         try {
-            EventNotification eventNotification = eventNotificationParser.parse(new JSONObject(message));
-            String description = eventNotification.getDescription();
-            String expiresAt = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(eventNotification.getExpiresAt().getTime());
+            JSONArray jsonNotifications = new JSONArray(sharedPreferences.getString("notifications", "[]"));
+            String arrived = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault()).format(Calendar.getInstance().getTime());
+            JSONObject jsonNotification = new JSONObject(message).put("arrived", arrived);
+            jsonNotifications.put(jsonNotification);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("notifications", jsonNotifications.toString());
+            editor.apply();
+
+            if (jsonNotification.has("event")) {
+                eventParser.addNotificationToEvent(jsonNotification);
+            }
+            if (jsonNotification.has("lecture")) {
+                lectureParser.addNotificationToLecture(jsonNotification);
+            }
+
+            Notification notification = notificationParser.parse(jsonNotification);
             if(sharedPreferences.getBoolean("pushNotifications", true)){
                 Log.i(TAG, "Push notification sent.");
-                sendNotification(expiresAt+"-"+description, "notifications");
+                sendNotification(notification, "notifications");
             }
             else {
                 Log.i(TAG, "Push notifications are disabled and the message is not sent.");
@@ -63,7 +87,7 @@ public class GcmListeningService extends GcmListenerService {
         }
     }
 
-    private void sendNotification(String message, String fragment) {
+    private void sendNotification(Notification notification, String fragment) {
         Intent intent = new Intent(this, NavigationDrawerActivity.class);
         intent.putExtra("fragment", fragment);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -74,7 +98,8 @@ public class GcmListeningService extends GcmListenerService {
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.ic_stat_ic_notification)
                 .setContentTitle("StudentInfo")
-                .setContentText(message)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(notification.toString()))
+                .setContentText(notification.toString())
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)
                 .setContentIntent(pendingIntent);

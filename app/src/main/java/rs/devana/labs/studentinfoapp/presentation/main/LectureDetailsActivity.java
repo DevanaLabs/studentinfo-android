@@ -6,16 +6,21 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.text.DecimalFormat;
+import java.util.Calendar;
+import java.util.List;
 
 import javax.inject.Inject;
 
 import rs.devana.labs.studentinfoapp.R;
 import rs.devana.labs.studentinfoapp.domain.models.lecture.Lecture;
+import rs.devana.labs.studentinfoapp.domain.models.notification.lecture.LectureNotification;
 import rs.devana.labs.studentinfoapp.infrastructure.dagger.Injector;
 import rs.devana.labs.studentinfoapp.infrastructure.json.parser.LectureParser;
+import rs.devana.labs.studentinfoapp.presentation.adapters.NotificationArrayAdapter;
 
 public class LectureDetailsActivity extends AppCompatActivity {
 
@@ -57,6 +62,7 @@ public class LectureDetailsActivity extends AppCompatActivity {
         TextView lectureTime = (TextView) findViewById(R.id.lectureTime);
         TextView classroomName = (TextView) findViewById(R.id.classroomName);
 
+        teacherName.setTextColor(ContextCompat.getColor(this, R.color.teacherName));
         teacherName.setText(lecture.getTeacher());
         lectureType.setText(lecture.getTypeString());
         if (lecture.getType() != 0) {
@@ -66,6 +72,12 @@ public class LectureDetailsActivity extends AppCompatActivity {
         }
         lectureTime.setText(getTime(lecture.getStartsAt(), lecture.getEndsAt()));
         classroomName.setText(lecture.getClassroom().getName());
+
+        ListView notificationsListView = (ListView) findViewById(R.id.notificationsListView);
+        if (lecture.getLectureNotifications().size() > 0) {
+            NotificationArrayAdapter notificationArrayAdapter = new NotificationArrayAdapter(removeExpired(lecture.getLectureNotifications()), this);
+            notificationsListView.setAdapter(notificationArrayAdapter);
+        }
     }
 
     private String getTime(int startsAt, int endsAt) {
@@ -99,5 +111,14 @@ public class LectureDetailsActivity extends AppCompatActivity {
         time += (endsAt / SECONDS_IN_HOUR) % HOURS_IN_DAY + ":" + new DecimalFormat("00").format((endsAt / SECONDS_IN_MINUTE) % MINUTES_IN_HOURS);
         time += " (" + Math.round((float) (endsAt - startsAt) / SECONDS_IN_HOUR) + "h)";
         return time;
+    }
+
+    private List<LectureNotification> removeExpired(List<LectureNotification> lectureNotifications){
+        for (int i = 0; i < lectureNotifications.size(); i++){
+            if (lectureNotifications.get(i).getExpiresAt().getTimeInMillis() < Calendar.getInstance().getTimeInMillis()){
+                lectureNotifications.remove(i);
+            }
+        }
+        return lectureNotifications;
     }
 }

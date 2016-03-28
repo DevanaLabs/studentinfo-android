@@ -8,7 +8,8 @@ import java.util.Locale;
 import javax.inject.Inject;
 
 import rs.devana.labs.studentinfoapp.domain.models.classroom.Classroom;
-import rs.devana.labs.studentinfoapp.domain.models.notification.Notification;
+import rs.devana.labs.studentinfoapp.domain.models.notification.event.EventNotification;
+
 
 public class Event {
 
@@ -16,21 +17,21 @@ public class Event {
     private String type, description;
     private Calendar startsAt, endsAt;
     private List<Classroom> classrooms;
-    private List<Notification> notifications;
+    private List<EventNotification> eventNotifications;
 
     @Inject
     public Event() {
 
     }
 
-    public Event(int id, String type, String description, Calendar startsAt, Calendar endsAt, List<Classroom> classrooms, List<Notification> notifications){
+    public Event(int id, String type, String description, Calendar startsAt, Calendar endsAt, List<Classroom> classrooms, List<EventNotification> eventNotifications) {
         this.id = id;
         this.type = type;
         this.description = description;
         this.startsAt = startsAt;
         this.endsAt = endsAt;
         this.classrooms = classrooms;
-        this.notifications = notifications;
+        this.eventNotifications = eventNotifications;
     }
 
     public int getId() {
@@ -81,8 +82,8 @@ public class Event {
         this.classrooms = classrooms;
     }
 
-    public List<Notification> getNotifications() {
-        return notifications;
+    public List<EventNotification> getNotifications() {
+        return eventNotifications;
     }
 
     public String getDayOfTheMonth(){
@@ -94,8 +95,8 @@ public class Event {
         return this.getStartsAt().getTime().getMonth();
     }
 
-    public void setNotifications(List<Notification> notifications) {
-        this.notifications = notifications;
+    public void setNotifications(List<EventNotification> eventNotifications) {
+        this.eventNotifications = eventNotifications;
     }
 
     @Override
@@ -106,6 +107,6 @@ public class Event {
                 ", startsAt=" + startsAt +
                 ", endsAt=" + endsAt +
                 ", classrooms=" + classrooms +
-                ", notifications=" + notifications;
+                ", notifications=" + eventNotifications;
     }
 }

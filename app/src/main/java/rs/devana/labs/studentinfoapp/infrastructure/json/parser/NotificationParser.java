@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -18,7 +19,8 @@ import rs.devana.labs.studentinfoapp.domain.models.notification.Notification;
 public class NotificationParser {
 
     @Inject
-    public NotificationParser(){}
+    public NotificationParser() {
+    }
 
     public List<Notification> parse(JSONArray jsonNotifications){
 
@@ -30,12 +32,21 @@ public class NotificationParser {
                 JSONObject jsonNotification = jsonNotifications.getJSONObject(i);
                 String stringNotification = jsonNotification.getString("expiresAt").substring(0, 19) + ".000-"+ jsonNotification.getString("expiresAt").substring(20, 24);
 
-                DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
                 Calendar calendar = Calendar.getInstance();
-                calendar.setTime(df.parse(stringNotification));
+                calendar.setTime(dateFormat.parse(stringNotification));
 
-                Notification notification = new Notification(jsonNotification.getInt("id"), jsonNotification.getString("description"), calendar);
-                notifications.add(notification);
+                Calendar calendarArrived = Calendar.getInstance();
+                if (jsonNotification.has("arrived")) {
+                    calendarArrived.setTime(dateFormat.parse(jsonNotification.getString("arrived")));
+                } else {
+                    calendarArrived.setTime(dateFormat.parse(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault()).format(Calendar.getInstance().getTime())));
+                }
+
+                if (jsonNotification.has("event"))
+                    notifications.add(new Notification(jsonNotification.getInt("id"), jsonNotification.getString("description"), calendar, calendarArrived, jsonNotification.getJSONObject("event").getString("description")));
+                if (jsonNotification.has("lecture"))
+                    notifications.add(new Notification(jsonNotification.getInt("id"), jsonNotification.getString("description"), calendar, calendarArrived, jsonNotification.getJSONObject("lecture").getJSONObject("course").getString("name")));
             } catch (JSONException | ParseException e) {
                 e.printStackTrace();
             } finally {
@@ -43,5 +54,30 @@ public class NotificationParser {
             }
         }
         return notifications;
+    }
+
+    public Notification parse(JSONObject jsonNotification) {
+        try {
+            String stringNotification = jsonNotification.getString("expiresAt").substring(0, 19) + ".000-" + jsonNotification.getString("expiresAt").substring(20, 24);
+
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(dateFormat.parse(stringNotification));
+
+            Calendar calendarArrived = Calendar.getInstance();
+            if (jsonNotification.has("arrived")) {
+                calendarArrived.setTime(dateFormat.parse(jsonNotification.getString("arrived")));
+            } else {
+                calendarArrived.setTime(dateFormat.parse(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault()).format(Calendar.getInstance().getTime())));
+            }
+
+            if (jsonNotification.has("event"))
+                return new Notification(jsonNotification.getInt("id"), jsonNotification.getString("description"), calendar, calendarArrived, jsonNotification.getJSONObject("event").getString("description"));
+            if (jsonNotification.has("lecture"))
+                return new Notification(jsonNotification.getInt("id"), jsonNotification.getString("description"), calendar, calendarArrived, jsonNotification.getJSONObject("lecture").getJSONObject("course").getString("name"));
+        } catch (JSONException | ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

@@ -5,9 +5,10 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+
 import rs.devana.labs.studentinfoapp.domain.models.classroom.Classroom;
 import rs.devana.labs.studentinfoapp.domain.models.event.Event;
-import rs.devana.labs.studentinfoapp.domain.models.notification.Notification;
+import rs.devana.labs.studentinfoapp.domain.models.notification.event.EventNotification;
 
 public class GlobalEvent extends Event {
 
@@ -16,8 +17,8 @@ public class GlobalEvent extends Event {
 
     }
 
-    public GlobalEvent(int id, String type, String description, Calendar startsAt, Calendar endsAt, List<Classroom> classrooms, List<Notification> notifications) {
-        super(id, type, description, startsAt, endsAt, classrooms, notifications);
+    public GlobalEvent(int id, String type, String description, Calendar startsAt, Calendar endsAt, List<Classroom> classrooms, List<EventNotification> eventNotifications) {
+        super(id, type, description, startsAt, endsAt, classrooms, eventNotifications);
     }
 }
 

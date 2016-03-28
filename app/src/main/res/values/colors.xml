@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#1080CC</color>
-    <color name="colorPrimaryDark">#1080CC</color>
+    <color name="colorPrimaryDark">#07578F</color>
     <color name="colorAccent">#1080CC</color>
     <color name="blue">#1080CC</color>
     <color name="orange">#F07D52</color>
+    <color name="teacherName">#4d4d4d</color>
     <color name="green">#39B54A</color>
     <color name="grey">#e6e6e6</color>
     <color name="gray">#ffdddddd</color>

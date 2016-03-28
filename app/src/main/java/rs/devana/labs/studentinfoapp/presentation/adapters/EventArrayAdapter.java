@@ -11,10 +11,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import rs.devana.labs.studentinfoapp.R;
 import rs.devana.labs.studentinfoapp.domain.models.event.Event;
+import rs.devana.labs.studentinfoapp.domain.models.notification.event.EventNotification;
 
 public class EventArrayAdapter extends BaseAdapter {
 
@@ -79,11 +81,17 @@ public class EventArrayAdapter extends BaseAdapter {
             }
             viewHolder.dayTextView.setText(event.getDayOfTheMonth());
             viewHolder.monthTextView.setText(translate(event.getMonth()));
-            viewHolder.descriptionTextView.setText("" + event.getDescription());
-            viewHolder.additionalInfoTextView.setText("" + event.getType());
+            viewHolder.descriptionTextView.setText(String.valueOf(event.getDescription()));
+            viewHolder.additionalInfoTextView.setText(String.valueOf(event.getType()));
 
-            if (event.getNotifications() != null && !event.getNotifications().isEmpty()){
-                viewHolder.notificationsAlertImageView.setVisibility(View.VISIBLE);
+            List<EventNotification> eventNotifications = event.getNotifications();
+            if (eventNotifications != null && !eventNotifications.isEmpty()){
+                for (int i = 0; i < eventNotifications.size(); i++){
+                    if (eventNotifications.get(i).getExpiresAt().getTimeInMillis() > Calendar.getInstance().getTimeInMillis()){
+                        viewHolder.notificationsAlertImageView.setVisibility(View.VISIBLE);
+                        break;
+                    }
+                }
             }
             setColor(viewHolder.eventDescriptionParentLayout, event);
 
@@ -182,5 +190,9 @@ public class EventArrayAdapter extends BaseAdapter {
         TextView additionalInfoTextView;
         CardView eventDescriptionParentLayout;
         ImageView notificationsAlertImageView;
+    }
+
+    public void setEvents(List<Event> events) {
+        this.events = events;
     }
 }
