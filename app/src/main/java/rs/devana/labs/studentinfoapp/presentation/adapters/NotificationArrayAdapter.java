@@ -6,7 +6,7 @@ import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
+import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
@@ -17,7 +17,7 @@ import java.util.Locale;
 import rs.devana.labs.studentinfoapp.R;
 import rs.devana.labs.studentinfoapp.domain.models.notification.Notification;
 
-public class NotificationArrayAdapter extends BaseAdapter {
+public class NotificationArrayAdapter extends ArrayAdapter<Notification> {
 
     private static final int SECONDS_IN_MINUTES = 60;
     private static final int MINUTES_IN_HOURS = 60;
@@ -30,7 +30,19 @@ public class NotificationArrayAdapter extends BaseAdapter {
     Context context;
     LayoutInflater inflater;
 
-    public NotificationArrayAdapter(List<? extends Notification> notifications, Context context) {
+    View.OnTouchListener mTouchListener;
+
+    public NotificationArrayAdapter(List<Notification> notifications, Context context, int textViewResourceId, View.OnTouchListener listener) {
+        super(context, textViewResourceId, notifications);
+        this.notifications = notifications;
+        this.context = context;
+        this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mTouchListener = listener;
+
+    }
+
+    public NotificationArrayAdapter(List<? extends Notification> notifications, Context context, int textViewResourceId) {
+        super(context, textViewResourceId, (List<Notification>)notifications);
         this.notifications = notifications;
         this.context = context;
         this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -42,23 +54,19 @@ public class NotificationArrayAdapter extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int position) {
+    public Notification getItem(int position) {
         return notifications.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        return position;
+        Notification notification = getItem(position);
+        return notification.getId();
     }
 
     @Override
-    public int getViewTypeCount() {
-        return getCount();
-    }
-
-    @Override
-    public int getItemViewType(int position) {
-        return position;
+    public boolean hasStableIds() {
+        return true;
     }
 
     @Override
@@ -70,6 +78,7 @@ public class NotificationArrayAdapter extends BaseAdapter {
             setBackgroundColor(cardView, position);
 
             Notification notification = notifications.get(position);
+            convertView.setId(notification.getId());
             TextView additionalInfoNotificationTextView = (TextView) convertView.findViewById(R.id.additionalInfoNotificationTextView);
             additionalInfoNotificationTextView.setText(notification.getAdditionalInfo());
 
@@ -78,14 +87,17 @@ public class NotificationArrayAdapter extends BaseAdapter {
             timeOfNotification.setText(time);
 
             TextView notificationDescriptionTextView = (TextView) convertView.findViewById(R.id.notificationDescriptionTextView);
+            TextView notificationExpiresAt = (TextView) convertView.findViewById(R.id.notificationExpiresAt);
+
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.getDefault());
-            String description = notification.getDescription() + "\n" + context.getString(R.string.notificationExpiresAt) + ": " + simpleDateFormat.format(notification.getExpiresAt().getTime());
-            notificationDescriptionTextView.setText(description);
+            notificationExpiresAt.setText(simpleDateFormat.format(notification.getExpiresAt().getTime()));
+            notificationDescriptionTextView.setText(notification.getDescription());
         }
+        convertView.setOnTouchListener(mTouchListener);
         return convertView;
     }
 
-    private void setBackgroundColor(CardView cardView, int position){
+    private void setBackgroundColor(CardView cardView, int position) {
         cardView.setCardBackgroundColor(position % 2 == 0 ? Color.parseColor("#eeeeee") : Color.parseColor("#ffffff"));
     }
 

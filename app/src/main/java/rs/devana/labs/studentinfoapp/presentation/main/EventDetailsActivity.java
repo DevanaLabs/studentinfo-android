@@ -2,8 +2,6 @@ package rs.devana.labs.studentinfoapp.presentation.main;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -13,6 +11,7 @@ import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -20,7 +19,6 @@ import javax.inject.Inject;
 
 import rs.devana.labs.studentinfoapp.R;
 import rs.devana.labs.studentinfoapp.domain.models.event.Event;
-import rs.devana.labs.studentinfoapp.domain.models.lecture.Lecture;
 import rs.devana.labs.studentinfoapp.domain.models.notification.event.EventNotification;
 import rs.devana.labs.studentinfoapp.infrastructure.dagger.Injector;
 import rs.devana.labs.studentinfoapp.infrastructure.json.parser.EventParser;
@@ -31,6 +29,7 @@ public class EventDetailsActivity extends AppCompatActivity {
     @Inject
     EventParser eventParser;
 
+    private static long MILLISECONDS_IN_A_DAY = 1000 * 60 * 60 * 24;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,11 +37,13 @@ public class EventDetailsActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        Event event= eventParser.getEvent(intent.getIntExtra("eventId", 0));
+        Event event = eventParser.getEvent(intent.getIntExtra("eventId", 0));
         setContentView(R.layout.activity_event_details);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         toolbar.setTitle(event.getType());
+        int color = event.getColor();
+        toolbar.setBackgroundColor(ContextCompat.getColor(this, color));
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(ContextCompat.getDrawable(this, R.drawable.ic_arrow_back));
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -57,8 +58,17 @@ public class EventDetailsActivity extends AppCompatActivity {
         TextView endTime = (TextView) findViewById(R.id.endTime);
 
         String arrived = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault()).format(Calendar.getInstance().getTime());
-        String startTimeString = getResources().getString(R.string.startTime) + ": " + new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(event.getStartsAt().getTime());
-        String endTimeString = getResources().getString(R.string.endTime) + ": " + new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(event.getEndsAt().getTime());
+        Date startsAt = event.getStartsAt().getTime();
+        Date endsAt = event.getEndsAt().getTime();
+
+        long differenceInDays = (endsAt.getTime() - startsAt.getTime()) / (MILLISECONDS_IN_A_DAY);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.getDefault());
+        if (differenceInDays > 0){
+            simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
+        }
+
+        String startTimeString = getResources().getString(R.string.startTime) + ": " + simpleDateFormat.format(startsAt);
+        String endTimeString = getResources().getString(R.string.endTime) + ": " + simpleDateFormat.format(endsAt);
 
         description.setText(event.getDescription());
         startTime.setText(startTimeString);
@@ -67,7 +77,7 @@ public class EventDetailsActivity extends AppCompatActivity {
         ListView notificationsListView = (ListView) findViewById(R.id.notificationsListView);
         List<EventNotification> eventNotifications = removeExpired(event.getNotifications());
         if (eventNotifications.size() > 0) {
-            NotificationArrayAdapter notificationArrayAdapter = new NotificationArrayAdapter(eventNotifications, this);
+            NotificationArrayAdapter notificationArrayAdapter = new NotificationArrayAdapter(eventNotifications, this, R.layout.custom_notification_card_view);
             notificationsListView.setAdapter(notificationArrayAdapter);
         }
     }

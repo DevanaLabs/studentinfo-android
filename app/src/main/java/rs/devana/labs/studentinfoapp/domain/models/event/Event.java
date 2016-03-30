@@ -7,6 +7,7 @@ import java.util.Locale;
 
 import javax.inject.Inject;
 
+import rs.devana.labs.studentinfoapp.R;
 import rs.devana.labs.studentinfoapp.domain.models.classroom.Classroom;
 import rs.devana.labs.studentinfoapp.domain.models.notification.event.EventNotification;
 
@@ -86,17 +87,41 @@ public class Event {
         return eventNotifications;
     }
 
-    public String getDayOfTheMonth(){
+    public String getDayOfTheMonth() {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd", Locale.getDefault());
         return simpleDateFormat.format(this.getStartsAt().getTime());
     }
 
-    public int getMonth(){
+    public int getMonth() {
         return this.getStartsAt().getTime().getMonth();
     }
 
     public void setNotifications(List<EventNotification> eventNotifications) {
         this.eventNotifications = eventNotifications;
+    }
+
+    public int getColor() {
+        int colorToParse;
+
+        switch (getType()) {
+            case "Испитни рок":
+            case "Испит":
+                colorToParse = R.color.eventBlue;
+                break;
+            case "Колоквијум":
+            case "Колоквијумска недеља":
+                colorToParse = R.color.eventOrange;
+                break;
+            case "Плаћање школарине":
+                colorToParse = R.color.eventGreen;
+                break;
+            case "Нерадни дани":
+                colorToParse = R.color.eventGray;
+                break;
+            default:
+                colorToParse = R.color.eventYellow;
+        }
+        return colorToParse;
     }
 
     @Override

@@ -75,7 +75,7 @@ public class LectureDetailsActivity extends AppCompatActivity {
 
         ListView notificationsListView = (ListView) findViewById(R.id.notificationsListView);
         if (lecture.getLectureNotifications().size() > 0) {
-            NotificationArrayAdapter notificationArrayAdapter = new NotificationArrayAdapter(removeExpired(lecture.getLectureNotifications()), this);
+            NotificationArrayAdapter notificationArrayAdapter = new NotificationArrayAdapter(removeExpired(lecture.getLectureNotifications()), this, R.layout.custom_notification_card_view);
             notificationsListView.setAdapter(notificationArrayAdapter);
         }
     }

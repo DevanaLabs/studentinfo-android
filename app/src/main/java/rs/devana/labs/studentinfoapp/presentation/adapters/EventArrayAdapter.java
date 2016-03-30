@@ -103,26 +103,7 @@ public class EventArrayAdapter extends BaseAdapter {
     }
 
     private void setColor(CardView cardView, Event event) {
-        int colorToParse;
-        switch (event.getType()) {
-            case "Испитни рок":
-            case "Испит":
-                colorToParse = R.color.eventBlue;
-                break;
-            case "Колоквијум":
-            case "Колоквијумска недеља":
-                colorToParse = R.color.eventOrange;
-                break;
-            case "Плаћање школарине":
-                colorToParse = R.color.eventGreen;
-                break;
-            case "Нерадни дани":
-                colorToParse = R.color.eventGray;
-                break;
-            default:
-                colorToParse = R.color.eventYellow;
-        }
-        cardView.setCardBackgroundColor(ContextCompat.getColor(context, colorToParse));
+        cardView.setCardBackgroundColor(ContextCompat.getColor(context, event.getColor()));
     }
 
 

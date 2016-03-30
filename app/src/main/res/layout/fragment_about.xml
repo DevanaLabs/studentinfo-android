@@ -18,10 +18,10 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1">
+                android:layout_weight="2">
                 <ImageView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="180dp"
                     android:src="@drawable/about_raf_logo"
                     android:paddingLeft="@dimen/activity_horizontal_margin"
                     android:paddingRight="@dimen/activity_horizontal_margin"/>
@@ -29,55 +29,86 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1.6"
+                android:layout_weight="3"
                 android:orientation="vertical"
-                android:paddingTop="@dimen/activity_horizontal_margin">
+                android:paddingStart="@dimen/activity_horizontal_margin"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:layout_gravity="center_vertical">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/raf.edu.rs"
                     android:layout_gravity="center_vertical"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                    android:paddingBottom="@dimen/activity_horizontal_margin"
-                    android:paddingTop="@dimen/activity_horizontal_margin"
                     android:autoLink="all"
                     android:focusable="false"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:orientation="vertical"
+                android:paddingStart="@dimen/activity_horizontal_margin"
+                android:paddingLeft="@dimen/activity_horizontal_margin">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:text="@string/telephones"
+                    android:paddingBottom="@dimen/lecturePaddingTopFor3"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/rafPhone1"
                     android:autoLink="all"
                     android:layout_gravity="center_vertical"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+                    android:paddingBottom="@dimen/cardview_default_elevation"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/rafPhone2"
                     android:autoLink="all"
                     android:layout_gravity="center_vertical"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:paddingBottom="@dimen/activity_horizontal_margin"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:orientation="vertical"
+                android:paddingStart="@dimen/activity_horizontal_margin"
+                android:paddingLeft="@dimen/activity_horizontal_margin">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:text="@string/contact"
+                    android:paddingBottom="@dimen/lecturePaddingTopFor3"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/rafEmail1"
                     android:autoLink="all"
                     android:layout_gravity="center_vertical"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+                    android:paddingBottom="@dimen/cardview_default_elevation"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/rafEmail2"
                     android:autoLink="all"
                     android:layout_gravity="center_vertical"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+                    android:paddingBottom="@dimen/cardview_default_elevation"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/rafEmail3"
                     android:autoLink="all"
                     android:layout_gravity="center_vertical"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:drawablePadding="@dimen/activity_horizontal_margin"/>
             </LinearLayout>
         </LinearLayout>
@@ -86,16 +117,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/inCollaborationWith"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin" />
+            android:padding="@dimen/activity_horizontal_margin"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textStyle="bold"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_height="180dp"
-                android:layout_weight="1">
+                android:layout_height="170dp"
+                android:layout_weight="2">
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -106,15 +138,17 @@
 
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1.6">
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:layout_gravity="center_vertical"
+                android:paddingStart="@dimen/activity_horizontal_margin"
+                android:paddingLeft="@dimen/activity_horizontal_margin">
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/devana.rs"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                    android:autoLink="all"
-                    android:paddingTop="@dimen/activity_horizontal_margin"/>
+                    android:autoLink="all"/>
             </LinearLayout>
         </LinearLayout>
 
@@ -134,7 +168,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textStyle="bold"
-                    android:text="@string/projectMakers"/>
+                    android:text="@string/projectMakers"
+                    android:paddingBottom="@dimen/lecturePaddingTopFor3"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -165,8 +200,8 @@
                     android:textStyle="bold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/mentors"/>
-
+                    android:text="@string/mentors"
+                    android:paddingBottom="@dimen/lecturePaddingTopFor3"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -175,6 +210,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/andrejBencic"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/miljanTekic"/>
 
             </LinearLayout>
         </LinearLayout>

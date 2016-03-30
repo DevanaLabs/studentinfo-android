@@ -47,6 +47,7 @@
     <string name="mentors">Ментори:</string>
     <string name="vladimirPrelovac">Владимир Преловац</string>
     <string name="andrejBencic">Андреј Бенчић</string>
+    <string name="miljanTekic">Миљан Текић</string>
     <string name="account">Налог</string>
     <string name="changePassword">Промена лозинке</string>
     <string name="newPassword">Нова лозинка</string>
@@ -55,6 +56,10 @@
     <string name="passwordChangeSuccessful">Промена лозинке је успела</string>
     <string name="passwordChangeNotSuccessful">Промена лозинке није успела</string>
     <string name="logoutAfterPasswordChange">Одјави ме после промене</string>
+    <string name="telephones">Телефони:</string>
+    <string name="contact">Контакт:</string>
+
+
 
     <string name="navigation_drawer_open">Отвори навигациону фиоку</string>
     <string name="navigation_drawer_close">Затвори навигациону фиоку</string>
@@ -80,6 +85,7 @@
     <string name="noNotifications">Нема обавештења</string>
     <string name="placeholderDate">17</string>
     <string name="placeholderMonth">АВГ</string>
+    <string name="placeholderFullDate">17.5.2017</string>
     <string name="placeholderAgo">Пре 25мин</string>
     <string name="placeholderInfoNotification">Дискретне структуре</string>
     <string name="placeholderEventDescription">На данашњи дан се дешавају нека дешавања јако битна за људе који у њима учествују и саћемо да видимо шта се дешава са овим дешавањем ако се деси да је нереално дугачко јебига</string>
@@ -141,7 +147,7 @@
     <string name="second">секунду</string>
 
     <string name="before">Пре</string>
-    <string name="notificationExpiresAt">Нотификација Истиче</string>
+    <string name="notificationExpiresAt">Обавештење истиче:</string>
 
     <string name="startTime">Почетак</string>
     <string name="endTime">Крај</string>

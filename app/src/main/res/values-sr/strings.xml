@@ -32,11 +32,13 @@
     <string name="aboutUs">О нама</string>
     <string name="raf.edu.rs">raf.edu.rs</string>
     <string name="devana.rs">devana.rs</string>
-    <string name="rafPhone1">(011) 2627613</string>
-    <string name="rafPhone2">(011) 2633321</string>
+    <string name="rafPhone1">(011)2627613</string>
+    <string name="rafPhone2">(011)2633321</string>
     <string name="rafEmail1">raf@raf.edu.rs</string>
     <string name="rafEmail2">sekretarijat@raf.edu.rs</string>
     <string name="rafEmail3">marketing@raf.edu.rs</string>
+    <string name="inCollaborationWith">У сарадњи са:</string>
+
     <string name="projectMakers">Учесници пројекта:</string>
     <string name="nikolaVukovic">Никола Вуковић</string>
     <string name="milanVucic">Милан Вучић</string>
@@ -45,6 +47,7 @@
     <string name="mentors">Ментори:</string>
     <string name="vladimirPrelovac">Владимир Преловац</string>
     <string name="andrejBencic">Андреј Бенчић</string>
+    <string name="miljanTekic">Миљан Текић</string>
     <string name="account">Налог</string>
     <string name="changePassword">Промена лозинке</string>
     <string name="newPassword">Нова лозинка</string>
@@ -53,6 +56,10 @@
     <string name="passwordChangeSuccessful">Промена лозинке је успела</string>
     <string name="passwordChangeNotSuccessful">Промена лозинке није успела</string>
     <string name="logoutAfterPasswordChange">Одјави ме после промене</string>
+    <string name="telephones">Телефони:</string>
+    <string name="contact">Контакт:</string>
+
+
 
     <string name="navigation_drawer_open">Отвори навигациону фиоку</string>
     <string name="navigation_drawer_close">Затвори навигациону фиоку</string>
@@ -123,6 +130,27 @@
     <string name="november">НОВ</string>
     <string name="december">ДЕЦ</string>
 
+    <string name="years">година</string>
+    <string name="year">годину</string>
+    <string name="months">месеци</string>
+    <string name="month">месец</string>
+    <string name="weeks">недеља</string>
+    <string name="week">недељу</string>
+    <string name="days">дана</string>
+    <string name="day">дан</string>
+    <string name="hours">сати</string>
+    <string name="hour">сат</string>
+    <string name="minutes">минута</string>
+    <string name="minute">минут</string>
+    <string name="seconds">секунди</string>
+    <string name="second">секунду</string>
+
+    <string name="before">Пре</string>
+    <string name="notificationExpiresAt">Нотификација Истиче</string>
+
+    <string name="startTime">Почетак</string>
+    <string name="endTime">Крај</string>
+    <string name="description">Опис</string>
 
     <string name="Predavanje">Предавање</string>
     <string name="Vezbe">Вежбе</string>
@@ -146,5 +174,6 @@
     <string name="title_activity_forgot_password">Заборављена лозинка</string>
     <string name="title_activity_about_us">О нама</string>
     <string name="title_activity_change_password">Промена лозинке</string>
+    <string name="title_activity_event_details">EventDetailsActivity</string>
 
 </resources>
