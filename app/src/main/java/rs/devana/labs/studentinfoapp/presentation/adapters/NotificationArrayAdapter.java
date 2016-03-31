@@ -16,6 +16,7 @@ import java.util.Locale;
 
 import rs.devana.labs.studentinfoapp.R;
 import rs.devana.labs.studentinfoapp.domain.models.notification.Notification;
+import rs.devana.labs.studentinfoapp.presentation.listeners.OnSwipeTouchListener;
 
 public class NotificationArrayAdapter extends ArrayAdapter<Notification> {
 
@@ -30,14 +31,14 @@ public class NotificationArrayAdapter extends ArrayAdapter<Notification> {
     Context context;
     LayoutInflater inflater;
 
-    View.OnTouchListener mTouchListener;
+    View.OnTouchListener mOnTouchListener;
 
-    public NotificationArrayAdapter(List<Notification> notifications, Context context, int textViewResourceId, View.OnTouchListener listener) {
+    public NotificationArrayAdapter(List<Notification> notifications, Context context, int textViewResourceId, View.OnTouchListener mOnTouchListener) {
         super(context, textViewResourceId, notifications);
         this.notifications = notifications;
         this.context = context;
         this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        mTouchListener = listener;
+        this.mOnTouchListener = mOnTouchListener;
 
     }
 
@@ -65,6 +66,16 @@ public class NotificationArrayAdapter extends ArrayAdapter<Notification> {
     }
 
     @Override
+    public int getViewTypeCount() {
+        return getCount() < 1 ? 1 : getCount();
+    }
+
+    @Override
+    public int getItemViewType(int position){
+        return position;
+    }
+
+        @Override
     public boolean hasStableIds() {
         return true;
     }
@@ -93,7 +104,7 @@ public class NotificationArrayAdapter extends ArrayAdapter<Notification> {
             notificationExpiresAt.setText(simpleDateFormat.format(notification.getExpiresAt().getTime()));
             notificationDescriptionTextView.setText(notification.getDescription());
         }
-        convertView.setOnTouchListener(mTouchListener);
+        convertView.setOnTouchListener(mOnTouchListener);
         return convertView;
     }
 

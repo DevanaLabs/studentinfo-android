@@ -176,7 +176,6 @@ public class YearlyCalendarFragment extends Fragment implements SwipeRefreshLayo
         @Override
         public int compare(Event lhs, Event rhs) {
             return lhs.getStartsAt().compareTo(rhs.getStartsAt());
-
         }
     }
 }

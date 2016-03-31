@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent">
+    <android.support.v7.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/card_view_notifications"
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        card_view:cardCornerRadius="4dp">
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:baselineAligned="false">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:paddingTop="@dimen/activity_vertical_margin">
+                <ImageView
+                    android:id="@+id/rafLogoImageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:paddingLeft="@dimen/notification_view_padding"
+                    android:paddingStart="@dimen/notification_view_padding"
+                    android:paddingEnd="0sp"
+                    android:paddingRight="0sp"
+                    android:src="@drawable/raflogo"
+                    android:contentDescription="@string/rafLogoImageDescription" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/eventDescriptionParentLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="8"
+                android:orientation="vertical"
+                android:padding="@dimen/notification_view_padding">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/timeOfNotification"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="@string/placeholderAgo"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                        android:gravity="end"/>
+                </LinearLayout>
+                <TextView
+                    android:id="@+id/notificationDescriptionTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/placeholderEventDescription"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:paddingBottom="@dimen/lecturePaddingTopFor3"
+                    android:paddingTop="@dimen/lecturePaddingTopFor3"/>
+                <TextView
+                    android:id="@+id/notificationExpiresAt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/placeholderFullDate"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:alpha="0.7"/>
+            </LinearLayout>
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+</LinearLayout>

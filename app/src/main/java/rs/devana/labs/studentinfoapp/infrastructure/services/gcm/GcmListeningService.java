@@ -13,6 +13,7 @@ import android.util.Log;
 
 import com.google.android.gms.gcm.GcmListenerService;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -25,6 +26,7 @@ import javax.inject.Inject;
 import rs.devana.labs.studentinfoapp.R;
 import rs.devana.labs.studentinfoapp.domain.models.notification.Notification;
 import rs.devana.labs.studentinfoapp.infrastructure.dagger.Injector;
+import rs.devana.labs.studentinfoapp.infrastructure.event_bus_events.RefreshNotificationsEvent;
 import rs.devana.labs.studentinfoapp.infrastructure.json.parser.EventParser;
 import rs.devana.labs.studentinfoapp.infrastructure.json.parser.LectureParser;
 import rs.devana.labs.studentinfoapp.infrastructure.json.parser.NotificationParser;
@@ -45,6 +47,9 @@ public class GcmListeningService extends GcmListenerService {
 
     @Inject
     EventParser eventParser;
+
+    @Inject
+    EventBus eventBus;
 
     @Override
     public void onCreate() {
@@ -73,6 +78,8 @@ public class GcmListeningService extends GcmListenerService {
             if (jsonNotification.has("lecture")) {
                 lectureParser.addNotificationToLecture(jsonNotification);
             }
+
+            eventBus.post(new RefreshNotificationsEvent());
 
             Notification notification = notificationParser.parse(jsonNotification);
             if(sharedPreferences.getBoolean("pushNotifications", true)){

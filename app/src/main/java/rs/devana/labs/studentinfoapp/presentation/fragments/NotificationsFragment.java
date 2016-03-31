@@ -2,9 +2,12 @@ package rs.devana.labs.studentinfoapp.presentation.fragments;
 
 
 import android.content.SharedPreferences;
+import android.graphics.PointF;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -12,7 +15,10 @@ import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.ListView;
+import android.widget.OverScroller;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -33,8 +39,10 @@ import rs.devana.labs.studentinfoapp.R;
 import rs.devana.labs.studentinfoapp.domain.models.notification.Notification;
 import rs.devana.labs.studentinfoapp.domain.models.notification.NotificationRepositoryInterface;
 import rs.devana.labs.studentinfoapp.infrastructure.dagger.Injector;
+import rs.devana.labs.studentinfoapp.infrastructure.event_bus_events.RefreshNotificationsEvent;
 import rs.devana.labs.studentinfoapp.infrastructure.json.parser.NotificationParser;
 import rs.devana.labs.studentinfoapp.presentation.adapters.NotificationArrayAdapter;
+import rs.devana.labs.studentinfoapp.presentation.views.NotificationListView;
 
 public class NotificationsFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
@@ -47,16 +55,27 @@ public class NotificationsFragment extends Fragment implements SwipeRefreshLayou
     @Inject
     NotificationRepositoryInterface notificationRepository;
 
+    @Inject
+    EventBus eventBus;
+
 
     private SwipeRefreshLayout swipeRefreshLayout;
     private NotificationArrayAdapter notificationArrayAdapter;
     private List<Notification> notificationsList;
-    private ListView notificationsListView;
+    private NotificationListView notificationsListView;
     boolean mSwiping = false;
     boolean mItemPressed = false;
     HashMap<Long, Integer> mItemIdTopMap = new HashMap<>();
     Set<String> removedNotifications;
 
+    private Direction mCurrentScrollDirection = Direction.NONE;
+    private Direction mCurrentFlingDirection = Direction.NONE;
+    private boolean mHorizontalFlingEnabled = true;
+    private boolean mVerticalFlingEnabled = true;
+    private int mScaledTouchSlop = 0;
+    private OverScroller mScroller;
+    private PointF mCurrentOrigin = new PointF(0f, 0f);
+    private float mXScrollingSpeed = 1f;
 
     private static final int SWIPE_DURATION = 250;
     private static final int MOVE_DURATION = 150;
@@ -82,12 +101,13 @@ public class NotificationsFragment extends Fragment implements SwipeRefreshLayou
         if (removedNotifications == null){
             removedNotifications = new HashSet<>();
         }
+        eventBus.register(this);
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        notificationsListView = (ListView) this.getActivity().findViewById(R.id.notificationsListView);
+        notificationsListView = (NotificationListView) this.getActivity().findViewById(R.id.notificationsListView);
         swipeRefreshLayout = (SwipeRefreshLayout) this.getActivity().findViewById(R.id.swipeRefreshLayout);
         notificationsList = new ArrayList<>();
 
@@ -109,11 +129,11 @@ public class NotificationsFragment extends Fragment implements SwipeRefreshLayou
 
     @Override
     public void onDetach() {
-
+        eventBus.unregister(this);
         super.onDetach();
     }
 
-        @Override
+    @Override
     public void onRefresh() {
         new Thread(new Runnable() {
             @Override
@@ -174,36 +194,70 @@ public class NotificationsFragment extends Fragment implements SwipeRefreshLayou
         }
     }
 
+    @Subscribe
+    public void onRefreshNotificationsEvent(RefreshNotificationsEvent refreshNotificationsEvent){
+        notificationsList = new ArrayList<>();
+
+        String notifications = sharedPreferences.getString("notifications", "");
+        if (!notifications.isEmpty()) {
+            try {
+                notificationsList = notificationParser.parse(new JSONArray(notifications));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        Collections.sort(notificationsList, new NotificationComparator());
+        notificationArrayAdapter.setNotifications(notificationsList);
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                notificationsListView.setAdapter(notificationArrayAdapter);
+            }
+        });
+    }
     private View.OnTouchListener mTouchListener = new View.OnTouchListener() {
 
         float mDownX;
+        float mDownY;
         private int mSwipeSlop = -1;
+        private boolean calcOnce = false;
 
         @Override
         public boolean onTouch(final View view, MotionEvent event) {
-
             if (mSwipeSlop < 0) {
                 mSwipeSlop = ViewConfiguration.get(getActivity()).
                         getScaledTouchSlop();
             }
             switch (event.getAction()) {
-                case MotionEvent.ACTION_DOWN:
+                case MotionEvent.ACTION_DOWN: {
                     if (mItemPressed) {
                         // Multi-item swipes not handled
                         return false;
                     }
+                    swipeRefreshLayout.setEnabled(false);
+                    calcOnce = true;
                     mItemPressed = true;
                     mDownX = event.getX();
+                    mDownY = event.getY();
                     break;
-                case MotionEvent.ACTION_CANCEL:
+                }
+                case MotionEvent.ACTION_CANCEL: {
                     view.setAlpha(1);
                     view.setTranslationX(0);
                     mItemPressed = false;
                     break;
-                case MotionEvent.ACTION_MOVE:
-                {
+                }
+                case MotionEvent.ACTION_MOVE: {
                     float x = event.getX() + view.getTranslationX();
-                    float deltaX = x - mDownX;
+                    float y = event.getY() + view.getTranslationY();
+                    float deltaX = Math.abs(x - mDownX);
+                    float deltaY = Math.abs(y - mDownY);
+                    if (((deltaY > 10) || (deltaX > 10)) && calcOnce){
+                        if(deltaY > deltaX) {
+                            swipeRefreshLayout.setEnabled(true);
+                        }
+                        calcOnce = false;
+                    }
                     float deltaXAbs = Math.abs(deltaX);
                     if (!mSwiping) {
                         if (deltaXAbs > mSwipeSlop) {
@@ -217,8 +271,7 @@ public class NotificationsFragment extends Fragment implements SwipeRefreshLayou
                     }
                 }
                 break;
-                case MotionEvent.ACTION_UP:
-                {
+                case MotionEvent.ACTION_UP: {
                     // User let go - figure out whether to animate the view out, or back into place
                     if (mSwiping) {
                         float x = event.getX() + view.getTranslationX();
@@ -235,7 +288,9 @@ public class NotificationsFragment extends Fragment implements SwipeRefreshLayou
                             endAlpha = 0;
                             remove = true;
                         } else {
-                            // Not far enough - animate it back
+                            view.setAlpha(1);
+                            view.setTranslationX(0);
+                            mItemPressed = false;
                             fractionCovered = 1 - (deltaXAbs / view.getWidth());
                             endX = 0;
                             endAlpha = 1;
@@ -261,6 +316,7 @@ public class NotificationsFragment extends Fragment implements SwipeRefreshLayou
                                 });
                     }
                 }
+                swipeRefreshLayout.setEnabled(true);
                 mItemPressed = false;
                 break;
                 default:
@@ -272,9 +328,10 @@ public class NotificationsFragment extends Fragment implements SwipeRefreshLayou
 
     private void animateRemoval(final ListView listview, View viewToRemove) {
 
-        removedNotifications.add(String.valueOf(viewToRemove.getId()));
+        HashSet<String> temp = new HashSet<>(sharedPreferences.getStringSet("removedNotifications", new HashSet<String>()));
+        temp.add(String.valueOf(viewToRemove.getId()));
         SharedPreferences.Editor editor =  sharedPreferences.edit();
-        editor.putStringSet("removedNotifications", removedNotifications);
+        editor.putStringSet("removedNotifications", temp);
         editor.apply();
 
         int firstVisiblePosition = listview.getFirstVisiblePosition();
@@ -339,5 +396,85 @@ public class NotificationsFragment extends Fragment implements SwipeRefreshLayou
                 return true;
             }
         });
+    }
+
+    private final GestureDetector.SimpleOnGestureListener mGestureListener = new GestureDetector.SimpleOnGestureListener() {
+
+
+        @Override
+        public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+            switch (mCurrentScrollDirection) {
+                case NONE: {
+                    // Allow scrolling only in one direction.
+                    if (Math.abs(distanceX) > Math.abs(distanceY)) {
+                        if (distanceX > 0) {
+                            mCurrentScrollDirection = Direction.LEFT;
+                        } else {
+                            mCurrentScrollDirection = Direction.RIGHT;
+                        }
+                    } else {
+                        mCurrentScrollDirection = Direction.VERTICAL;
+                    }
+                    break;
+                }
+                case LEFT: {
+                    // Change direction if there was enough change.
+                    if (Math.abs(distanceX) > Math.abs(distanceY) && (distanceX < -mScaledTouchSlop)) {
+                        mCurrentScrollDirection = Direction.RIGHT;
+                    }
+                    break;
+                }
+                case RIGHT: {
+                    // Change direction if there was enough change.
+                    if (Math.abs(distanceX) > Math.abs(distanceY) && (distanceX > mScaledTouchSlop)) {
+                        mCurrentScrollDirection = Direction.LEFT;
+                    }
+                    break;
+                }
+            }
+
+            // Calculate the new origin after scroll.
+            switch (mCurrentScrollDirection) {
+                case LEFT:
+                case RIGHT:
+                    mCurrentOrigin.x -= distanceX * mXScrollingSpeed;
+                    ViewCompat.postInvalidateOnAnimation(notificationsListView);
+                    break;
+                case VERTICAL:
+                    mCurrentOrigin.y -= distanceY;
+                    ViewCompat.postInvalidateOnAnimation(notificationsListView);
+                    break;
+            }
+            return true;
+        }
+
+        @Override
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+            if ((mCurrentFlingDirection == Direction.LEFT && !mHorizontalFlingEnabled) ||
+                    (mCurrentFlingDirection == Direction.RIGHT && !mHorizontalFlingEnabled) ||
+                    (mCurrentFlingDirection == Direction.VERTICAL && !mVerticalFlingEnabled)) {
+                return true;
+            }
+
+            mScroller.forceFinished(true);
+
+            mCurrentFlingDirection = mCurrentScrollDirection;
+            switch (mCurrentFlingDirection) {
+                case LEFT:
+                case RIGHT:
+                    mScroller.fling((int) mCurrentOrigin.x, (int) mCurrentOrigin.y, (int) (velocityX * mXScrollingSpeed), 0, Integer.MIN_VALUE, Integer.MAX_VALUE, (int) -(notificationsListView.getHeight()/notificationsListView.getCount()- notificationsListView.getHeight()), 0);
+                    break;
+                case VERTICAL:
+                    mScroller.fling((int) mCurrentOrigin.x, (int) mCurrentOrigin.y, 0, (int) velocityY, Integer.MIN_VALUE, Integer.MAX_VALUE, (int) -(notificationsListView.getHeight()/notificationsListView.getCount() - notificationsListView.getHeight()), 0);
+                    break;
+            }
+
+            ViewCompat.postInvalidateOnAnimation(notificationsListView);
+            return true;
+        }
+    };
+
+    private enum Direction {
+        NONE, LEFT, RIGHT, VERTICAL
     }
 }

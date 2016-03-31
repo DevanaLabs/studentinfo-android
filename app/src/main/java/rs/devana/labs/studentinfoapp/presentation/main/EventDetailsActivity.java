@@ -77,7 +77,7 @@ public class EventDetailsActivity extends AppCompatActivity {
         ListView notificationsListView = (ListView) findViewById(R.id.notificationsListView);
         List<EventNotification> eventNotifications = removeExpired(event.getNotifications());
         if (eventNotifications.size() > 0) {
-            NotificationArrayAdapter notificationArrayAdapter = new NotificationArrayAdapter(eventNotifications, this, R.layout.custom_notification_card_view);
+            NotificationArrayAdapter notificationArrayAdapter = new NotificationArrayAdapter(eventNotifications, this, R.layout.custom_notification_row_view_in_events);
             notificationsListView.setAdapter(notificationArrayAdapter);
         }
     }

@@ -53,7 +53,7 @@ public class Notification implements NotificationInterface{
     public String toString() {
         return getAdditionalInfo() + "\n"
                 + description + "\n"
-                + "Нотификација истиче: " + new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(expiresAt.getTime());
+                + new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(expiresAt.getTime());
     }
 
     @Override

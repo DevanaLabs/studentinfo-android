@@ -131,7 +131,7 @@ public class LecturesView extends View {
 
         canvas.drawRect(0, height - margin, width, height, paint); //bottom margin
 
-        drawTimeLine(canvas, height + margin, width); //time line
+        drawTimeLine(canvas, height, width); //time line
 
         drawLines(canvas, paint, margin, width); //lines between lectures and in empty part of view
     }
@@ -143,8 +143,8 @@ public class LecturesView extends View {
                 if (lectureNotifications.get(i).getExpiresAt().getTimeInMillis() > Calendar.getInstance().getTimeInMillis()){
                     Paint paint = getPaint();
                     Bitmap icon = BitmapFactory.decodeResource(context.getResources(),
-                            android.R.drawable.ic_dialog_alert);
-                    canvas.drawBitmap(icon, width - icon.getWidth() - context.getResources().getDimensionPixelSize(R.dimen.notificationCirclePadding), height - icon.getHeight() - context.getResources().getDimensionPixelSize(R.dimen.notificationCirclePadding), paint);
+                                    R.drawable.ic_notification_icon);
+                    canvas.drawBitmap(icon, width - icon.getWidth(), height - icon.getHeight(), paint);
                     break;
                 }
             }
@@ -214,7 +214,7 @@ public class LecturesView extends View {
     }
 
     private void drawTimeLine(Canvas canvas, float height, float width) {
-        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT+1"));
+        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("Europe/Belgrade"));
         float timeLineMargin = getResources().getDimensionPixelSize(R.dimen.timeLineMargin);
         int today = calendar.get(Calendar.DAY_OF_WEEK) - 2;
         if (today == -1) {
@@ -225,7 +225,7 @@ public class LecturesView extends View {
             paint.setColor(ContextCompat.getColor(context, R.color.black));
             paint.setAlpha(255 * 2 / 10);
 
-            long seconds = ((calendar.getTimeInMillis() + calendar.getTimeZone().getRawOffset()) / 1000 % SECONDS_IN_DAY) - 9 * SECONDS_IN_HOUR;
+            long seconds = ((calendar.getTimeInMillis() + calendar.getTimeZone().getRawOffset() + calendar.getTimeZone().getDSTSavings()) / 1000 % SECONDS_IN_DAY) - 9 * SECONDS_IN_HOUR;
             canvas.drawRect(0, height * seconds / SECONDS_IN_HALF_DAY - timeLineMargin, width, height * seconds / SECONDS_IN_HALF_DAY + timeLineMargin, paint);
         }
     }

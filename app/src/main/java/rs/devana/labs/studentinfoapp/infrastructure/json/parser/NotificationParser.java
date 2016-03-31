@@ -32,10 +32,7 @@ public class NotificationParser {
     public List<Notification> parse(JSONArray jsonNotifications){
 
         List<Notification> notifications = new ArrayList<>();
-        Set<String> removedNotifications = sharedPreferences.getStringSet("removedNotifications", null);
-        if (removedNotifications == null){
-            removedNotifications = new HashSet<>();
-        }
+        HashSet<String> removedNotifications = new HashSet<>(sharedPreferences.getStringSet("removedNotifications", new HashSet<String>()));
 
         int i = 0;
         while (i < jsonNotifications.length()) {
