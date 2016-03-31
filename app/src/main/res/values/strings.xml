@@ -3,11 +3,11 @@
     <string name="title_activity_login">Логин</string>
 
     <!-- Strings related to login -->
-    <string name="prompt_email">Емаил</string>
+    <string name="prompt_email">Адреса</string>
     <string name="prompt_password">Лозинка</string>
     <string name="action_sign_in">Пријави се</string>
     <string name="action_sign_in_short">Пријави се</string>
-    <string name="error_invalid_email">Емаил адреса није валидна</string>
+    <string name="error_invalid_email">Адреса није валидна</string>
     <string name="error_invalid_password">Лозинка је прекратка</string>
     <string name="error_incorrect_password">Лозинка је нетачна</string>
     <string name="error_field_required">Ово поље је обавезно</string>
@@ -98,6 +98,7 @@
     <string name="somethingHappened">Дошло је до грешке</string>
     <string name="enterEmailForResettingPassword">Унесите Вашу адресу да бисте добили маил са инструкцијама за ресетовање лозинке:</string>
     <string name="forgotPassword"><u>Заборавили сте лозинку?</u></string>
+    <string name="loginRemark">Напомена: Да бисте се пријавили, користите адресу на коју сте од Вашег факултета добили емаил за отварање налога.\nУколико немате отворен налог за Студент Инфо, обратите се администратору на Вашем факултету.</string>
 
     <string name="hello_blank_fragment">Ћао празни фрагменту</string>
     <string name="start">Почетак:</string>
@@ -131,20 +132,23 @@
     <string name="november">НОВ</string>
     <string name="december">ДЕЦ</string>
 
-    <string name="years">година</string>
-    <string name="year">годину</string>
-    <string name="months">месеци</string>
-    <string name="month">месец</string>
-    <string name="weeks">недеља</string>
-    <string name="week">недељу</string>
-    <string name="days">дана</string>
-    <string name="day">дан</string>
-    <string name="hours">сати</string>
-    <string name="hour">сат</string>
-    <string name="minutes">минута</string>
-    <string name="minute">минут</string>
-    <string name="seconds">секунди</string>
-    <string name="second">секунду</string>
+        <string name="years">година</string>
+        <string name="year">годину</string>
+        <string name="monthsFive">месеци</string>
+        <string name="monthsTwo">месецa</string>
+        <string name="month">месец</string>
+        <string name="weeks">недеље</string>
+        <string name="week">недељу</string>
+        <string name="days">дана</string>
+        <string name="day">дан</string>
+        <string name="hoursFive">сати</string>
+        <string name="hoursTwo">сата</string>
+        <string name="hour">сат</string>
+        <string name="minutes">минута</string>
+        <string name="minute">минут</string>
+        <string name="secondsFive">секунди</string>
+        <string name="secondsTwo">секунде</string>
+        <string name="second">секунду</string>
 
     <string name="before">Пре</string>
     <string name="notificationExpiresAt">Обавештење истиче:</string>

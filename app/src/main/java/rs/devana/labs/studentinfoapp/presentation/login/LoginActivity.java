@@ -42,6 +42,7 @@ import rs.devana.labs.studentinfoapp.domain.api.ApiDataFetch;
 import rs.devana.labs.studentinfoapp.infrastructure.dagger.Injector;
 import rs.devana.labs.studentinfoapp.infrastructure.event_bus_events.EventsFetchedEvent;
 import rs.devana.labs.studentinfoapp.infrastructure.event_bus_events.GroupsFetchedEvent;
+import rs.devana.labs.studentinfoapp.infrastructure.event_bus_events.LoginErrorEvent;
 import rs.devana.labs.studentinfoapp.infrastructure.services.gcm.RegistrationIntentService;
 import rs.devana.labs.studentinfoapp.presentation.main.NavigationDrawerActivity;
 
@@ -62,7 +63,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
-    private boolean auth = false;
+    private boolean auth = false, userNotInDB = false;
     String email, password;
     String accessToken;
 
@@ -73,6 +74,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
 
         Injector.INSTANCE.getApplicationComponent().inject(this);
 
+        eventBus.register(this);
         accessToken = sharedPreferences.getString("accessToken", "");
         final CountDownLatch latch = new CountDownLatch(1);
 
@@ -212,6 +214,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
         return ((password != null) && (!password.isEmpty()) && (password.length() > 4));
     }
 
+    @Override
+    protected void onDestroy() {
+        eventBus.unregister(this);
+        super.onDestroy();
+    }
+
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     private void showProgress(final boolean show) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
@@ -266,7 +274,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            return apiAuth.getAccessToken(mEmail, mPassword) && apiAuth.getUser(mEmail, mPassword);
+            userNotInDB = false;
+            return apiAuth.getUser(mEmail, mPassword) && apiAuth.getAccessToken(mEmail, mPassword);
         }
 
         @Override
@@ -285,7 +294,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
 
                 Intent navigationDrawerIntent = new Intent(LoginActivity.this, NavigationDrawerActivity.class);
                 startActivity(navigationDrawerIntent);
-            } else {
+            } else if (!userNotInDB){
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();
             }
@@ -309,6 +318,19 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
         toast.setGravity(Gravity.TOP, 0, 150);
 
         toast.show();
+    }
+
+    @Subscribe
+    public void onLoginErrorEvent(LoginErrorEvent loginErrorEvent){
+        final String errorMsg = loginErrorEvent.getErrorMessage();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mEmailView.setError(errorMsg);
+                mEmailView.requestFocus();
+                userNotInDB = true;
+            }
+        });
     }
 
     @Subscribe

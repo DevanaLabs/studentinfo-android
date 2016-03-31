@@ -3,6 +3,7 @@ package rs.devana.labs.studentinfoapp.domain.api;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -11,20 +12,26 @@ import java.io.IOException;
 import javax.inject.Inject;
 
 import rs.devana.labs.studentinfoapp.domain.http.HttpClientInterface;
+import rs.devana.labs.studentinfoapp.infrastructure.dagger.Injector;
+import rs.devana.labs.studentinfoapp.infrastructure.event_bus_events.LoginErrorEvent;
 
 public class ApiAuth {
     SharedPreferences sharedPreferences;
     HttpClientInterface httpClient;
     ResponseReader responseReader;
     private static final String TAG = ApiAuth.class.getSimpleName();
+    private static final int USER_NOT_IN_DB = 103;
     private static final String CLIENT_ID = "\"client_id\": \"1\"";
     static String url = "http://api.studentinfo.rs";
+    @Inject
+    EventBus eventBus;
 
     @Inject
     public ApiAuth(SharedPreferences sharedPreferences, HttpClientInterface httpClient, ResponseReader responseReader) {
         this.sharedPreferences = sharedPreferences;
         this.httpClient = httpClient;
         this.responseReader = responseReader;
+        Injector.INSTANCE.getApplicationComponent().inject(this);
     }
 
     public boolean getAccessToken(String username, String password) {
@@ -59,6 +66,15 @@ public class ApiAuth {
         try {
             BufferedReader reader = httpClient.postStream(url + "/auth", payload);
             String response = responseReader.readResponse(reader);
+            if (response.contains("error")){
+                JSONObject json = new JSONObject(response);
+                JSONObject error = json.getJSONObject("error");
+                Log.i("GRESKA", error.toString());
+                int errorCode = error.getInt("errorCode");
+                if (errorCode == USER_NOT_IN_DB) {
+                    eventBus.post(new LoginErrorEvent(errorCode));
+                }
+            }
             if (!response.contains("success")) {
                 return false;
             }

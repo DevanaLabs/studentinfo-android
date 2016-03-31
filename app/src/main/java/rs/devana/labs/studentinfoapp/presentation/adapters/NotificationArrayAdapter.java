@@ -24,7 +24,7 @@ public class NotificationArrayAdapter extends ArrayAdapter<Notification> {
     private static final int HOURS_IN_DAY = 24;
     private static final int DAYS_IN_WEEK = 7;
     private static final int DAYS_IN_MONTH = 30;
-    private static final int DAY_IN_YEAR = 365;
+    private static final int DAYS_IN_YEAR = 365;
 
     List<? extends Notification> notifications;
     Context context;
@@ -42,7 +42,7 @@ public class NotificationArrayAdapter extends ArrayAdapter<Notification> {
     }
 
     public NotificationArrayAdapter(List<? extends Notification> notifications, Context context, int textViewResourceId) {
-        super(context, textViewResourceId, (List<Notification>)notifications);
+        super(context, textViewResourceId, (List<Notification>) notifications);
         this.notifications = notifications;
         this.context = context;
         this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -105,52 +105,54 @@ public class NotificationArrayAdapter extends ArrayAdapter<Notification> {
         long secondsNow = Calendar.getInstance().getTimeInMillis();
         long diff = (secondsNow - calendar.getTimeInMillis()) / 1000;
 
-        if (diff > 2 * SECONDS_IN_MINUTES * MINUTES_IN_HOURS * HOURS_IN_DAY * DAY_IN_YEAR) {
-            return String.valueOf(diff / (SECONDS_IN_MINUTES * MINUTES_IN_HOURS * HOURS_IN_DAY * DAY_IN_YEAR)) + " " + context.getString(R.string.years);
+        if (diff > 2 * SECONDS_IN_MINUTES * MINUTES_IN_HOURS * HOURS_IN_DAY * DAYS_IN_YEAR) {
+            return String.valueOf(diff / (SECONDS_IN_MINUTES * MINUTES_IN_HOURS * HOURS_IN_DAY * DAYS_IN_YEAR)) + " " + context.getString(R.string.years);
         }
-        if (diff > SECONDS_IN_MINUTES * MINUTES_IN_HOURS * HOURS_IN_DAY * DAY_IN_YEAR) {
-            return String.valueOf(diff / (SECONDS_IN_MINUTES * MINUTES_IN_HOURS * HOURS_IN_DAY * DAY_IN_YEAR)) + " " + context.getString(R.string.year);
+        if (diff > SECONDS_IN_MINUTES * MINUTES_IN_HOURS * HOURS_IN_DAY * DAYS_IN_YEAR) {
+            return String.valueOf(diff / (SECONDS_IN_MINUTES * MINUTES_IN_HOURS * HOURS_IN_DAY * DAYS_IN_YEAR)) + " " + context.getString(R.string.year);
         }
-
+        if (diff > 5 * SECONDS_IN_MINUTES * MINUTES_IN_HOURS * HOURS_IN_DAY * DAYS_IN_MONTH) {
+            return String.valueOf(diff / (SECONDS_IN_MINUTES * MINUTES_IN_HOURS * HOURS_IN_DAY * DAYS_IN_MONTH)) + " " + context.getString(R.string.monthsFive);
+        }
         if (diff > 2 * SECONDS_IN_MINUTES * MINUTES_IN_HOURS * HOURS_IN_DAY * DAYS_IN_MONTH) {
-            return String.valueOf(diff / (SECONDS_IN_MINUTES * MINUTES_IN_HOURS * HOURS_IN_DAY * DAYS_IN_MONTH)) + " " + context.getString(R.string.months);
+            return String.valueOf(diff / (SECONDS_IN_MINUTES * MINUTES_IN_HOURS * HOURS_IN_DAY * DAYS_IN_MONTH)) + " " + context.getString(R.string.monthsTwo);
         }
         if (diff > SECONDS_IN_MINUTES * MINUTES_IN_HOURS * HOURS_IN_DAY * DAYS_IN_MONTH) {
             return String.valueOf(diff / (SECONDS_IN_MINUTES * MINUTES_IN_HOURS * HOURS_IN_DAY * DAYS_IN_MONTH)) + " " + context.getString(R.string.month);
         }
-
         if (diff > 2 * SECONDS_IN_MINUTES * MINUTES_IN_HOURS * HOURS_IN_DAY * DAYS_IN_WEEK) {
             return String.valueOf(diff / (SECONDS_IN_MINUTES * MINUTES_IN_HOURS * HOURS_IN_DAY * DAYS_IN_WEEK)) + " " + context.getString(R.string.weeks);
         }
         if (diff > SECONDS_IN_MINUTES * MINUTES_IN_HOURS * HOURS_IN_DAY * DAYS_IN_WEEK) {
             return String.valueOf(diff / (SECONDS_IN_MINUTES * MINUTES_IN_HOURS * HOURS_IN_DAY * DAYS_IN_WEEK)) + " " + context.getString(R.string.week);
         }
-
         if (diff > 2 * SECONDS_IN_MINUTES * MINUTES_IN_HOURS * HOURS_IN_DAY) {
             return String.valueOf(diff / (SECONDS_IN_MINUTES * MINUTES_IN_HOURS * HOURS_IN_DAY)) + " " + context.getString(R.string.days);
         }
         if (diff > SECONDS_IN_MINUTES * MINUTES_IN_HOURS * HOURS_IN_DAY) {
             return String.valueOf(diff / (SECONDS_IN_MINUTES * MINUTES_IN_HOURS * HOURS_IN_DAY)) + " " + context.getString(R.string.day);
         }
-
+        if (diff > 5 * SECONDS_IN_MINUTES * MINUTES_IN_HOURS) {
+            return String.valueOf(diff / (SECONDS_IN_MINUTES * MINUTES_IN_HOURS)) + " " + context.getString(R.string.hoursFive);
+        }
         if (diff > 2 * SECONDS_IN_MINUTES * MINUTES_IN_HOURS) {
-            return String.valueOf(diff / (SECONDS_IN_MINUTES * MINUTES_IN_HOURS)) + " " + context.getString(R.string.hours);
+            return String.valueOf(diff / (SECONDS_IN_MINUTES * MINUTES_IN_HOURS)) + " " + context.getString(R.string.hoursTwo);
         }
         if (diff > SECONDS_IN_MINUTES * MINUTES_IN_HOURS) {
             return String.valueOf(diff / (SECONDS_IN_MINUTES * MINUTES_IN_HOURS)) + " " + context.getString(R.string.hour);
         }
-
-        if (diff > 2 * SECONDS_IN_MINUTES) {
+        if ((diff > 2 * SECONDS_IN_MINUTES && (diff / SECONDS_IN_MINUTES) % 10 != 1) || diff / SECONDS_IN_MINUTES == 11) {
             return String.valueOf(diff / (SECONDS_IN_MINUTES)) + " " + context.getString(R.string.minutes);
         }
         if (diff > SECONDS_IN_MINUTES) {
             return String.valueOf(diff / (SECONDS_IN_MINUTES)) + " " + context.getString(R.string.minute);
         }
-
-        if (diff > 2) {
-            return String.valueOf(diff) + " " + context.getString(R.string.seconds);
+        if ((diff > 5 && diff % 10 != 1) || diff == 11 || diff < 1) {
+            return String.valueOf(diff) + " " + context.getString(R.string.secondsFive);
         }
-
+        if (diff > 2) {
+            return String.valueOf(diff) + " " + context.getString(R.string.secondsTwo);
+        }
         return String.valueOf(diff) + " " + context.getString(R.string.second);
     }
 

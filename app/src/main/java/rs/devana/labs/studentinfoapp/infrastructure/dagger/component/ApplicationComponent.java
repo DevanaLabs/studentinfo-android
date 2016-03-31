@@ -3,6 +3,7 @@ package rs.devana.labs.studentinfoapp.infrastructure.dagger.component;
 import javax.inject.Singleton;
 
 import dagger.Component;
+import rs.devana.labs.studentinfoapp.domain.api.ApiAuth;
 import rs.devana.labs.studentinfoapp.infrastructure.dagger.module.ApiModule;
 import rs.devana.labs.studentinfoapp.infrastructure.dagger.module.ApplicationContextModule;
 import rs.devana.labs.studentinfoapp.infrastructure.dagger.module.EventBusModule;
@@ -64,4 +65,6 @@ public interface ApplicationComponent {
     void inject(ChangePasswordActivity changePasswordActivity);
 
     void inject(EventDetailsActivity eventDetailsActivity);
+
+    void inject(ApiAuth apiAuth);
 }
