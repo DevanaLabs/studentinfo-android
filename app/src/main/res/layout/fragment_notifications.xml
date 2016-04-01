@@ -17,17 +17,16 @@
                 android:clickable="false"
                 android:listSelector="@drawable/listview_entry"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/empty"
-                android:text="@string/noNotifications"
-                android:layout_centerInParent="true"
-                android:visibility="gone"
-                android:drawableTop="@drawable/ic_speaker_notes_black_48px"
-                android:drawablePadding="@dimen/activity_horizontal_margin"/>
-
     </android.support.v4.widget.SwipeRefreshLayout>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/empty"
+        android:text="@string/noNotifications"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        android:drawableTop="@drawable/ic_speaker_notes_black_48px"
+        android:drawablePadding="@dimen/activity_horizontal_margin"/>
 
 </RelativeLayout>

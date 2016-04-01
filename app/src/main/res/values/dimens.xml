@@ -32,6 +32,7 @@
     <dimen name="lecturePaddingTopFor2">3sp</dimen>
     <dimen name="lecturePaddingTopFor1">1sp</dimen>
     <dimen name="timeLineMargin">2sp</dimen>
+    <dimen name="Margin4dp">4dp</dimen>
 
     <dimen name="notificationCirclePadding">5sp</dimen>
 </resources>

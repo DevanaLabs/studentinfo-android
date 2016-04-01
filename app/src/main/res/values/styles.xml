@@ -7,6 +7,21 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+
+        <!--<item name="editTextStyle">@style/App_EditTextStyle</item>-->
+    </style>
+
+    <style name="MyAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
+        <item name="colorPrimary">@color/white</item>
+        <item name="colorPrimaryDark">@color/white</item>
+        <item name="colorAccent">@color/white</item>
+
+        <item name="android:textColor">@color/white</item>
+        <item name="colorControlNormal">#c5c5c5</item>
+        <item name="colorControlHighlight">#ffffff</item>
+        <item name="android:textColorHint">#ffffff</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -21,7 +36,7 @@
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="CustomTabLayout" parent="Widget.Design.TabLayout">
-        <item name="tabIndicatorColor">#ffffff</item>
+        <item name="tabIndicatorColor">@color/white</item>
     </style>
 
     <style name="Widget.MyTheme.ListView" parent="android:Widget.ListView">

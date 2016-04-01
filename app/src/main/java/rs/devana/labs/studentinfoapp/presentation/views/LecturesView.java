@@ -24,7 +24,6 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 import java.util.TimeZone;
 
 import javax.inject.Inject;
@@ -143,7 +142,7 @@ public class LecturesView extends View {
                 if (lectureNotifications.get(i).getExpiresAt().getTimeInMillis() > Calendar.getInstance().getTimeInMillis()){
                     Paint paint = getPaint();
                     Bitmap icon = BitmapFactory.decodeResource(context.getResources(),
-                                    R.drawable.ic_notification_icon);
+                                    R.drawable.notification_icon);
                     canvas.drawBitmap(icon, width - icon.getWidth(), height - icon.getHeight(), paint);
                     break;
                 }

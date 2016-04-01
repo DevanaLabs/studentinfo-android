@@ -22,7 +22,7 @@ import rs.devana.labs.studentinfoapp.domain.models.event.Event;
 import rs.devana.labs.studentinfoapp.domain.models.notification.event.EventNotification;
 import rs.devana.labs.studentinfoapp.infrastructure.dagger.Injector;
 import rs.devana.labs.studentinfoapp.infrastructure.json.parser.EventParser;
-import rs.devana.labs.studentinfoapp.presentation.adapters.NotificationArrayAdapter;
+import rs.devana.labs.studentinfoapp.presentation.adapters.NotificationForLectureOrEventArrayAdapter;
 
 public class EventDetailsActivity extends AppCompatActivity {
 
@@ -77,7 +77,7 @@ public class EventDetailsActivity extends AppCompatActivity {
         ListView notificationsListView = (ListView) findViewById(R.id.notificationsListView);
         List<EventNotification> eventNotifications = removeExpired(event.getNotifications());
         if (eventNotifications.size() > 0) {
-            NotificationArrayAdapter notificationArrayAdapter = new NotificationArrayAdapter(eventNotifications, this, R.layout.custom_notification_row_view_in_events);
+            NotificationForLectureOrEventArrayAdapter notificationArrayAdapter = new NotificationForLectureOrEventArrayAdapter(eventNotifications, this, R.layout.custom_notification_row_view_in_events);
             notificationsListView.setAdapter(notificationArrayAdapter);
         }
     }

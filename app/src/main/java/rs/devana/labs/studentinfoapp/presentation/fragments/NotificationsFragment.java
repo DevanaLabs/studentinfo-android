@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.ListView;
 import android.widget.OverScroller;
+import android.widget.TextView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -108,6 +109,8 @@ public class NotificationsFragment extends Fragment implements SwipeRefreshLayou
     public void onStart() {
         super.onStart();
         notificationsListView = (NotificationListView) this.getActivity().findViewById(R.id.notificationsListView);
+        TextView emptyTextView = (TextView) this.getActivity().findViewById(R.id.empty);
+        notificationsListView.setEmptyView(emptyTextView);
         swipeRefreshLayout = (SwipeRefreshLayout) this.getActivity().findViewById(R.id.swipeRefreshLayout);
         notificationsList = new ArrayList<>();
 

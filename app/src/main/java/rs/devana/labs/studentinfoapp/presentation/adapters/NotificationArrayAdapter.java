@@ -16,7 +16,6 @@ import java.util.Locale;
 
 import rs.devana.labs.studentinfoapp.R;
 import rs.devana.labs.studentinfoapp.domain.models.notification.Notification;
-import rs.devana.labs.studentinfoapp.presentation.listeners.OnSwipeTouchListener;
 
 public class NotificationArrayAdapter extends ArrayAdapter<Notification> {
 
@@ -30,11 +29,13 @@ public class NotificationArrayAdapter extends ArrayAdapter<Notification> {
     List<? extends Notification> notifications;
     Context context;
     LayoutInflater inflater;
+    int customLayoutId;
 
     View.OnTouchListener mOnTouchListener;
 
-    public NotificationArrayAdapter(List<Notification> notifications, Context context, int textViewResourceId, View.OnTouchListener mOnTouchListener) {
-        super(context, textViewResourceId, notifications);
+    public NotificationArrayAdapter(List<Notification> notifications, Context context, int customLayoutId, View.OnTouchListener mOnTouchListener) {
+        super(context, customLayoutId, notifications);
+        this.customLayoutId = customLayoutId;
         this.notifications = notifications;
         this.context = context;
         this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -42,8 +43,9 @@ public class NotificationArrayAdapter extends ArrayAdapter<Notification> {
 
     }
 
-    public NotificationArrayAdapter(List<? extends Notification> notifications, Context context, int textViewResourceId) {
-        super(context, textViewResourceId, (List<Notification>) notifications);
+    public NotificationArrayAdapter(List<? extends Notification> notifications, Context context, int customLayoutId) {
+        super(context, customLayoutId, (List<Notification>) notifications);
+        this.customLayoutId = customLayoutId;
         this.notifications = notifications;
         this.context = context;
         this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -83,7 +85,7 @@ public class NotificationArrayAdapter extends ArrayAdapter<Notification> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
-            convertView = inflater.inflate(R.layout.custom_notification_card_view, parent, false);
+            convertView = inflater.inflate(customLayoutId, parent, false);
 
             CardView cardView = (CardView) convertView.findViewById(R.id.card_view_notifications);
             setBackgroundColor(cardView, position);

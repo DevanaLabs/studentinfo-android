@@ -74,12 +74,10 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                 new ScheduleFetchTask(getActivity()).execute((String) newValue);
                 scheduleFetchDialog = ProgressDialog.show(getActivity(), getResources().getString(R.string.pleaseWait), getResources().getString(R.string.fetchingSchedule), true);
                 CharSequence group = findEntryForValue((CharSequence) newValue);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString("groupName", group.toString());
-                editor.putString("groupId", newValue.toString());
-                editor.apply();
-                listPreference.setSummary(group);
-                eventBus.post(new GroupChangedEvent(group.toString()));
+//                SharedPreferences.Editor editor = sharedPreferences.edit();
+//                editor.apply();
+//                listPreference.setSummary(group);
+//                eventBus.post(new GroupChangedEvent(group.toString()));
                 newGroupId = (CharSequence) newValue;
 
                 return true;

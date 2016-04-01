@@ -36,6 +36,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         card_view:cardCornerRadius="4dp"
+        android:padding="0dp"
         android:layout_weight="8"
         card_view:cardBackgroundColor="@color/blue">
         <LinearLayout
@@ -66,15 +67,18 @@
             </LinearLayout>
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="match_parent">
+                android:layout_weight="1.5"
+                android:layout_height="match_parent"
+                android:layout_gravity="bottom">
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/notificationsAlertImageView"
-                    android:src="@drawable/ic_notification_icon"
+                    android:src="@drawable/notification_icon"
                     android:layout_gravity="bottom"
-                    android:visibility="gone"/>
+                    android:visibility="gone"
+                    android:paddingBottom="@dimen/Margin4dp"
+                    android:paddingRight="@dimen/Margin4dp"/>
             </LinearLayout>
         </LinearLayout>
     </android.support.v7.widget.CardView>

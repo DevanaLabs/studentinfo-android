@@ -3,8 +3,10 @@ package rs.devana.labs.studentinfoapp.presentation.login;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.app.AlertDialog;
 import android.app.LoaderManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.content.SharedPreferences;
@@ -149,6 +151,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
                 public void onClick(View v) {
                     Intent forgotPasswordIntent = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
                     startActivity(forgotPasswordIntent);
+                }
+            });
+
+            TextView youDontHaveAnAccountTextView = (TextView) findViewById(R.id.youDontHaveAnAccountTextView);
+            youDontHaveAnAccountTextView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    makeDialog();
                 }
             });
 
@@ -318,6 +328,19 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
         toast.setGravity(Gravity.TOP, 0, 150);
 
         toast.show();
+    }
+
+    private void makeDialog(){
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.note)
+                .setMessage(R.string.loginRemark)
+                .setNegativeButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_info)
+                .show();
     }
 
     @Subscribe
