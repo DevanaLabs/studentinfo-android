@@ -38,7 +38,7 @@ public class NotificationParser {
         while (i < jsonNotifications.length()) {
             try {
                 JSONObject jsonNotification = jsonNotifications.getJSONObject(i);
-                String stringNotification = jsonNotification.getString("expiresAt").substring(0, 19) + ".000-"+ jsonNotification.getString("expiresAt").substring(20, 24);
+                String stringNotification = jsonNotification.getString("expiresAt").substring(0, 19) + ".000+"+ jsonNotification.getString("expiresAt").substring(20, 24);
 
                 DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
                 Calendar calendar = Calendar.getInstance();
@@ -70,7 +70,7 @@ public class NotificationParser {
 
     public Notification parse(JSONObject jsonNotification) {
         try {
-            String stringNotification = jsonNotification.getString("expiresAt").substring(0, 19) + ".000-" + jsonNotification.getString("expiresAt").substring(20, 24);
+            String stringNotification = jsonNotification.getString("expiresAt").substring(0, 19) + ".000+" + jsonNotification.getString("expiresAt").substring(20, 24);
 
             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
             Calendar calendar = Calendar.getInstance();

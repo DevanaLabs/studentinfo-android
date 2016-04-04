@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -23,9 +24,9 @@ public class LectureNotificationParser {
 
     public LectureNotification parse(JSONObject jsonLectureNotification) {
         try {
-            String stringNotification = jsonLectureNotification.getString("expiresAt").substring(0, 19) + ".000-" + jsonLectureNotification.getString("expiresAt").substring(20, 24);
+            String stringNotification = jsonLectureNotification.getString("expiresAt").substring(0, 19) + ".000+" + jsonLectureNotification.getString("expiresAt").substring(20, 24);
 
-            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(dateFormat.parse(stringNotification));
 
@@ -47,9 +48,9 @@ public class LectureNotificationParser {
             try {
                 JSONObject jsonLectureNotification = jsonLectureNotifications.getJSONObject(i);
 
-                String stringNotification = jsonLectureNotification.getString("expiresAt").substring(0, 19) + ".000-" + jsonLectureNotification.getString("expiresAt").substring(20, 24);
+                String stringNotification = jsonLectureNotification.getString("expiresAt").substring(0, 19) + ".000+" + jsonLectureNotification.getString("expiresAt").substring(20, 24);
 
-                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTime(dateFormat.parse(stringNotification));
 

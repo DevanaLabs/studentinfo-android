@@ -7,6 +7,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -26,10 +27,10 @@ public class CourseEventParser {
 
     public CourseEvent parse(JSONObject jsonCourseEvent) {
         try {
-            String startsAt = jsonCourseEvent.getJSONObject("datetime").getString("startsAt").substring(0, 19) + ".000-" + jsonCourseEvent.getJSONObject("datetime").getString("startsAt").substring(20, 24);
-            String endsAt = jsonCourseEvent.getJSONObject("datetime").getString("endsAt").substring(0, 19) + ".000-" + jsonCourseEvent.getJSONObject("datetime").getString("endsAt").substring(20, 24);
+            String startsAt = jsonCourseEvent.getJSONObject("datetime").getString("startsAt").substring(0, 19) + ".000+" + jsonCourseEvent.getJSONObject("datetime").getString("startsAt").substring(20, 24);
+            String endsAt = jsonCourseEvent.getJSONObject("datetime").getString("endsAt").substring(0, 19) + ".000+" + jsonCourseEvent.getJSONObject("datetime").getString("endsAt").substring(20, 24);
 
-            DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
 
             Calendar startsAtCalendar = Calendar.getInstance();
             startsAtCalendar.setTime(df.parse(startsAt));

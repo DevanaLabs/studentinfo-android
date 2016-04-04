@@ -1,8 +1,10 @@
 package rs.devana.labs.studentinfoapp.presentation.login;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -30,6 +32,14 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        toolbar.setNavigationIcon(ContextCompat.getDrawable(this, R.drawable.ic_arrow_back));
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
         Injector.INSTANCE.getApplicationComponent().inject(this);
 
         final EditText recoveryEmailEditText = (EditText) findViewById(R.id.recoveryEmailEditText);
@@ -49,6 +59,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                 } else {
                     recoveryEmailEditText.setError(null);
                     sendRecoveryEmail(emailEntered);
+                    onBackPressed();
                 }
             }
         });

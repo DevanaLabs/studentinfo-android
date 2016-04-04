@@ -26,8 +26,8 @@ public class GlobalEventParser {
 
     public GlobalEvent parse(JSONObject jsonGlobalEvent) {
         try {
-            String startsAt = jsonGlobalEvent.getJSONObject("datetime").getString("startsAt").substring(0, 19) + ".000-" + jsonGlobalEvent.getJSONObject("datetime").getString("startsAt").substring(20, 24);
-            String endsAt = jsonGlobalEvent.getJSONObject("datetime").getString("endsAt").substring(0, 19) + ".000-" + jsonGlobalEvent.getJSONObject("datetime").getString("endsAt").substring(20, 24);
+            String startsAt = jsonGlobalEvent.getJSONObject("datetime").getString("startsAt").substring(0, 19) + ".000+" + jsonGlobalEvent.getJSONObject("datetime").getString("startsAt").substring(20, 24);
+            String endsAt = jsonGlobalEvent.getJSONObject("datetime").getString("endsAt").substring(0, 19) + ".000+" + jsonGlobalEvent.getJSONObject("datetime").getString("endsAt").substring(20, 24);
 
             DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
 

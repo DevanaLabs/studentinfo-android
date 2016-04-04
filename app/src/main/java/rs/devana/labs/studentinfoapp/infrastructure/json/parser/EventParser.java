@@ -43,20 +43,22 @@ public class EventParser {
 
     public List<Event> parse(JSONArray jsonEvents) {
         List<Event> events = new ArrayList<>();
+        JSONArray jsonLectures = null;
 
         String groupId = sharedPreferences.getString("groupId", "");
         for (int i = 0; i < jsonEvents.length(); i++) {
             try {
                 if ((jsonEvents.getJSONObject(i).has("group")) && (jsonEvents.getJSONObject(i).getString("groupId").equals(groupId))) {
-                    GroupEvent globalEvent = groupEventParser.parse(jsonEvents.getJSONObject(i));
-                    events.add(globalEvent);
+                    GroupEvent groupEvent = groupEventParser.parse(jsonEvents.getJSONObject(i));
+                    events.add(groupEvent);
                 } else if (jsonEvents.getJSONObject(i).has("course")) {
-                    JSONArray jsonLectures = new JSONArray(sharedPreferences.getString("lectures", ""));
+                    if (jsonLectures == null) {
+                        jsonLectures = new JSONArray(sharedPreferences.getString("lectures", "[]"));
+                    }
                     for (int j = 0; j < jsonLectures.length(); j++) {
                         if (jsonLectures.getJSONObject(j).getJSONObject("course").getString("name").equals(jsonEvents.getJSONObject(i).getJSONObject("course").getString("name"))) {
                             CourseEvent courseEvent = courseEventParser.parse(jsonEvents.getJSONObject(i));
                             events.add(courseEvent);
-                            break;
                         }
                     }
                 } else {

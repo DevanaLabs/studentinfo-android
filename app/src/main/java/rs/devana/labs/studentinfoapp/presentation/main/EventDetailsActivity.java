@@ -56,8 +56,8 @@ public class EventDetailsActivity extends AppCompatActivity {
         TextView description = (TextView) findViewById(R.id.description);
         TextView startTime = (TextView) findViewById(R.id.startTime);
         TextView endTime = (TextView) findViewById(R.id.endTime);
+        TextView classrooms = (TextView) findViewById(R.id.classrooms);
 
-        String arrived = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault()).format(Calendar.getInstance().getTime());
         Date startsAt = event.getStartsAt().getTime();
         Date endsAt = event.getEndsAt().getTime();
 
@@ -69,10 +69,23 @@ public class EventDetailsActivity extends AppCompatActivity {
 
         String startTimeString = getResources().getString(R.string.startTime) + ": " + simpleDateFormat.format(startsAt);
         String endTimeString = getResources().getString(R.string.endTime) + ": " + simpleDateFormat.format(endsAt);
+        String classroomsString = "";
+        for (int i = 0; i < event.getClassrooms().size(); i++) {
+            if (i + 1 == event.getClassrooms().size()) {
+                classroomsString += event.getClassrooms().get(i).getName();
+            } else {
+                classroomsString += event.getClassrooms().get(i).getName() + ", ";
+            }
+        }
 
         description.setText(event.getDescription());
         startTime.setText(startTimeString);
         endTime.setText(endTimeString);
+        classrooms.setText(classroomsString);
+
+        if (classroomsString.equals("")){
+            classrooms.setHeight(0);
+        }
 
         ListView notificationsListView = (ListView) findViewById(R.id.notificationsListView);
         List<EventNotification> eventNotifications = removeExpired(event.getNotifications());

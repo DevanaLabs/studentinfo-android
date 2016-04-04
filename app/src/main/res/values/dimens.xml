@@ -34,5 +34,7 @@
     <dimen name="timeLineMargin">2sp</dimen>
     <dimen name="Margin4dp">4dp</dimen>
 
+    <dimen name="notificationIconSize">20dp</dimen>
+
     <dimen name="notificationCirclePadding">5sp</dimen>
 </resources>

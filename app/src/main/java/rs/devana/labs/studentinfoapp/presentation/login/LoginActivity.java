@@ -33,7 +33,11 @@ import android.widget.Toast;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.json.JSONArray;
+import org.json.JSONException;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 import java.util.concurrent.CountDownLatch;
 
 import javax.inject.Inject;
@@ -45,7 +49,9 @@ import rs.devana.labs.studentinfoapp.infrastructure.dagger.Injector;
 import rs.devana.labs.studentinfoapp.infrastructure.event_bus_events.EventsFetchedEvent;
 import rs.devana.labs.studentinfoapp.infrastructure.event_bus_events.GroupsFetchedEvent;
 import rs.devana.labs.studentinfoapp.infrastructure.event_bus_events.LoginErrorEvent;
+import rs.devana.labs.studentinfoapp.infrastructure.event_bus_events.NotificationsFetchedEvent;
 import rs.devana.labs.studentinfoapp.infrastructure.services.gcm.RegistrationIntentService;
+import rs.devana.labs.studentinfoapp.presentation.fragments.NotificationsFragment;
 import rs.devana.labs.studentinfoapp.presentation.main.NavigationDrawerActivity;
 
 public class LoginActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -114,6 +120,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
             }
 
             mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
+            mEmailView.setText(sharedPreferences.getString("textEmail", ""));
             mEmailView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
                 @Override
                 public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -221,11 +228,15 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
     }
 
     private boolean isPasswordValid(String password) {
-        return ((password != null) && (!password.isEmpty()) && (password.length() > 4));
+        return ((password != null) && (!password.isEmpty()));
     }
 
     @Override
     protected void onDestroy() {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("textEmail", mEmailView.getText().toString());
+        editor.apply();
+
         eventBus.unregister(this);
         super.onDestroy();
     }
@@ -296,7 +307,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
             if (success) {
                 accessToken = sharedPreferences.getString("accessToken", "");
 
-                new GroupFetchTask().execute(); new EventsFetchTask().execute();
+                new GroupFetchTask().execute(); new EventsFetchTask().execute(); new NotificationsFetchTask().execute();
 
                 Intent gcmRegister = new Intent(LoginActivity.this, RegistrationIntentService.class);
                 startService(gcmRegister);
@@ -397,4 +408,34 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
             eventBus.post(new EventsFetchedEvent(jsonArray.toString()));
         }
     }
+
+    public class NotificationsFetchTask extends AsyncTask<Void, Void, JSONArray> {
+
+        @Override
+        protected JSONArray doInBackground(Void... params) {
+
+            return apiDataFetch.getAllNotifications();
+        }
+
+        @Override
+        protected void onPostExecute(JSONArray jsonNotifications) {
+
+            for (int i = 0; i < jsonNotifications.length(); i++) {
+                try {
+                    if (!jsonNotifications.getJSONObject(i).has("arrived")) {
+                        String arrived = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault()).format(Calendar.getInstance().getTime());
+                        jsonNotifications.getJSONObject(i).put("arrived", arrived);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("notifications", jsonNotifications.toString());
+            editor.apply();
+
+            eventBus.post(new NotificationsFetchedEvent(jsonNotifications.toString()));
+        }
+    }
+
 }

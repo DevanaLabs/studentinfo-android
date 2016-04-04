@@ -159,13 +159,15 @@ public class NotificationsFragment extends Fragment implements SwipeRefreshLayou
                 notificationsList = notificationParser.parse(notifications);
                 Collections.sort(notificationsList, new NotificationComparator());
                 notificationArrayAdapter.setNotifications(notificationsList);
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        notificationsListView.setAdapter(notificationArrayAdapter);
-                        swipeRefreshLayout.setRefreshing(false);
-                    }
-                });
+                if (getActivity() != null) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            notificationsListView.setAdapter(notificationArrayAdapter);
+                            swipeRefreshLayout.setRefreshing(false);
+                        }
+                    });
+                }
                 if (notifications.length() > 0) {
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putString("notifications", notifications.toString());
@@ -175,7 +177,7 @@ public class NotificationsFragment extends Fragment implements SwipeRefreshLayou
         }).start();
     }
 
-    private JSONArray addArrivedToNotifications(JSONArray jsonNotifications) {
+    private static JSONArray addArrivedToNotifications(JSONArray jsonNotifications) {
         for (int i = 0; i < jsonNotifications.length(); i++) {
             try {
                 if (!jsonNotifications.getJSONObject(i).has("arrived")) {

@@ -71,6 +71,7 @@ public class NavigationDrawerActivity extends AppCompatActivity {
     private static final String TAG = NavigationDrawerActivity.class.getSimpleName();
     private static final int WEEKLY_SCHEDULE_INDEX = 0;
     private static final int SETTINGS_INDEX = 3;
+    private static final int NOTIFICATION_INDEX = 2;
 
     String email;
     TextView groupTextView;
@@ -217,6 +218,7 @@ public class NavigationDrawerActivity extends AppCompatActivity {
 
         Fragment fragment = NotificationsFragment.newInstance();
         changeToFragment(fragment);
+        navigationView.getMenu().getItem(NOTIFICATION_INDEX).setChecked(true);
 
         try {
             getSupportActionBar().setTitle(R.string.notifications);

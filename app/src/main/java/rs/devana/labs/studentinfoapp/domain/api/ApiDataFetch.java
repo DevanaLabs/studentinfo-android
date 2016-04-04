@@ -88,7 +88,7 @@ public class ApiDataFetch {
         String accessToken = sharedPreferences.getString("accessToken", "");
         String slug = sharedPreferences.getString("slug", "");
         try {
-            BufferedReader reader = httpClient.getStream(url + "/" + slug + "/events/" + "?access_token=" + accessToken);
+            BufferedReader reader = httpClient.getStream(url + "/" + slug + "/events/" + "?display=notification&access_token=" + accessToken);
             String response = responseReader.readResponse(reader);
             JSONObject json = new JSONObject(response);
 

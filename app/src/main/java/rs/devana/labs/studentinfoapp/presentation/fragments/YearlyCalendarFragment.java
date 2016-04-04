@@ -1,6 +1,7 @@
 package rs.devana.labs.studentinfoapp.presentation.fragments;
 
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -99,7 +100,7 @@ public class YearlyCalendarFragment extends Fragment implements SwipeRefreshLayo
     private int findPositionOfTodayDate(List<Event> eventList){
         Calendar currentDate = Calendar.getInstance();
         for (int i = 0; i < eventList.size(); i++) {
-            if (currentDate.compareTo(eventList.get(i).getStartsAt()) > 0) continue;
+            if (currentDate.getTimeInMillis() > eventList.get(i).getStartsAt().getTimeInMillis() + 86400) continue;
             return i;
         }
         return eventList.size();
@@ -111,7 +112,7 @@ public class YearlyCalendarFragment extends Fragment implements SwipeRefreshLayo
 
     @Override
     public void onRefresh() {
-        new Thread(new Runnable() {
+         new Thread(new Runnable() {
             @Override
             public void run() {
                 swipeRefreshLayout.setRefreshing(true);
@@ -140,14 +141,16 @@ public class YearlyCalendarFragment extends Fragment implements SwipeRefreshLayo
                 eventsList = eventParser.parse(events);
                 Collections.sort(eventsList, new EventComparator());
                 eventArrayAdapter.setEvents(eventsList);
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        eventsListView.setAdapter(eventArrayAdapter);
-                        eventsListView.setSelection(findPositionOfTodayDate(eventsList));
-                        swipeRefreshLayout.setRefreshing(false);
-                    }
-                });
+                if (getActivity() != null) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            eventsListView.setAdapter(eventArrayAdapter);
+                            eventsListView.setSelection(findPositionOfTodayDate(eventsList));
+                            swipeRefreshLayout.setRefreshing(false);
+                        }
+                    });
+                }
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putString("allEvents", events.toString());
                 editor.apply();

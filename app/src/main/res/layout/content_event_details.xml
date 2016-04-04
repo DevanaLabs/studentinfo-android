@@ -25,8 +25,8 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@android:color/darker_gray"
-        android:layout_marginBottom="@dimen/Margin4dp"
-        android:layout_marginTop="@dimen/Margin4dp"/>
+        android:layout_marginBottom="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -41,6 +41,14 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Medium Text"
         android:id="@+id/endTime"
+        android:layout_marginBottom="@dimen/activity_vertical_margin" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Medium Text"
+        android:id="@+id/classrooms"
         android:layout_marginBottom="@dimen/activity_vertical_margin" />
 
     <ListView

@@ -7,7 +7,10 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.os.Parcelable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GestureDetectorCompat;
 import android.text.Layout;
@@ -141,9 +144,9 @@ public class LecturesView extends View {
             for (int i = 0; i < lectureNotifications.size(); i++){
                 if (lectureNotifications.get(i).getExpiresAt().getTimeInMillis() > Calendar.getInstance().getTimeInMillis()){
                     Paint paint = getPaint();
-                    Bitmap icon = BitmapFactory.decodeResource(context.getResources(),
-                                    R.drawable.notification_icon);
-                    canvas.drawBitmap(icon, width - icon.getWidth(), height - icon.getHeight(), paint);
+                    Drawable iconDrawable = ContextCompat.getDrawable(context, R.drawable.notification_icon);
+                    Bitmap icon = drawableToBitmap(iconDrawable, context);
+                    canvas.drawBitmap(icon, width - icon.getWidth() - getResources().getDimensionPixelSize(R.dimen.Margin4dp), height - icon.getHeight() - getResources().getDimensionPixelSize(R.dimen.Margin4dp), paint);
                     break;
                 }
             }
@@ -305,4 +308,20 @@ public class LecturesView extends View {
             return super.onSingleTapUp(event);
         }
     };
+
+    public static Bitmap drawableToBitmap (Drawable drawable, Context context) {
+
+        if (drawable instanceof BitmapDrawable) {
+            return ((BitmapDrawable)drawable).getBitmap();
+        }
+
+        Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+
+        Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, context.getResources().getDimensionPixelOffset(R.dimen.notificationIconSize), context.getResources().getDimensionPixelOffset(R.dimen.notificationIconSize), true);
+        Canvas canvas = new Canvas(scaledBitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+
+        return scaledBitmap;
+    }
 }
