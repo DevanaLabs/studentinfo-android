@@ -92,6 +92,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
             } else {
                 Intent navigationDrawerIntent = new Intent(LoginActivity.this, NavigationDrawerActivity.class);
                 startActivity(navigationDrawerIntent);
+                finish();
             }
         } else {
             if (!accessToken.equals("")) {
@@ -113,6 +114,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
                     if (auth) {
                         Intent navigationDrawer = new Intent(this, NavigationDrawerActivity.class);
                         startActivity(navigationDrawer);
+                        finish();
                     }
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -311,10 +313,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
 
                 Intent gcmRegister = new Intent(LoginActivity.this, RegistrationIntentService.class);
                 startService(gcmRegister);
-                finish();
 
                 Intent navigationDrawerIntent = new Intent(LoginActivity.this, NavigationDrawerActivity.class);
                 startActivity(navigationDrawerIntent);
+                finish();
             } else if (!userNotInDB){
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();
