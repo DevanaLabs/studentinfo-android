@@ -21,6 +21,7 @@ public class ApiAuth {
     ResponseReader responseReader;
     private static final String TAG = ApiAuth.class.getSimpleName();
     private static final int USER_NOT_IN_DB = 103;
+    private static final int YOU_MUST_REGISTER_FIRST = 141;
     private static final String CLIENT_ID = "\"client_id\": \"1\"";
     static String url = "http://api.studentinfo.rs";
     @Inject
@@ -71,7 +72,7 @@ public class ApiAuth {
                 JSONObject error = json.getJSONObject("error");
                 Log.i("GRESKA", error.toString());
                 int errorCode = error.getInt("errorCode");
-                if (errorCode == USER_NOT_IN_DB) {
+                if (errorCode == USER_NOT_IN_DB || errorCode == YOU_MUST_REGISTER_FIRST) {
                     eventBus.post(new LoginErrorEvent(errorCode));
                 }
             }

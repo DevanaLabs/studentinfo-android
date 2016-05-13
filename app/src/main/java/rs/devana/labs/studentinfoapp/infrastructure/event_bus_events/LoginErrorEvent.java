@@ -13,6 +13,8 @@ public class LoginErrorEvent {
         switch (errorCode){
             case 103: errorMsg = "Адреса не постоји у бази";
                 break;
+            case 141: errorMsg = "Потребно је да прво активирате Ваш налог";
+                break;
             default: errorMsg = "Грешка приликом пријаве";
                 break;
         }
